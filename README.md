@@ -20,6 +20,13 @@ Vishva Pandhya
 <h4>Adding a New Dependency</h4>
 <p>pip3 install (new dependency)</p>
 <p>pip freeze > requirements.txt </p>
+<h4>Running the NodeJS Client Server</h4>
+<p>nodemon server.js</p>
+<h4>Running the React Build Server</h4>
+<p>run "npm start" inside of the frontend folder</p>
+<h4>Running the Python Servers</h4>
+<p>python3 (server name)</p>
+  
 
 <h2>Contributing</h2>
 <p>Create a new branch, and submit a merge request. Another developer will look through and either approve the MR, or provide feedback on what needs to be changed before it can be merged. Delete the branch when it is complete</p>
