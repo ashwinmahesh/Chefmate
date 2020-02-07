@@ -29,3 +29,17 @@ Vishva Pandhya
 <p>run "npm start" inside of the frontend folder</p>
 <h4>Running the Python Servers</h4>
 <p>python3 (server name)</p>
+
+<h2>Git Commands</h2>
+<h4>Creating a branch</h4>
+<p>git checkout -b (branch name)</p>
+<h4>Pulling changes</h4>
+<p>git pull</p>
+<h4>Checking what changes have been made since the last commit</h4>
+<p>git status</p>
+<h4>Adding files to a commit</h4>
+<p>git add (file name)*</p>
+<h4>Making a commit</h4>
+<p>git commit -m "(commit message)"</p>
+<h4>Pushing a commit to the repo</h4>
+<p>git push</p>
