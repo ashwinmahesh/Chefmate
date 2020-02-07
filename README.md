@@ -8,6 +8,9 @@ Turner Dunlop,
 Vishva Pandhya
 </h3>
 
+<h2>Contributing</h2>
+<p>Create a new branch, and submit a merge request. Another developer will look through and either approve the MR, or provide feedback on what needs to be changed before it can be merged. Delete the branch when it is complete</p>
+
 <h2>Important Commands</h2>
 <h4>Creating a Python Virtual Environment</h4>
 <p>python3 -m venv venv</p>
@@ -26,7 +29,3 @@ Vishva Pandhya
 <p>run "npm start" inside of the frontend folder</p>
 <h4>Running the Python Servers</h4>
 <p>python3 (server name)</p>
-  
-
-<h2>Contributing</h2>
-<p>Create a new branch, and submit a merge request. Another developer will look through and either approve the MR, or provide feedback on what needs to be changed before it can be merged. Delete the branch when it is complete</p>
