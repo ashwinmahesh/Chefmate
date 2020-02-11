@@ -1,6 +1,7 @@
 from flask import Flask
 from pymongo import MongoClient
 import requests
+import json
 
 app = Flask(__name__)
 
@@ -61,8 +62,10 @@ def makeRequest(server, route, method="GET", data={}):
         print ("Timeout Error:",errt)
     except requests.exceptions.RequestException as err:
         print ("Oops: Something Else",err)
-
-  return res
+  
+  if res=='ERROR':
+    return res
+  return json.loads(res.decode('utf-8'))
 
 if __name__ == "__main__":
   print(f"Crawler is listening on port {port}")
