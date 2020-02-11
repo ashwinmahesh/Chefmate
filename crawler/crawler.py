@@ -18,8 +18,12 @@ except ConnectionError:
 
 @app.route('/', methods=["GET"])
 def index():
-  print(makeRequest("client", "testRoute"))
+  print(makeRequest("ranker", "testRoute"))
   return 'I am the crawler!'
+
+@app.route('/testRoute')
+def testRoute():
+  return sendPacket(1, 'successfully got packet from crawler', {'name': 'Ashwin'})
 
 #TODO UPDATE SERVER PATHS BASED ON CONFIG
 def getServerPath(serverName):

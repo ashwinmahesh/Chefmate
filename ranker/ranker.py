@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from pymongo import MongoClient
 import requests
 import json
@@ -21,6 +21,11 @@ def index():
   print(makeRequest("client", "testRoute"))
   return 'I am the ranker!'
 
+@app.route('/testRoute')
+def testRoute():
+  return sendPacket(1, 'successfully got packet from ranker', {'name': 'Ashwin'})
+
+#DONT PUT ANY SERVER PATHS BELOW THIS
 #TODO UPDATE SERVER PATHS BASED ON CONFIG
 def getServerPath(serverName):
   if serverName == 'crawler':
@@ -29,6 +34,9 @@ def getServerPath(serverName):
     return 'http://localhost:8000'
   else:
     return "ERROR"
+
+def sendPacket(success:int, message:str, content={}):
+  return {'success': success, 'message': message, 'content': content}
 
 def makeRequest(server, route, method="GET", data={}):
   serverPath = getServerPath(server)
