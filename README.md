@@ -11,6 +11,10 @@ Vishva Pandhya
 <h2>Contributing</h2>
 <p>Create a new branch, and submit a merge request. Another developer will look through and either approve the MR, or provide feedback on what needs to be changed before it can be merged. Delete the branch when it is complete</p>
 
+<h2>Running the Project</h2>
+<h4>On initial download: "chmod 777 start"</h4>
+<h4>./start</h4>
+
 <h2>Important Commands</h2>
 <h4>Creating a Python Virtual Environment</h4>
 <p>python3 -m venv venv</p>
