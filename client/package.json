@@ -1,11 +1,13 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "description": "",
+  "description": "Client Server Code for Chefmate",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js | pino-colada",
+    "startDev": "nodemon server.js | pino-colada",
+    "build": "cd frontend && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
@@ -16,10 +18,12 @@
     "express-pino-logger": "^4.0.0",
     "express-session": "^1.17.0",
     "mongoose": "^5.8.11",
-    "nodemon": "^2.0.2",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pino-colada": "^1.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
