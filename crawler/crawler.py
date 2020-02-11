@@ -2,6 +2,15 @@ from flask import Flask
 from pymongo import MongoClient
 
 app = Flask(__name__)
+mongoUri = 'mongodb://localhost/chefmateDB'
+mongoServer = MongoClient(mongoUri)
+mongo = mongoServer.admin
+try:
+  mongo.command('isMaster')
+  print("Success: Connected successfully to database.")
+except ConnectionError:
+  print("Error: Database connection failed.")
+
 
 # connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
 # client = MongoClient(<<MONGODB URL>>)
@@ -10,6 +19,8 @@ app = Flask(__name__)
 # Issue the serverStatus command and print the results
 # serverStatusResult=db.command("serverStatus")
 # pprint(serverStatusResult)
+
+
 
 @app.route('/')
 def index():
