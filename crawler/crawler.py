@@ -1,7 +1,10 @@
-from flask import Flask
+from flask import Flask, jsonify
 from pymongo import MongoClient
 import requests
 import json
+import sys
+sys.path.append('..')
+import helpers
 
 app = Flask(__name__)
 
@@ -18,58 +21,12 @@ except ConnectionError:
 
 @app.route('/', methods=["GET"])
 def index():
-  print(makeRequest("ranker", "testRoute"))
+  print(helpers.makeRequest("ranker", "testRoute"))
   return 'I am the crawler!'
 
 @app.route('/testRoute')
 def testRoute():
-  return sendPacket(1, 'successfully got packet from crawler', {'name': 'Ashwin'})
-
-#TODO UPDATE SERVER PATHS BASED ON CONFIG
-def getServerPath(serverName):
-  if serverName == 'ranker':
-    return 'http://localhost:8002'
-  elif serverName == 'client':
-    return 'http://localhost:8000'
-  else:
-    return "ERROR"
-
-def makeRequest(server, route, method="GET", data={}):
-  serverPath = getServerPath(server)
-  res='ERROR'
-  if serverPath == 'ERROR':
-    return res
-  if method == 'GET':
-    try:
-      res=requests.get(f'{serverPath}/{route}', timeout=3)
-      res.raise_for_status()
-      res = res.content
-    except requests.exceptions.HTTPError as errh:
-        print ("Http Error:",errh)
-    except requests.exceptions.ConnectionError as errc:
-        print ("Error Connecting:",errc)
-    except requests.exceptions.Timeout as errt:
-        print ("Timeout Error:",errt)
-    except requests.exceptions.RequestException as err:
-        print ("Oops: Something Else",err)
-
-  elif method == 'POST':
-    try:
-      res=requests.post(f'{serverPath}/{route}', data, timeout=3)
-      res.raise_for_status()
-      res=res.content
-    except requests.exceptions.HTTPError as errh:
-        print ("Http Error:",errh)
-    except requests.exceptions.ConnectionError as errc:
-        print ("Error Connecting:",errc)
-    except requests.exceptions.Timeout as errt:
-        print ("Timeout Error:",errt)
-    except requests.exceptions.RequestException as err:
-        print ("Oops: Something Else",err)
-  
-  if res=='ERROR':
-    return res
-  return json.loads(res.decode('utf-8'))
+  return helpers.sendPacket(1, 'successfully got packet from crawler', {'name': 'Ashwin'})
 
 if __name__ == "__main__":
   print(f"Crawler is listening on port {port}")
