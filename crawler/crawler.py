@@ -18,7 +18,7 @@ except ConnectionError:
 @app.route('/', methods=["GET"])
 def index():
   print(makeRequest("client", "testRoute"))
-  return 'Hello World!'
+  return 'I am the crawler!'
 
 #TODO UPDATE SERVER PATHS BASED ON CONFIG
 def getServerPath(serverName):
@@ -63,6 +63,7 @@ def makeRequest(server, route, method="GET", data={}):
         print ("Oops: Something Else",err)
 
   return res
+
 if __name__ == "__main__":
   print(f"Crawler is listening on port {port}")
   app.run(debug=True, host='0.0.0.0', port=port)
