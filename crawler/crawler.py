@@ -1,30 +1,68 @@
 from flask import Flask
 from pymongo import MongoClient
+import requests
 
 app = Flask(__name__)
+
+port = 8001
+#TODO change this to deployed db
 mongoUri = 'mongodb://localhost/chefmateDB'
 mongoServer = MongoClient(mongoUri)
 mongo = mongoServer.admin
 try:
   mongo.command('isMaster')
-  print("Success: Connected successfully to database.")
+  print("Connected successfully to database.")
 except ConnectionError:
   print("Error: Database connection failed.")
 
-
-# connect to MongoDB, change the << MONGODB URL >> to reflect your own connection string
-# client = MongoClient(<<MONGODB URL>>)
-# db=client.admin
-
-# Issue the serverStatus command and print the results
-# serverStatusResult=db.command("serverStatus")
-# pprint(serverStatusResult)
-
-
-
-@app.route('/')
+@app.route('/', methods=["GET"])
 def index():
+  print(makeRequest("client", "testRoute"))
   return 'Hello World!'
 
+#TODO UPDATE SERVER PATHS BASED ON CONFIG
+def getServerPath(serverName):
+  if serverName == 'ranker':
+    return 'http://localhost:8002'
+  elif serverName == 'client':
+    return 'http://localhost:8000'
+  else:
+    return "ERROR"
+
+def makeRequest(server, route, method="GET", data={}):
+  serverPath = getServerPath(server)
+  res='ERROR'
+  if serverPath == 'ERROR':
+    return res
+  if method == 'GET':
+    try:
+      res=requests.get(f'{serverPath}/{route}', timeout=3)
+      res.raise_for_status()
+      res = res.content
+    except requests.exceptions.HTTPError as errh:
+        print ("Http Error:",errh)
+    except requests.exceptions.ConnectionError as errc:
+        print ("Error Connecting:",errc)
+    except requests.exceptions.Timeout as errt:
+        print ("Timeout Error:",errt)
+    except requests.exceptions.RequestException as err:
+        print ("Oops: Something Else",err)
+
+  elif method == 'POST':
+    try:
+      res=requests.post(f'{serverPath}/{route}', data, timeout=3)
+      res.raise_for_status()
+      res=res.content
+    except requests.exceptions.HTTPError as errh:
+        print ("Http Error:",errh)
+    except requests.exceptions.ConnectionError as errc:
+        print ("Error Connecting:",errc)
+    except requests.exceptions.Timeout as errt:
+        print ("Timeout Error:",errt)
+    except requests.exceptions.RequestException as err:
+        print ("Oops: Something Else",err)
+
+  return res
 if __name__ == "__main__":
-  app.run(debug=True, host='0.0.0.0', port=8001)
+  print(f"Crawler is listening on port {port}")
+  app.run(debug=True, host='0.0.0.0', port=port)

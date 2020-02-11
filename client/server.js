@@ -42,6 +42,10 @@ mongoose.connect(mongoUri, {useNewUrlParser: true, useUnifiedTopology: true}).th
 
 //Insert server response functions here
 
+app.get('/testRoute', (request, response) => {
+  return response.json(sendPacket(1, 'Successfully got response'))
+})
+
 app.get('*', (request, response) => {
   return response.sendFile('index.html', { root });
 })
@@ -50,11 +54,11 @@ app.get('*', (request, response) => {
 function checkAuthentication(request) {
   return request.isAuthenticated() && request.user.id // == some stored value
 }
-function sendPacket(success, message, content) {
+function sendPacket(success, message, content={}) {
   return {success: success, message: message, content: content}
 }
 //Insert helper functions here
 
 app.listen(port, () => {
-  console.log(`Server is listening on port ${port}.`);
+  console.log(`Client server is listening on port ${port}.`);
 })
