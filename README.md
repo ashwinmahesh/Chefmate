@@ -28,11 +28,13 @@ Vishva Pandhya
 <p>pip3 install (new dependency)</p>
 <p>pip freeze > requirements.txt </p>
 <h4>Running the NodeJS Client Server</h4>
-<p>nodemon server.js</p>
+<p>npm run startDev</p>
 <h4>Running the React Build Server</h4>
 <p>run "npm start" inside of the frontend folder</p>
 <h4>Running the Python Servers</h4>
 <p>python3 (server name)</p>
+<h4>Creating a static Build of React Client</h4>
+<p>In client "npm run build"</p>
 
 <h2>Git Commands</h2>
 <h4>Creating a branch</h4>
