@@ -44,3 +44,4 @@ client/node_modules/
 crawler/venv/
 ranker/venv/
 __pycache__/
+*.md
