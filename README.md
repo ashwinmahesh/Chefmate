@@ -13,7 +13,7 @@ Vishva Pandhya
 
 <h2>Running the Project</h2>
 <h4>On initial download: "chmod 777 start"</h4>
-<h4>./start</h4>
+<h4>./start {mode: dev | prod} {install}</h4>
 
 <h2>Important Commands</h2>
 <h4>Creating a Python Virtual Environment</h4>
