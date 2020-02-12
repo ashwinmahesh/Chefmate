@@ -1,40 +1,40 @@
-if (process.env.NODE_ENV != "production") {
-  require("dotenv").config();
+if (process.env.NODE_ENV != 'production') {
+  require('dotenv').config();
 }
 
-const express = require("express");
-const bodyParser = require("body-parser");
-const expressSession = require("express-session");
-const path = require("path");
-const pino = require("express-pino-logger")();
-const fs = require("fs");
-const passport = require("passport");
-const initializePassport = require("./passport-config");
-const bcrypt = require("bcrypt");
-const database = require("./mongoConfig");
+const express = require('express');
+const bodyParser = require('body-parser');
+const expressSession = require('express-session');
+const path = require('path');
+const pino = require('express-pino-logger')();
+const fs = require('fs');
+const passport = require('passport');
+const initializePassport = require('./passport-config');
+const bcrypt = require('bcrypt');
+const database = require('./mongoConfig');
 
 const mongoose = database.mongoose;
 const User = database.User;
-const Crawler = database.Crawler;
 const InvertedIndex = database.InvertedIndex;
+const Crawler = database.Crawler;
 
 const app = express();
 
 initializePassport(passport);
 
 const port = process.env.PORT || 8000;
-const root = require("path").join(__dirname, "frontend", "build");
+const root = require('path').join(__dirname, 'frontend', 'build');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   expressSession({
-    secret: "DontTellNobody69",
+    secret: 'DontTellNobody69',
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1 * 24 * 60 * 60 * 1000
-    }
+      maxAge: 1 * 24 * 60 * 60 * 1000,
+    },
   })
 );
 app.use(pino);
@@ -42,13 +42,12 @@ app.use(express.static(root));
 
 //Insert server response functions here
 
-app.get("/testRoute", (request, response) => {
-  return response.json(sendPacket(1, "Successfully got response"));
+app.get('/testRoute', (request, response) => {
+  return response.json(sendPacket(1, 'Successfully got response'));
 });
 
-app.get("*", (request, response) => {
-  return response.sendFile("index.html", { root });
-
+app.get('*', (request, response) => {
+  return response.sendFile('index.html', { root });
 });
 
 //TODO
