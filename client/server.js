@@ -8,10 +8,15 @@ const expressSession = require("express-session");
 const path = require("path");
 const pino = require("express-pino-logger")();
 const fs = require("fs");
-const mongoose = require("mongoose");
 const passport = require("passport");
 const initializePassport = require("./passport-config");
 const bcrypt = require("bcrypt");
+const database = require("./mongoConfig");
+
+const mongoose = database.mongoose;
+const User = database.User;
+const Crawler = database.Crawler;
+const InvertedIndex = database.InvertedIndex;
 
 const app = express();
 
@@ -34,91 +39,6 @@ app.use(
 );
 app.use(pino);
 app.use(express.static(root));
-
-// var mongoUri = 'mongodb://localhost/chefmateDB'
-var mongoUri = "mongodb://18.222.251.5/chefmateDB";
-mongoose
-  .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log("Connected to database");
-  })
-  .catch(err => {
-    console.log("Error: Not connected to database.");
-  });
-
-const CrawlerSchema = new mongoose.Schema(
-  {
-    url: { type: String, required: [true, "URL is required "] },
-    title: { type: String, required: [true, "Web Page title is required"] },
-    body: { type: String, required: [true, "Body of web page is required"] },
-    hub: { type: Number, required: [true, "Hub is required"], default: 1 },
-    authority: {
-      type: Number,
-      required: [true, "Authority is required"],
-      default: 1
-    }
-  },
-  { timestamps: true }
-);
-mongoose.model("Crawler", CrawlerSchema);
-const Crawler = mongoose.model("Crawler");
-
-const UserSchema = new mongoose.Schema(
-  {
-    userid: {
-      type: String,
-      required: [true, "Identifier is required for user"]
-    },
-    likes: {
-      type: {},
-      required: [true, "Likes are required. Resort to default {}"],
-      default: {}
-    },
-    dislikes: {
-      type: {},
-      required: [true, "Dislikes are required. Resort to default {}"],
-      default: {}
-    },
-    history: {
-      type: { webpageID: String },
-      required: [true, "History required. Resort to default {}"],
-      default: {}
-    }
-  },
-  { timestamps: true }
-);
-mongoose.model("User", UserSchema);
-const User = mongoose.model("User");
-
-const InvertedIndexSchema = new mongoose.Schema(
-  {
-    term: {
-      type: String,
-      required: [true, "Term is required for InvertedIndex table"]
-    },
-    doc_info: {
-      type: [{ doc_id: String, termCount: Number, pos: [Number] }],
-      required: [
-        true,
-        "Doc Info is required, resort to default [] if needed. {}"
-      ],
-      default: []
-    },
-    idf: {
-      type: Number,
-      default: 1,
-      required: [true, "IDF is required, resort to default (1) if needed."]
-    },
-    tfidf: {
-      type: {},
-      default: {},
-      required: [true, "TFIDF is required, resort to default {} if needed."]
-    }
-  },
-  { timestamps: true }
-);
-mongoose.model("InvertedIndex", InvertedIndexSchema);
-const InvertedIndex = mongoose.model("InvertedIndex");
 
 //Insert server response functions here
 
