@@ -15,6 +15,9 @@ Vishva Pandhya
 <h4>On initial download: "chmod +x start"</h4>
 <h4>./start {mode: dev | prod} {install}</h4>
 
+<h2>Visual Studio Add-Ons</h2>
+<p>Install Prettier and ESLint if you are using Visual Studio. Set formatOnSave to True in your user settings</p>
+
 <h2>Important Commands</h2>
 <h4>Creating a Python Virtual Environment</h4>
 <p>python3 -m venv venv</p>
