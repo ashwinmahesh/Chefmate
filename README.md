@@ -5,7 +5,7 @@ Ashwin Mahesh,
 Nathan Venckus,
 Richa Tenany,
 Turner Dunlop,
-Vishva Pandhya
+Vishva Pandya
 </h3>
 
 <h2>Contributing</h2>
