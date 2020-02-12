@@ -29,5 +29,5 @@ def testRoute():
   return helpers.sendPacket(1, 'successfully got packet from crawler', {'name': 'Ashwin'})
 
 if __name__ == "__main__":
-  print(f"Crawler is listening on port {port}")
+  print(f"Crawler is listening on port {port}, {app.config['ENV']} environment.")
   app.run(debug=True, host='0.0.0.0', port=port)
