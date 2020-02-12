@@ -2,8 +2,5 @@
   "printWidth": 85,
   "arrowParens": "always",
   "semi": true,
-  "tabWidth": 2,
-  "[javascript]": {
-    "editor.formatOnSave": true
-  }
+  "tabWidth": 2
 }
