@@ -7,7 +7,6 @@ const useStyles = makeStyles(theme => ({
 
 function Template() {
   const styles = useStyles();
-
   return(
     <div>
       <p>I am a template</p>

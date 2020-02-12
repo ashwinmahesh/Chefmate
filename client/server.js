@@ -48,6 +48,7 @@ app.get("/testRoute", (request, response) => {
 
 app.get("*", (request, response) => {
   return response.sendFile("index.html", { root });
+
 });
 
 //TODO
