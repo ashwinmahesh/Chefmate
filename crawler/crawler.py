@@ -10,7 +10,8 @@ app = Flask(__name__)
 
 port = 8001
 #TODO change this to deployed db
-mongoUri = 'mongodb://localhost/chefmateDB'
+# mongoUri = 'mongodb://localhost/chefmateDB'
+mongoUri = 'mongodb://18.222.251.5/chefmateDB'
 mongoServer = MongoClient(mongoUri)
 mongo = mongoServer.admin
 try:

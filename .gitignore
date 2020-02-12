@@ -5,5 +5,7 @@ crawler/venv/
 ranker/venv/
 __pycache__/
 *.md
-.DS_STORE
 *.pem
+.DS_STORE
+
+
