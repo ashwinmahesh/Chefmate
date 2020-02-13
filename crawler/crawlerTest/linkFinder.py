@@ -3,14 +3,12 @@ from urllib import parse
 from bs4 import BeautifulSoup
 import requests
 
-class LinkFinder():
+class LinkFinder:
   def __init__(self, root):
     self.links=set()
     self.root = root
   
-  def findLinkFromSite(self, startingLink=''):
-    if startingLink == '':
-      startingLink = self.root
+  def findLinks(self, startingLink):
     page = requests.get(startingLink)
     soup = BeautifulSoup(page.content, 'html.parser')
     for link in soup.find_all('a'):
@@ -23,15 +21,11 @@ class LinkFinder():
         self.links.add(href)
     return self
   
-  def showLinks(self):
-    for link in self.links:
-      print(link)
+  def getLinks(self):
+    # for link in self.links:
+    #   print(link)
+    return self.links
 
-  # def handle_starttag(self, tag, attrs):
-  #   if tag == 'a':
-  #     for (attr, val) in attrs:
-  #       print(attr, val)
-
-lf = LinkFinder('https://youtube.com')
-# lf.feed('<html><head><h1><a href=\'#\'>Link</a>Hello!</h1></head></html>')
-lf.findLinkFromSite().showLinks()
+if __name__ == '__main__':
+  lf = LinkFinder('https://youtube.com')
+# lf.findLinks('https://youtube.com').getLinks()
