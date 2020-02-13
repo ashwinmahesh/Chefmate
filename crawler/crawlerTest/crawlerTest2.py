@@ -34,19 +34,23 @@ class Crawler:
 
   def runSpider(self):
     # while(True):
-    for i in range(0, 10):
+    for i in range(0, 4):
       self.queue = FileIO.fileToSet(self.queueFile)
       FileIO.deleteFileContents(self.queueFile)
       self.crawled = FileIO.fileToSet(self.crawledFile)
-      FileIO.deleteFileContents(self.crawledFile)
+      # FileIO.deleteFileContents(self.crawledFile)
       
       newLinks = set()
       #Do set union here after every link
+      newCrawledLinks = set()
       while(len(self.queue)!=0):
-        res = self.crawlPage(self.queue.pop())
+        nextLink = self.queue.pop()
+        res = self.crawlPage(nextLink)
+        newCrawledLinks.add(nextLink)
         newLinks = newLinks.union(res)
+
       FileIO.setToFile(newLinks, self.queueFile)
-      FileIO.setToFile(self.crawled, self.crawledFile)
+      FileIO.setToFile(newCrawledLinks, self.crawledFile)
 
   
   def crawlPage(self, parseLink):
