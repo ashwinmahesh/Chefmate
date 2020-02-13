@@ -9,6 +9,9 @@ class LinkFinder:
     self.root = root
   
   def findLinks(self, startingLink):
+    head = requests.head(startingLink)
+    if "text/html" not in head.headers["content-type"]:
+      return self
     page = requests.get(startingLink)
     soup = BeautifulSoup(page.content, 'html.parser')
     for link in soup.find_all('a'):
@@ -22,10 +25,7 @@ class LinkFinder:
     return self
   
   def getLinks(self):
-    # for link in self.links:
-    #   print(link)
     return self.links
 
 if __name__ == '__main__':
   lf = LinkFinder('https://youtube.com')
-# lf.findLinks('https://youtube.com').getLinks()
