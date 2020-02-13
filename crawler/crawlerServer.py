@@ -5,6 +5,7 @@ import json
 import sys
 sys.path.append('..')
 import helpers
+from crawler import Crawler
 
 app = Flask(__name__)
 
@@ -28,6 +29,11 @@ def index():
 @app.route('/testRoute')
 def testRoute():
   return helpers.sendPacket(1, 'successfully got packet from crawler', {'name': 'Ashwin'})
+
+@app.route('/runCrawler')
+def runCrawler():
+  c = Crawler('google', 'https://www.google.com/')
+  c.runSpider(3)
 
 if __name__ == "__main__":
   print(f"Crawler is listening on port {port}, {app.config['ENV']} environment.")
