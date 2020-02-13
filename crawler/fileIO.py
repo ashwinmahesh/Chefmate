@@ -1,6 +1,4 @@
 import os
-# from bs4 import BeautifulSoup
-# import requests
 
 class FileIO:
   @staticmethod
@@ -39,13 +37,9 @@ class FileIO:
   
   @staticmethod
   def setToFile(links, filePath):
-    # FileIO.deleteFileContents(filePath)
     for link in sorted(links):
       FileIO.writeToFile(filePath, link)
 
 if __name__ == "__main__":
   FileIO.createSiteFileSetup('google', 'https://www.google.com')
   FileIO.fileToSet('google/google_queue.txt')
-  # page = requests.get('https://www.google.com')
-  # soup = BeautifulSoup(page.content, 'html.parser')
-  # findLinks('https://www.google.com')

@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 from urllib import parse
-import os
 from fileIO import FileIO
 
 class Crawler:
@@ -32,9 +31,9 @@ class Crawler:
         output.add(href)
     return output
 
-  def runSpider(self):
+  def runSpider(self, iterations):
     # while(True):
-    for i in range(0, 3):
+    for i in range(0, iterations):
       self.queue = FileIO.fileToSet(self.queueFile)
       FileIO.deleteFileContents(self.queueFile)
       self.crawled = FileIO.fileToSet(self.crawledFile)
@@ -79,4 +78,4 @@ class Crawler:
 
 if __name__ == "__main__":
   crawler = Crawler('google', 'https://www.google.com/')
-  crawler.runSpider()
+  crawler.runSpider(3)
