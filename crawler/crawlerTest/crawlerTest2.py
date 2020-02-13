@@ -34,15 +34,14 @@ class Crawler:
 
   def runSpider(self):
     # while(True):
-    for i in range(0, 4):
+    for i in range(0, 3):
       self.queue = FileIO.fileToSet(self.queueFile)
       FileIO.deleteFileContents(self.queueFile)
       self.crawled = FileIO.fileToSet(self.crawledFile)
-      # FileIO.deleteFileContents(self.crawledFile)
       
       newLinks = set()
-      #Do set union here after every link
       newCrawledLinks = set()
+
       while(len(self.queue)!=0):
         nextLink = self.queue.pop()
         res = self.crawlPage(nextLink)
@@ -61,12 +60,8 @@ class Crawler:
     for link in foundLinks:
       if link not in self.crawled and link not in self.queue:
         newLinks.add(link)
-        # self.queue.add(link)
     return newLinks
-    # FileIO.setToFile(newLinks, self.queueFile)
-    # FileIO.setToFile(self.crawled, self.crawledFile)
 
-  
   @staticmethod
   def getDomainName(url):
     try:
