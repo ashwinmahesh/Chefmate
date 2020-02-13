@@ -52,3 +52,9 @@ Vishva Pandya
 <p>git commit -m "(commit message)"</p>
 <h4>Pushing a commit to the repo</h4>
 <p>git push</p>
+
+<h4>Connecting To AWS DB Server</h4>
+<p>Download Chefmate.pem</p>
+<p>chmod 400 chefmate.pem</p>
+<p>ssh -i Chefmate.pem ec2-user@18.222.251.5</p>
+<p>Congratulations you are in the Chefmate</p>
