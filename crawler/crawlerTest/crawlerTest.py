@@ -1,4 +1,6 @@
 import os
+from bs4 import BeautifulSoup
+import requests
 
 def createSiteFileSetup(siteName, siteURL):
   if not os.path.exists(siteName):
@@ -36,6 +38,15 @@ def setToFile(links, filePath):
   for link in sorted(links):
     writeToFile(filePath, link)
 
+def findLinks(startingLink):
+  page = requests.get(startingLink)
+  soup = BeautifulSoup(page.content, 'html.parser')
+  for link in soup.find_all('a'):
+    print(link.get('href'))
+
 if __name__ == "__main__":
   createSiteFileSetup('google', 'www.google.com')
   fileToSet('google/google_queue.txt')
+  # page = requests.get('https://www.google.com')
+  # soup = BeautifulSoup(page.content, 'html.parser')
+  findLinks('https://www.google.com')
