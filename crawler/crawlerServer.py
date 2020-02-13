@@ -30,10 +30,12 @@ def index():
 def testRoute():
   return helpers.sendPacket(1, 'successfully got packet from crawler', {'name': 'Ashwin'})
 
+#TODO Figure out how we want to implement/run crawler
 @app.route('/runCrawler')
 def runCrawler():
   c = Crawler('google', 'https://www.google.com/')
   c.runSpider(3)
+  return helpers.sendPacket(1, 'Running the crawler.')
 
 if __name__ == "__main__":
   print(f"Crawler is listening on port {port}, {app.config['ENV']} environment.")
