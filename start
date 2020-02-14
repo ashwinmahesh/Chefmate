@@ -41,7 +41,7 @@ tell application "Terminal"
 end tell
 
 tell application "Terminal"
-    do script "cd \"`pwd`\"; source setHeader CRAWLER; cd crawler; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; python3 crawler.py"
+    do script "cd \"`pwd`\"; source setHeader CRAWLER; cd crawler; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; python3 crawlerServer.py"
 end tell
 
 tell application "Terminal"
