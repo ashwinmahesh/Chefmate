@@ -19,37 +19,37 @@ fi
 if [ $CHEFMATE_INSTALL == "true" ]; then
 osascript <<END
 tell application "Terminal"
-    do script "cd \"`pwd`\"; source setHeader RANKER; cd ranker; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; pip install -r requirements.txt; python3 ranker.py"
+    do script "cd \"`pwd`\"; source scripts/setHeader RANKER; cd ranker; source ../scripts/createEnv; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; pip install -r requirements.txt; python3 ranker.py"
 end tell
 
 tell application "Terminal"
-    do script "cd \"`pwd`\"; source setHeader CRAWLER; cd crawler; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; pip install -r requirements.txt; python3 crawler.py"
+    do script "cd \"`pwd`\"; source scripts/setHeader CRAWLER; cd crawler; source ../scripts/createEnv; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; pip install -r requirements.txt; python3 crawlerServer.py"
 end tell
 
 tell application "Terminal"
-    do script "cd \"`pwd`\"; source setHeader \"NODEJS CLIENT\"; cd client; npm install; npm run startDev"
+    do script "cd \"`pwd`\"; source scripts/setHeader \"NODEJS CLIENT\"; cd client; npm install; npm run startDev"
 end tell
 
 tell application "Terminal"
-    do script "cd \"`pwd`\"; source setHeader \"REACT CLIENT\"; cd client/frontend; npm install; npm start"
+    do script "cd \"`pwd`\"; source scripts/setHeader \"REACT CLIENT\"; cd client/frontend; npm install; npm start"
 end tell
 END
 else 
 osascript <<END
 tell application "Terminal"
-    do script "cd \"`pwd`\"; source setHeader RANKER; cd ranker; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; python3 ranker.py"
+    do script "cd \"`pwd`\"; source scripts/setHeader RANKER; cd ranker; source ../scripts/createEnv; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; python3 ranker.py"
 end tell
 
 tell application "Terminal"
-    do script "cd \"`pwd`\"; source setHeader CRAWLER; cd crawler; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; python3 crawlerServer.py"
+    do script "cd \"`pwd`\"; source scripts/setHeader CRAWLER; cd crawler; source ../scripts/createEnv; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; python3 crawlerServer.py"
 end tell
 
 tell application "Terminal"
-    do script "cd \"`pwd`\"; source setHeader \"NODEJS CLIENT\"; cd client; npm run startDev"
+    do script "cd \"`pwd`\"; source scripts/setHeader \"NODEJS CLIENT\"; cd client; npm run startDev"
 end tell
 
 tell application "Terminal"
-    do script "cd \"`pwd`\"; source setHeader \"REACT CLIENT\"; cd client/frontend; npm start"
+    do script "cd \"`pwd`\"; source scripts/setHeader \"REACT CLIENT\"; cd client/frontend; npm start"
 end tell
 END
 fi
