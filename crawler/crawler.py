@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from urllib import parse
 from fileIO import FileIO
-from concurrent.futures import ThreadPoolExecutor
+import time
 
 class Crawler:
   def __init__(self, siteName, baseURL):
@@ -14,6 +14,7 @@ class Crawler:
     self.crawledFile = siteName + '/' + siteName + '_crawled.txt'
     self.queue = set()
     self.crawled = set()
+    self.numCrawled = 0
 
   def findNewLinks(self, parseLink):
     output = set()
@@ -33,7 +34,6 @@ class Crawler:
     return output
 
   def runSpider(self, iterations):
-    # while(True):
     for i in range(0, iterations):
       self.queue = FileIO.fileToSet(self.queueFile)
       FileIO.deleteFileContents(self.queueFile)
@@ -53,6 +53,7 @@ class Crawler:
 
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)
+    self.numCrawled += 1
     print(f"Crawling page {parseLink}")
     foundLinks = self.findNewLinks(parseLink)
     newLinks = set()
@@ -79,6 +80,8 @@ class Crawler:
 
 if __name__ == "__main__":
   # crawler = Crawler('google', 'https://www.google.com/')
-  crawler = Crawler('tasty', 'https://tasty.co/')
-  with ThreadPoolExecutor(8) as executor:
-    executor.map(crawler.runSpider(3))
+  startTime = time.time()
+  crawler = Crawler('SimplyRecipes', 'https://www.simplyrecipes.com/')
+  crawler.runSpider(5)
+  print(
+      f"Execution Finished. Runtime: {time.time() - startTime} seconds. Total links crawled: {crawler.numCrawled}")
