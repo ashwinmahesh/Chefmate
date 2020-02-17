@@ -1,0 +1,6 @@
+#!/bin/sh 
+
+if [ ! -d "./venv" ]; then
+  echo 'Creating Python3 Virtual Environment'
+  python3 -m venv venv
+fi
