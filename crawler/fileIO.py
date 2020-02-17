@@ -4,14 +4,14 @@ class FileIO:
   @staticmethod
   def createSiteFileSetup(siteName, siteURL):
     if not os.path.exists(siteName):
-      print("Creating site directory "+siteName)
+      print("Creating site directory " + siteName)
       os.mkdir(siteName)
     queueFile = siteName + '_queue.txt'
     crawledFile = siteName + '_crawled.txt'
     if not os.path.isfile(queueFile):
-      FileIO.writeToFile(siteName+'/'+queueFile, siteURL)
+      FileIO.writeToFile(siteName + '/' + queueFile, siteURL)
     if not os.path.isfile(crawledFile):
-      FileIO.writeToFile(siteName+'/'+crawledFile, '')
+      FileIO.writeToFile(siteName + '/' + crawledFile, '')
 
   @staticmethod
   def writeToFile(filePath, data):
@@ -19,7 +19,7 @@ class FileIO:
     if data == '':
       file.write(data)
     else:
-      file.write(data+'\n')
+      file.write(data + '\n')
     file.close()
 
   @staticmethod
@@ -32,13 +32,14 @@ class FileIO:
     output = set()
     with open(filePath, 'rt') as file:
       for line in file:
-        output.add(line[:len(line)-1])
+        output.add(line[:len(line) - 1])
     return output
-  
+
   @staticmethod
   def setToFile(links, filePath):
     for link in sorted(links):
       FileIO.writeToFile(filePath, link)
+
 
 if __name__ == "__main__":
   FileIO.createSiteFileSetup('google', 'https://www.google.com')
