@@ -9,7 +9,7 @@ import helpers
 app = Flask(__name__)
 
 port = 8002
-#TODO change this to deployed db
+# TODO change this to deployed db
 # mongoUri = 'mongodb://localhost/chefmateDB'
 mongoUri = 'mongodb://18.222.251.5/chefmateDB'
 mongoServer = MongoClient(mongoUri)
@@ -26,8 +26,10 @@ def index():
 
 @app.route('/testRoute')
 def testRoute():
-  return helpers.sendPacket(1, 'successfully got packet from ranker', {'name': 'Ashwin'})
-  
+  return helpers.sendPacket(
+      1, 'successfully got packet from ranker', {'name': 'Ashwin'})
+
+
 if __name__ == "__main__":
   print(f"Ranker is listening on port {port}, {app.config['ENV']} environment.")
   app.run(debug=True, host='0.0.0.0', port=port)
