@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from urllib import parse
 from fileIO import FileIO
+from concurrent.futures import ThreadPoolExecutor
 
 class Crawler:
   def __init__(self, siteName, baseURL):
@@ -77,5 +78,7 @@ class Crawler:
 
 
 if __name__ == "__main__":
-  crawler = Crawler('google', 'https://www.google.com/')
-  crawler.runSpider(3)
+  # crawler = Crawler('google', 'https://www.google.com/')
+  crawler = Crawler('tasty', 'https://tasty.co/')
+  with ThreadPoolExecutor(8) as executor:
+    executor.map(crawler.runSpider(3))

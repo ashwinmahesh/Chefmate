@@ -1,9 +1,7 @@
 from crawler import Crawler
 import helpers
-from flask import Flask, jsonify
+from flask import Flask
 from pymongo import MongoClient
-import requests
-import json
 import sys
 sys.path.append('..')
 

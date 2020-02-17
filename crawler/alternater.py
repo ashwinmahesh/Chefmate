@@ -9,4 +9,5 @@ domains = [
 ]
 
 def alternator():
-  pass
+  for domain in domains:
+    c = Crawler(domain['name'], domain['root'])
