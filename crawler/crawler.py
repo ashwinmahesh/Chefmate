@@ -9,8 +9,8 @@ class Crawler:
     self.baseURL = baseURL
     self.domainName = Crawler.getDomainName(baseURL)
     FileIO.createSiteFileSetup(self.siteName, self.baseURL)
-    self.queueFile = siteName+'/'+siteName+'_queue.txt'
-    self.crawledFile = siteName+'/'+siteName+'_crawled.txt'
+    self.queueFile = siteName + '/' + siteName + '_queue.txt'
+    self.crawledFile = siteName + '/' + siteName + '_crawled.txt'
     self.queue = set()
     self.crawled = set()
 
@@ -23,10 +23,10 @@ class Crawler:
     soup = BeautifulSoup(page.content, 'html.parser')
     for link in soup.find_all('a'):
       href = link.get('href')
-      if href==None or len(href)==0:
+      if href is None or len(href) == 0:
         continue
-      if href[0]=='/':
-        output.add(self.baseURL+href)
+      if href[0] == '/':
+        output.add(self.baseURL + href)
       elif href[:len(self.baseURL)] == self.baseURL:
         output.add(href)
     return output
@@ -37,11 +37,11 @@ class Crawler:
       self.queue = FileIO.fileToSet(self.queueFile)
       FileIO.deleteFileContents(self.queueFile)
       self.crawled = FileIO.fileToSet(self.crawledFile)
-      
+
       newLinks = set()
       newCrawledLinks = set()
 
-      while(len(self.queue)!=0):
+      while(len(self.queue) != 0):
         nextLink = self.queue.pop()
         res = self.crawlPage(nextLink)
         newCrawledLinks.add(nextLink)
@@ -50,7 +50,6 @@ class Crawler:
       FileIO.setToFile(newLinks, self.queueFile)
       FileIO.setToFile(newCrawledLinks, self.crawledFile)
 
-  
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)
     print(f"Crawling page {parseLink}")
@@ -65,16 +64,17 @@ class Crawler:
   def getDomainName(url):
     try:
       results = getSubdomainName(url).split('.')
-      return results[-2]+'.'+results[-1]
-    except:
+      return results[-2] + '.' + results[-1]
+    except BaseException:
       return ''
-  
+
   @staticmethod
   def getSubdomainName(url):
     try:
       return parse.urlparse(url).netloc
-    except:
+    except BaseException:
       return ''
+
 
 if __name__ == "__main__":
   crawler = Crawler('google', 'https://www.google.com/')

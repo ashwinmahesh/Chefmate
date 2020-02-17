@@ -9,6 +9,7 @@ if [ $# -ge 1 ]; then
         CHEFMATE_ENV="development"
     fi
 fi
+
 CHEFMATE_INSTALL="false"
 if [ $# -gt 1 ]; then
     if [ $2 = "install" ]; then
