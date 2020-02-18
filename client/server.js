@@ -12,7 +12,6 @@ const passport = require('passport');
 const initializePassport = require('./passport-config');
 const bcrypt = require('bcrypt');
 const database = require('./mongoConfig');
-// const axios = require('axios');
 
 const mongoose = database.mongoose;
 const User = database.User;
@@ -52,7 +51,7 @@ app.get('/search/:query', async (request, response) => {
   const data = await makeRequest('ranker', `query/${query}`);
   log('ranker', data.message);
   return response.json(
-    sendPacket(1, `Successfully received response from ranker: ${query}`)
+    sendPacket(data.success, `Successfully received response from ranker: ${query}`)
   );
 });
 

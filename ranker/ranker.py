@@ -18,9 +18,9 @@ mongoServer = MongoClient(mongoUri)
 mongo = mongoServer.admin
 try:
   mongo.command('isMaster')
-  print("Connected successfully to database.")
+  log("info", 'Connected successfully to database.')
 except ConnectionError:
-  print("Error: Database connection failed.")
+  log('error', 'Database connection failed.')
 
 @app.route('/', methods=["GET"])
 def index():
@@ -38,5 +38,5 @@ def testRoute():
 
 
 if __name__ == "__main__":
-  print(f"Ranker is listening on port {port}, {app.config['ENV']} environment.")
+  log('info', f"Ranker is listening on port {port}, {app.config['ENV']} environment.")
   app.run(debug=True, host='0.0.0.0', port=port)
