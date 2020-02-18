@@ -3,15 +3,18 @@ import os
 class FileIO:
   @staticmethod
   def createSiteFileSetup(siteName, siteURL):
-    if not os.path.exists(siteName):
+    domainsSiteName = 'domains/'+siteName
+    if not os.path.exists('domains'):
+      os.mkdir('domains')
+    if not os.path.exists(domainsSiteName):
       print("Creating site directory " + siteName)
-      os.mkdir(siteName)
+      os.mkdir('domains/'+siteName)
     queueFile = siteName + '_queue.txt'
     crawledFile = siteName + '_crawled.txt'
     if not os.path.isfile(queueFile):
-      FileIO.writeToFile(siteName + '/' + queueFile, siteURL)
+      FileIO.writeToFile(domainsSiteName + '/' + queueFile, siteURL)
     if not os.path.isfile(crawledFile):
-      FileIO.writeToFile(siteName + '/' + crawledFile, '')
+      FileIO.writeToFile(domainsSiteName + '/' + crawledFile, '')
 
   @staticmethod
   def writeToFile(filePath, data):

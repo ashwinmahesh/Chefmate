@@ -3,6 +3,7 @@ client/frontend/package-lock.json
 client/node_modules/
 crawler/venv/
 ranker/venv/
+crawler/domains/
 __pycache__/
 *.md
 *.pem
