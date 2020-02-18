@@ -12,6 +12,7 @@ const passport = require('passport');
 const initializePassport = require('./passport-config');
 const bcrypt = require('bcrypt');
 const database = require('./mongoConfig');
+// const axios = require('axios');
 
 const mongoose = database.mongoose;
 const User = database.User;
@@ -19,6 +20,7 @@ const InvertedIndex = database.InvertedIndex;
 const Crawler = database.Crawler;
 
 const log = require('./logger');
+const makeRequest = require('./makeRequest');
 
 const app = express();
 
@@ -44,10 +46,14 @@ app.use(express.static(root));
 
 //Insert server response functions here
 
-app.get('/search/:query', (request, response) => {
+app.get('/search/:query', async (request, response) => {
   const query = request.params['query'];
   log('query', query);
-  return response.json(sendPacket(1, `Received query: ${query}`));
+  const data = await makeRequest('ranker', `query/${query}`);
+  log('ranker', data.message);
+  return response.json(
+    sendPacket(1, `Successfully received response from ranker: ${query}`)
+  );
 });
 
 app.get('/testRoute', (request, response) => {
@@ -68,6 +74,6 @@ function sendPacket(success, message, content = {}) {
 //Insert helper functions here
 
 app.listen(port, () => {
-  log('info', `Client server is listening on port ${port}.`)
+  log('info', `Client server is listening on port ${port}.`);
   // console.log(`Client server is listening on port ${port}.`);
 });

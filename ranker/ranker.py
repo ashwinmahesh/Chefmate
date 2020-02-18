@@ -6,6 +6,8 @@ import sys
 sys.path.append('..')
 import helpers
 
+log = helpers.log
+
 app = Flask(__name__)
 
 port = 8002
@@ -23,6 +25,11 @@ except ConnectionError:
 @app.route('/', methods=["GET"])
 def index():
   return 'I am the ranker!'
+
+@app.route('/query/<query>', methods=['GET'])
+def rankQuery(query):
+  log('query', query)
+  return helpers.sendPacket(1, 'Successfully retrieved query', {'query':query})
 
 @app.route('/testRoute')
 def testRoute():

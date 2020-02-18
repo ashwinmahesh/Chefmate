@@ -52,3 +52,6 @@ def makeRequest(server, route, method="GET", data={}):
   if res=='ERROR':
     return res
   return json.loads(res.decode('utf-8'))
+
+def log(title, message):
+  print(f'[{title.upper()}] {message}')
