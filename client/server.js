@@ -18,6 +18,8 @@ const User = database.User;
 const InvertedIndex = database.InvertedIndex;
 const Crawler = database.Crawler;
 
+const log = require('./logger');
+
 const app = express();
 
 initializePassport(passport);
@@ -42,6 +44,12 @@ app.use(express.static(root));
 
 //Insert server response functions here
 
+app.get('/search/:query', (request, response) => {
+  const query = request.params['query'];
+  log('query', query);
+  return response.json(sendPacket(1, `Received query: ${query}`));
+});
+
 app.get('/testRoute', (request, response) => {
   return response.json(sendPacket(1, 'Successfully got response'));
 });
@@ -60,5 +68,6 @@ function sendPacket(success, message, content = {}) {
 //Insert helper functions here
 
 app.listen(port, () => {
-  console.log(`Client server is listening on port ${port}.`);
+  log('info', `Client server is listening on port ${port}.`)
+  // console.log(`Client server is listening on port ${port}.`);
 });
