@@ -47,7 +47,7 @@ function HomepageSimple() {
     <div className={styles.container}>
       <HeaderSimple />
       <div className={styles.contents}>
-        <img src={logo} className={styles.logo} />
+        <img src={logo} className={styles.logo} alt="Chefmate logo" />
         <br />
         <TextField
           id="outlined-search"

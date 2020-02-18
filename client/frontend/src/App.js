@@ -1,7 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Template from './template/template';
 import HomepageSimple from './homepageSimple/HomepageSimple';
 
 function App() {
