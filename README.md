@@ -54,7 +54,7 @@ Vishva Pandya
 <p>git push</p>
 
 <h2>Connecting To AWS DB Server</h2>
-<p>Download Chefmate.pem</p>
+<p>Download Chefmate.pem and move it to the keys/ folder in the project</p>
 <p>chmod 400 chefmate.pem</p>
 <p>ssh -i Chefmate.pem ec2-user@18.222.251.5 OR run ./connect in the keys folder</p>
 <p>Congratulations you are in the Chefmate DB</p>
