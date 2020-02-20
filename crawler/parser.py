@@ -9,5 +9,9 @@ class Parser:
     def parse(self, baseURL):
         page = urllib2.urlopen(baseURL).read()
         soup = BeautifulSoup(page)
+        titles = soup.find('title')
+        headers = soup.find('head')
         body = soup.find('body')
-        content = body.findChildren(recursive=False)
+        bodyContent = body.findChildren(recursive=False)
+        titleContent = titles.findChildren(recursive=False)
+        headContent = titles.findCHildren(recursive=False)
