@@ -1,14 +1,15 @@
 const mongoose = require("mongoose");
+const log = require('./logger');
 
 // var mongoUri = 'mongodb://localhost/chefmateDB'
 var mongoUri = "mongodb://18.222.251.5/chefmateDB";
 mongoose
   .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log("Connected to database");
+    log('info', "Connected to database");
   })
   .catch(err => {
-    console.log("Error: Not connected to database.");
+    log('error', "Error: Not connected to database.");
   });
 
 const CrawlerSchema = new mongoose.Schema(

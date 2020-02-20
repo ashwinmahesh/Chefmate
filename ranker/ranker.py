@@ -6,6 +6,8 @@ import sys
 sys.path.append('..')
 import helpers
 
+log = helpers.log
+
 app = Flask(__name__)
 
 port = 8002
@@ -16,13 +18,18 @@ mongoServer = MongoClient(mongoUri)
 mongo = mongoServer.admin
 try:
   mongo.command('isMaster')
-  print("Connected successfully to database.")
+  log("info", 'Connected successfully to database.')
 except ConnectionError:
-  print("Error: Database connection failed.")
+  log('error', 'Database connection failed.')
 
 @app.route('/', methods=["GET"])
 def index():
   return 'I am the ranker!'
+
+@app.route('/query/<query>', methods=['GET'])
+def rankQuery(query):
+  log('query', query)
+  return helpers.sendPacket(1, 'Successfully retrieved query', {'query':query})
 
 @app.route('/testRoute')
 def testRoute():
@@ -31,5 +38,5 @@ def testRoute():
 
 
 if __name__ == "__main__":
-  print(f"Ranker is listening on port {port}, {app.config['ENV']} environment.")
+  log('info', f"Ranker is listening on port {port}, {app.config['ENV']} environment.")
   app.run(debug=True, host='0.0.0.0', port=port)
