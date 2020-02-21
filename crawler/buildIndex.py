@@ -12,3 +12,6 @@ def buildIndex():
   for domain in domains:
     crawler = Crawler(domain.name, domain.root)
     crawler.runSpider(5)
+
+if __name__ == "__main__":
+  buildIndex()
