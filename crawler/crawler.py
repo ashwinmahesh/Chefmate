@@ -57,7 +57,7 @@ class Crawler:
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)
     self.numCrawled += 1
-    print(f"Crawling page {parseLink}")
+    print("Crawling page "+parseLink)
     foundLinks = self.findNewLinks(parseLink)
     newLinks = set()
     for link in foundLinks:
