@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     // display: 'block',
   },
   buttonStyle: {
+    marginLeft: '20px',
     width: '50px',
     height: '55px',
   },
