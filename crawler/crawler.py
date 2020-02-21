@@ -54,7 +54,7 @@ class Crawler:
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)
     self.numCrawled += 1
-    print(f"Crawling page {parseLink}")
+    print("Crawling page " + parseLink)
     foundLinks = self.findNewLinks(parseLink)
     newLinks = set()
     for link in foundLinks:
@@ -84,4 +84,4 @@ if __name__ == "__main__":
   crawler = Crawler('SimplyRecipes', 'https://www.simplyrecipes.com/')
   crawler.runSpider(5)
   print(
-      f"Execution Finished. Runtime: {time.time() - startTime} seconds. Total links crawled: {crawler.numCrawled}")
+      "Execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(crawler.numCrawled))
