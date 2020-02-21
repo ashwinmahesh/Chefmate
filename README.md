@@ -58,3 +58,5 @@ Vishva Pandya
 <p>chmod 400 chefmate.pem</p>
 <p>ssh -i Chefmate.pem ec2-user@18.222.251.5 OR run ./connect in the keys folder</p>
 <p>Congratulations you are in the Chefmate DB</p>
+<h4>Running the Crawler in the Background of the AWS Server</h4>
+<p>nohup ./buildIndex > output.txt &</p>
