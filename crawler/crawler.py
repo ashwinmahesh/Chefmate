@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from urllib import parse
 from fileIO import FileIO
+import time
 
 class Crawler:
   def __init__(self, siteName, baseURL):
@@ -13,6 +14,7 @@ class Crawler:
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
     self.queue = set()
     self.crawled = set()
+    self.numCrawled = 0
 
   def findNewLinks(self, parseLink):
     output = set()
@@ -33,6 +35,7 @@ class Crawler:
 
   def runSpider(self, iterations):
     # while(True):
+    startTime = time.time()
     for i in range(0, iterations):
       self.queue = FileIO.fileToSet(self.queueFile)
       FileIO.deleteFileContents(self.queueFile)
@@ -49,9 +52,11 @@ class Crawler:
 
       FileIO.setToFile(newLinks, self.queueFile)
       FileIO.setToFile(newCrawledLinks, self.crawledFile)
+    print("Execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(self.numCrawled))
 
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)
+    self.numCrawled += 1
     print(f"Crawling page {parseLink}")
     foundLinks = self.findNewLinks(parseLink)
     newLinks = set()
