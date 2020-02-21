@@ -8,10 +8,10 @@ domains = [
     {'name': 'GoodFood', 'root': 'https://www.bbcgoodfood.com/'}
 ]
 
-def buildIndex():
+def buildIndex(iterations):
   for domain in domains:
     crawler = Crawler(domain.name, domain.root)
-    crawler.runSpider(5)
+    crawler.runSpider(iterations)
 
 if __name__ == "__main__":
-  buildIndex()
+  buildIndex(5)
