@@ -9,8 +9,8 @@ class Crawler:
     self.baseURL = baseURL
     self.domainName = Crawler.getDomainName(baseURL)
     FileIO.createSiteFileSetup(self.siteName, self.baseURL)
-    self.queueFile = siteName + '/' + siteName + '_queue.txt'
-    self.crawledFile = siteName + '/' + siteName + '_crawled.txt'
+    self.queueFile = 'domains/' + siteName + '/' + siteName + '_queue.txt'
+    self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
     self.queue = set()
     self.crawled = set()
 
@@ -77,5 +77,5 @@ class Crawler:
 
 
 if __name__ == "__main__":
-  crawler = Crawler('google', 'https://www.google.com/')
+  crawler = Crawler('simpleRecipes', 'https://www.simplyrecipes.com/')
   crawler.runSpider(3)
