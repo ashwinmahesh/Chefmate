@@ -10,8 +10,8 @@ domains = [
 
 def buildIndex(iterations):
   for domain in domains:
-    crawler = Crawler(domain.name, domain.root)
+    crawler = Crawler(domain['name'], domain['root'])
     crawler.runSpider(iterations)
 
 if __name__ == "__main__":
-  buildIndex(5)
+  buildIndex(1)
