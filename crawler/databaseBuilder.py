@@ -3,7 +3,7 @@ class DatabaseBuilder:
     self.domain = domain
   
   def readFile(self):
-    filePath = 'domains/'+domain +'/'+domain+"_index.txt" 
+    filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
     file = open(filePath, 'r')
     for line in file:
       if line == "\n":
@@ -12,7 +12,11 @@ class DatabaseBuilder:
       link = file.readline()
       title = file.readline()
       body = file.readline()
-      # newline = file.readline()
+
+      docID = docID[7:len(docID)-1]
+      link = link[6:len(link)-1]
+      title = title[7:len(title)-1]
+      body = body[6:len(body)-1]
 
       print(f"{docID}\n{link}\n{title}\n{body}\n")
 
