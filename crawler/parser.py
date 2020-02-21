@@ -1,5 +1,7 @@
-import urllib2
+from urllib.request import urlopen
 from bs4 import BeautifulSoup
+from lxml import html
+import requests
 
 class Parser:
 
@@ -7,11 +9,18 @@ class Parser:
         self.baseURL = baseURL
 
     def parse(self, baseURL):
-        page = urllib2.urlopen(baseURL).read()
-        soup = BeautifulSoup(page)
-        titles = soup.find('title')
-        headers = soup.find('head')
-        body = soup.find('body')
+        page = urlopen(baseURL).read()
+        soup = BeautifulSoup(page, "html.parser")
+        for node in soup.findAll('body'):
+            print('\n'.join(node.findAll(text=True)))
+        """body = soup.find('body')
         bodyContent = body.findChildren(recursive=False)
-        titleContent = titles.findChildren(recursive=False)
-        headContent = titles.findCHildren(recursive=False)
+        soup2 = BeautifulSoup(bodyContent)
+        bodyContent2 = soup2.get_text()
+        print(bodyContent2)"""
+        
+        
+        
+if __name__ == "__main__":
+    p = Parser("https://www.google.com/")
+    p.parse("https://www.google.com/")
