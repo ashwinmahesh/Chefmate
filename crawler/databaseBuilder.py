@@ -8,9 +8,14 @@ log = helpers.log
 def inDatabase(db, word):
   return False
 
+#dbName can be Crawler, InvertedIndex, or User
 def writeToDatabase(dbName, contents, key):
   _id = key
   print("Writing to database:", contents)
+
+def updateDatabaseEntry(dbName, contents, key):
+  _id = key
+  print("Updating database entry")
 
 class DatabaseBuilder:
   def __init__(self, domain):
@@ -43,9 +48,14 @@ class DatabaseBuilder:
     writeToDatabase('Crawler', {'link':link, 'title':title, 'body':body}, docID)
     
   def buildInvertedIndex(self, body, docID):
+    wordPos = 0
     for word in body:
-      pass
-
+      wordPos += 1
+      if not inDatabase('InvertedIndex', word):
+        writeToDatabase('InvertedIndedx', {}, word)
+      # Need to update this logic
+      # updateDatabaseEntry('InvertedIndex', {'doc_id':docID, 'term_count':1, 'pos':[wordPos]}, word)
+      
 
 if __name__ == "__main__":
   d = DatabaseBuilder('SimplyRecipes')
