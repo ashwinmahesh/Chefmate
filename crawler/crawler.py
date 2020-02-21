@@ -19,7 +19,7 @@ class Crawler:
   def findNewLinks(self, parseLink):
     output = set()
     head = requests.head(parseLink)
-    if "text/html" not in head.headers['content-type']:
+    if 'content-type' not in head.headers or "text/html" not in head.headers['content-type']:
       return set()
     page = requests.get(parseLink)
     soup = BeautifulSoup(page.content, 'html.parser')

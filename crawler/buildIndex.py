@@ -14,4 +14,4 @@ def buildIndex(iterations):
     crawler.runSpider(iterations)
 
 if __name__ == "__main__":
-  buildIndex(1)
+  buildIndex(3)
