@@ -8,5 +8,10 @@ domains = [
     {'name': 'GoodFood', 'root': 'https://www.bbcgoodfood.com/'}
 ]
 
-def alternator():
-  pass
+def buildIndex(iterations):
+  for domain in domains:
+    crawler = Crawler(domain.name, domain.root)
+    crawler.runSpider(iterations)
+
+if __name__ == "__main__":
+  buildIndex(5)
