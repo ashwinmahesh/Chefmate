@@ -11,8 +11,11 @@ class Parser:
     def parse(self, baseURL):
         page = urlopen(baseURL).read()
         soup = BeautifulSoup(page, "html.parser")
+        parsed = ""
         for node in soup.findAll('body'):
-            print('\n'.join(node.findAll(text=True)))
+            parsed += ('\n'.join(node.findAll(text=True)))
+
+        print(parsed)
         """body = soup.find('body')
         bodyContent = body.findChildren(recursive=False)
         soup2 = BeautifulSoup(bodyContent)
