@@ -62,6 +62,7 @@ class FileIO:
     with open(filePath) as json_file:
       try:
         data = json.load(json_file)
+        json_file.close()
         return data
       except json.decoder.JSONDecodeError:
         return dict()
@@ -69,7 +70,9 @@ class FileIO:
   @staticmethod
   def writeJsonFile(data, filePath):
     with open(filePath, 'w') as outfile:
-        json.dump(data, outfile, indent=4)
+      json.dump(data, outfile, indent=2)
+      outfile.close()
+      
 
 
 if __name__ == "__main__":

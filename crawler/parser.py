@@ -2,6 +2,11 @@ from fileIO import FileIO
 import json
 import uuid
 import os
+import sys
+sys.path.append('..')
+import helpers
+
+log = helpers.log
 
 class Parser:
   def __init__(self, siteName):
@@ -15,19 +20,18 @@ class Parser:
 
   def runParser(self):
     if not os.path.isfile(self.crawledFile):
-        print("Error: no crawled file\n")
-        return ''
+      log('error', 'No crawled file.')
+      return self
     self.links = FileIO.fileToSet(self.crawledFile)
     if not self.links:
-        print("Error: crawled file is empty\n")
-        return ''
+        log('error','Crawled file is empty')
+        return self
     data = FileIO.readJsonFile(self.indexFile)
     for link in self.links:
         if link not in data:
             obj = self.parse(link)
             data[link] = {
                 'docId': str(uuid.uuid1()),
-                'link': link,
                 'title': obj['title'],
                 'body': obj['body']
             }
