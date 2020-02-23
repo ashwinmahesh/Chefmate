@@ -2,7 +2,19 @@ import sys
 sys.path.append('..')
 import helpers
 log = helpers.log
-from fileIO import fileIO
+from fileIO import FileIO
+from pymongo import MongoClient
+
+mongoUri = 'mongodb://18.222.251.5/chefmateDB'  # 'mongodb://localhost/chefmateDB'
+mongoServer = MongoClient(mongoUri)
+mongo = mongoServer.admin
+try:
+  mongo.command('isMaster')
+  log("info", 'Connected successfully to database.')
+except ConnectionError:
+  log('error', 'Database connection failed.')
+
+CrawlerDB = mongo.Crawler
 
 
 #TODO Replace with actual DB write funtions in the future. Using these stubs for now.
@@ -25,26 +37,34 @@ class DatabaseBuilder:
   def readFile(self, printStatements=False):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
 
-    file = open(filePath, 'r')
-    for line in file:
-      if line == "\n":
-        continue
-      docID = line
-      link = file.readline()
-      title = file.readline()
-      body = file.readline()
+    rawData = FileIO.readJsonFile(filePath)
+    # print(rawData)
+    for entry in rawData.keys():
+      doc = rawData[entry]
+      # self.addDocumentToCollection(doc['docId'], entry, doc['title'], doc['body'])
+      # self.buildInvertedIndex(doc['body'], doc['docId'])
+      # print(rawData[entry['title']])
 
-      docID = docID[7:len(docID)-1]
-      link = link[6:len(link)-1]
-      title = title[7:len(title)-1]
-      body = body[6:len(body)-1]
+    # file = open(filePath, 'r')
+    # for line in file:
+    #   if line == "\n":
+    #     continue
+    #   docID = line
+    #   link = file.readline()
+    #   title = file.readline()
+    #   body = file.readline()
 
-      self.addDocumentToCollection(docID, link, title, body)
-      if printStatements:
-        log('entry', docID)
-        log('entry', link)
-        log('entry', title)
-        log('entry', body)
+    #   docID = docID[7:len(docID)-1]
+    #   link = link[6:len(link)-1]
+    #   title = title[7:len(title)-1]
+    #   body = body[6:len(body)-1]
+
+    #   self.addDocumentToCollection(docID, link, title, body)
+    #   if printStatements:
+    #     log('entry', docID)
+    #     log('entry', link)
+    #     log('entry', title)
+    #     log('entry', body)
   
   def addDocumentToCollection(self, docID, link, title, body):
     writeToDatabase('Crawler', {'link':link, 'title':title, 'body':body}, docID)
@@ -60,6 +80,6 @@ class DatabaseBuilder:
       
 
 if __name__ == "__main__":
-  d = DatabaseBuilder('SimplyRecipes')
+  d = DatabaseBuilder('EpiCurious')
   d.readFile(printStatements=True)
         

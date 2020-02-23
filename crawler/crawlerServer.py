@@ -22,6 +22,8 @@ try:
 except ConnectionError:
   log('error', 'Database connection failed.')
 
+# database = 
+
 @app.route('/', methods=["GET"])
 def index():
   print(helpers.makeRequest("ranker", "testRoute"))
