@@ -2,6 +2,7 @@ import sys
 sys.path.append('..')
 import helpers
 log = helpers.log
+from fileIO import fileIO
 
 
 #TODO Replace with actual DB write funtions in the future. Using these stubs for now.
@@ -23,6 +24,7 @@ class DatabaseBuilder:
   
   def readFile(self, printStatements=False):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
+
     file = open(filePath, 'r')
     for line in file:
       if line == "\n":
