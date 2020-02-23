@@ -5,6 +5,7 @@ import os
 import sys
 sys.path.append('..')
 import helpers
+from extractData import extractData
 
 log = helpers.log
 
@@ -14,9 +15,6 @@ class Parser:
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
     self.indexFile = FileIO.createSiteIndexFile(self.siteName)
     self.links = set()
-
-  def parse(self, link):
-    return {'title':'test_title', 'body':'test_body'}
 
   def runParser(self):
     if not os.path.isfile(self.crawledFile):
@@ -30,14 +28,14 @@ class Parser:
     for link in self.links:
         if link not in data:
             obj = self.parse(link)
-            data[link] = {
-                'docId': str(uuid.uuid1()),
-                'title': obj['title'],
-                'body': obj['body']
-            }
+        obj = extractData(link)
+        data[link] = {
+            'docId': str(uuid.uuid1()),
+            'title': obj['title'],
+            'body': obj['body']
+        }
     FileIO.deleteFileContents(self.indexFile)
     FileIO.writeJsonFile(data, self.indexFile)
-
 
 if __name__ == "__main__":
   parser = Parser('EpiCurious')
