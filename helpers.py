@@ -54,4 +54,4 @@ def makeRequest(server, route, method="GET", data={}):
   return json.loads(res.decode('utf-8'))
 
 def log(title, message):
-  print(f'[{title.upper()}] {message}')
+  print('['+title.upper()+']'+message)
