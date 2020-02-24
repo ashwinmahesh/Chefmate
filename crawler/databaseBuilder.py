@@ -8,10 +8,9 @@ from mongoConfig import *
 import math
 import time
 
-connect('chefmateDB', host='18.222.251.5', port=27017)
-
 class DatabaseBuilder:
   docCount = 0
+  connect('chefmateDB', host='18.222.251.5', port=27017)
 
   def __init__(self, domain, mode='DEV'):
     self.domain = domain
@@ -32,7 +31,6 @@ class DatabaseBuilder:
 
       if self.mode=='DEV' and count>=10:
         break
-
  
   def buildRawText(self, printStatements=False):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
@@ -42,21 +40,24 @@ class DatabaseBuilder:
       if line == "\n":
         continue
       docID = line
-      link = file.readline()
+      url = file.readline()
       title = file.readline()
       body = file.readline()
 
       docID = docID[7:len(docID)-1]
-      link = link[6:len(link)-1]
+      url = link[6:len(link)-1]
       title = title[7:len(title)-1]
       body = body[6:len(body)-1]
 
-      self.addDocumentToCollection(docID, link, title, body)
+      self.addDocumentToCollection(docID, url, title, body)
+      self.buildInvertedIndex(body, url)
+      
       if printStatements:
         log('entry', docID)
         log('entry', link)
         log('entry', title)
         log('entry', body)
+      
   
   def addDocumentToCollection(self, docId, url, title, body):
     log("new entry", "Adding "+url+" to collection.")
@@ -110,6 +111,11 @@ class DatabaseBuilder:
       log('update idf', termEntry['term']+"= "+str(termEntry['idf']))
       termEntry.save()
     log('time', 'IDF Execution finished in '+str(time.time() - startTime)+' seconds.')
+  
+  @staticmethod
+  def resetInvertedIndex():
+    log('reset', 'Resetting Inverted Index Database')
+    InvertedIndex.drop_collection()
 
 if __name__ == "__main__":
   d = DatabaseBuilder('EpiCurious')
