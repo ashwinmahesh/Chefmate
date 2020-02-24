@@ -1,5 +1,9 @@
 import os
 import json
+import sys
+sys.path.append('..')
+import helpers
+log = helpers.log
 
 class FileIO:
   @staticmethod
@@ -8,7 +12,7 @@ class FileIO:
     if not os.path.exists('domains'):
       os.mkdir('domains')
     if not os.path.exists(domainsSiteName):
-      print("Creating site directory " + siteName)
+      log('file', "Creating site directory " + siteName)
       os.mkdir('domains/'+siteName)
     queueFile = siteName + '_queue.txt'
     crawledFile = siteName + '_crawled.txt'
@@ -23,7 +27,7 @@ class FileIO:
     if not os.path.exists('domains'):
       os.mkdir('domains')
     if not os.path.exists(domainsSiteName):
-      print("Creating site directory " + siteName)
+      log('file', "Creating site directory " + siteName)
       os.mkdir('domains/'+siteName)
     indexFile = siteName + '_index.txt'
     if not os.path.isfile(indexFile):
@@ -72,8 +76,6 @@ class FileIO:
     with open(filePath, 'w') as outfile:
       json.dump(data, outfile, indent=2)
       outfile.close()
-      
-
 
 if __name__ == "__main__":
   FileIO.createSiteFileSetup('google', 'https://www.google.com')
