@@ -8,7 +8,7 @@ import helpers
 
 log = helpers.log
 
-class Parser:
+class DataParser:
   def __init__(self, siteName):
     self.siteName = siteName
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
@@ -40,5 +40,5 @@ class Parser:
 
 
 if __name__ == "__main__":
-  parser = Parser('EpiCurious')
-  parser.runParser()
+  parser = DataParser('EpiCurious')
+  DataParser.runParser()
