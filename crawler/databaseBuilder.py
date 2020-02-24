@@ -23,9 +23,10 @@ class DatabaseBuilder:
         doc['title']='No Title'
       self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'])
       self.buildInvertedIndex(doc['body'], entry)
-      break
  
   def buildRawText(self, printStatements=False):
+    filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
+
     file = open(filePath, 'r')
     for line in file:
       if line == "\n":
@@ -84,10 +85,6 @@ class DatabaseBuilder:
         )
         newTermEntry.save()
 
-      if termPos==10:
-        break
-  
-
 def calculateIDF(docCount):
   terms = InvertedIndex.objects()
   for termEntry in terms:
@@ -101,6 +98,4 @@ if __name__ == "__main__":
   d.build()
   calculateIDF(20)
   terms = InvertedIndex.objects()
-  for term in terms:
-    print('idf:',term.idf)
         
