@@ -1,6 +1,6 @@
 from crawler import Crawler
 from dataParser import DataParser
-from databaseBuilder import DatabaseBuilder, calculateIDF
+from databaseBuilder import DatabaseBuilder
 
 domains = [
     {'name': 'Tasty', 'root': 'https://tasty.co/'},
@@ -18,7 +18,7 @@ def buildIndex(iterations):
     databaseBuilder = DatabaseBuilder(domain['name'])
     databaseBuilder.build()
   
-  calculateIDF(100)
+  DatabaseBuilder.calculateIDF()
 
 if __name__ == "__main__":
-  buildIndex(3)
+  buildIndex(2)

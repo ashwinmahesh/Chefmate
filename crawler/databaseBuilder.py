@@ -10,19 +10,28 @@ import math
 connect('chefmateDB', host='18.222.251.5', port=27017)
 
 class DatabaseBuilder:
-  def __init__(self, domain):
+  docCount = 0
+
+  def __init__(self, domain, mode='DEV'):
     self.domain = domain
+    self.mode = mode
   
   def build(self):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
 
     rawData = FileIO.readJsonFile(filePath)
+    count=0
     for entry in rawData.keys():
+      count+=1
       doc = rawData[entry]
       if doc['title'] == None:
         doc['title']='No Title'
       self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'])
       self.buildInvertedIndex(doc['body'], entry)
+
+      if self.mode=='DEV' and count>=10:
+        break
+
  
   def buildRawText(self, printStatements=False):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
@@ -49,8 +58,11 @@ class DatabaseBuilder:
         log('entry', body)
   
   def addDocumentToCollection(self, docId, url, title, body):
+    log("new entry", "Adding "+url+" to collection.")
+    print("body:", body)
     crawlerDoc = Crawler(url=url, title=title, body=body, docId=docId)
     crawlerDoc.save()
+    DatabaseBuilder.docCount+=1
     
   def buildInvertedIndex(self, body, url):
     termPos = 0
@@ -85,17 +97,21 @@ class DatabaseBuilder:
         )
         newTermEntry.save()
 
-def calculateIDF(docCount):
-  terms = InvertedIndex.objects()
-  for termEntry in terms:
-    docsContaining = float(len(termEntry.doc_info))
-    termEntry['idf'] = math.log(docCount / docsContaining, 2)
-    log('update idf', termEntry['term']+"= "+str(termEntry['idf']))
-    termEntry.save()
+      if self.mode=='DEV' and termPos>=50:
+        break
+
+  @staticmethod
+  def calculateIDF():
+    terms = InvertedIndex.objects()
+    for termEntry in terms:
+      docsContaining = float(len(termEntry.doc_info))
+      termEntry['idf'] = math.log(DatabaseBuilder.docCount / docsContaining, 2)
+      log('update idf', termEntry['term']+"= "+str(termEntry['idf']))
+      termEntry.save()
 
 if __name__ == "__main__":
   d = DatabaseBuilder('EpiCurious')
   d.build()
   calculateIDF(20)
-  terms = InvertedIndex.objects()
+  # terms = InvertedIndex.objects()
         

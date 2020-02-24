@@ -29,12 +29,13 @@ class DataParser:
     data = FileIO.readJsonFile(self.indexFile)
     for link in self.links:
         if link not in data:
-            obj = self.parse(link)
-            data[link] = {
-                'docId': str(uuid.uuid1()),
-                'title': obj['title'],
-                'body': obj['body']
-            }
+          log('parser', link)
+          obj = self.parse(link)
+          data[link] = {
+              'docId': str(uuid.uuid1()),
+              'title': obj['title'],
+              'body': obj['body']
+          }
     FileIO.deleteFileContents(self.indexFile)
     FileIO.writeJsonFile(data, self.indexFile)
 

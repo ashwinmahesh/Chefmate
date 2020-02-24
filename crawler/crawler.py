@@ -3,6 +3,10 @@ import requests
 from urllib import parse
 from fileIO import FileIO
 import time
+import sys
+sys.path.append('..')
+import helpers
+log = helpers.log
 
 class Crawler:
   def __init__(self, siteName, baseURL):
@@ -57,7 +61,8 @@ class Crawler:
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)
     self.numCrawled += 1
-    print("Crawling page "+parseLink)
+    # print("Crawling page "+parseLink)
+    log("crawler", parseLink)
     foundLinks = self.findNewLinks(parseLink)
     newLinks = set()
     for link in foundLinks:
