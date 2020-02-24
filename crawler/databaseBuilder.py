@@ -5,24 +5,8 @@ log = helpers.log
 from fileIO import FileIO
 from mongoengine import *
 from mongoConfig import *
-# from pymongo import MongoClient
 
 connect('chefmateDB', host='18.222.251.5', port=27017)
-
-
-# mongoUri = 'mongodb://18.222.251.5:27017/'  # 'mongodb://localhost/chefmateDB'
-# mongoServer = MongoClient(mongoUri)
-# mongo = mongoServer.chefmateDB
-# try:
-#   mongo.command('isMaster')
-#   log("info", 'Connected successfully to database.')
-# except ConnectionError:
-#   log('error', 'Database connection failed.')
-
-# CrawlerDB = mongo.Crawler
-# print(CrawlerDB)
-
-
 
 #TODO Replace with actual DB write funtions in the future. Using these stubs for now.
 def inDatabase(db, word):
@@ -50,15 +34,8 @@ class DatabaseBuilder:
       if doc['title'] == None:
         doc['title']='No Title'
       self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'])
-      # crawlerDoc = Crawler(url=entry, title=doc['title'], body=doc['body'], docId=doc['docId'])
-      # crawlerDoc.save()
-      # print(doc.keys())
-      # res = CrawlerDB.insert_one(doc)
-      # print("RES:",res)
-      # self.addDocumentToCollection(doc['docId'], entry, doc['title'], doc['body'])
-      # self.buildInvertedIndex(doc['body'], doc['docId'])
-      # print(rawData[entry['title']])
-
+      # self.buildInvertedIndex(doc['body'], entry)
+ 
     # file = open(filePath, 'r')
     # for line in file:
     #   if line == "\n":
@@ -86,7 +63,7 @@ class DatabaseBuilder:
 
     # writeToDatabase('Crawler', {'link':link, 'title':title, 'body':body}, docID)
     
-  def buildInvertedIndex(self, body, docID):
+  def buildInvertedIndex(self, body, url):
     wordPos = 0
     for word in body:
       wordPos += 1
