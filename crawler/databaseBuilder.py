@@ -3,18 +3,25 @@ sys.path.append('..')
 import helpers
 log = helpers.log
 from fileIO import FileIO
-from pymongo import MongoClient
+from mongoengine import *
+from mongoConfig import *
+# from pymongo import MongoClient
 
-mongoUri = 'mongodb://18.222.251.5/chefmateDB'  # 'mongodb://localhost/chefmateDB'
-mongoServer = MongoClient(mongoUri)
-mongo = mongoServer.admin
-try:
-  mongo.command('isMaster')
-  log("info", 'Connected successfully to database.')
-except ConnectionError:
-  log('error', 'Database connection failed.')
+connect('chefmateDB', host='18.222.251.5', port=27017)
 
-CrawlerDB = mongo.Crawler
+
+# mongoUri = 'mongodb://18.222.251.5:27017/'  # 'mongodb://localhost/chefmateDB'
+# mongoServer = MongoClient(mongoUri)
+# mongo = mongoServer.chefmateDB
+# try:
+#   mongo.command('isMaster')
+#   log("info", 'Connected successfully to database.')
+# except ConnectionError:
+#   log('error', 'Database connection failed.')
+
+# CrawlerDB = mongo.Crawler
+# print(CrawlerDB)
+
 
 
 #TODO Replace with actual DB write funtions in the future. Using these stubs for now.
@@ -38,9 +45,16 @@ class DatabaseBuilder:
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
 
     rawData = FileIO.readJsonFile(filePath)
-    # print(rawData)
     for entry in rawData.keys():
       doc = rawData[entry]
+      if doc['title'] == None:
+        doc['title']='No Title'
+      self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'])
+      # crawlerDoc = Crawler(url=entry, title=doc['title'], body=doc['body'], docId=doc['docId'])
+      # crawlerDoc.save()
+      # print(doc.keys())
+      # res = CrawlerDB.insert_one(doc)
+      # print("RES:",res)
       # self.addDocumentToCollection(doc['docId'], entry, doc['title'], doc['body'])
       # self.buildInvertedIndex(doc['body'], doc['docId'])
       # print(rawData[entry['title']])
@@ -66,8 +80,11 @@ class DatabaseBuilder:
     #     log('entry', title)
     #     log('entry', body)
   
-  def addDocumentToCollection(self, docID, link, title, body):
-    writeToDatabase('Crawler', {'link':link, 'title':title, 'body':body}, docID)
+  def addDocumentToCollection(self, docId, url, title, body):
+    crawlerDoc = Crawler(url=url, title=title, body=body, docId=docId)
+    crawlerDoc.save()
+
+    # writeToDatabase('Crawler', {'link':link, 'title':title, 'body':body}, docID)
     
   def buildInvertedIndex(self, body, docID):
     wordPos = 0
