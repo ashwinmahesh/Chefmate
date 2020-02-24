@@ -38,7 +38,6 @@ class Crawler:
     return output
 
   def runSpider(self, iterations):
-    # while(True):
     startTime = time.time()
     for i in range(0, iterations):
       self.queue = FileIO.fileToSet(self.queueFile)
@@ -61,7 +60,6 @@ class Crawler:
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)
     self.numCrawled += 1
-    # print("Crawling page "+parseLink)
     log("crawler", parseLink)
     foundLinks = self.findNewLinks(parseLink)
     newLinks = set()
