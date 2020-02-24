@@ -6,6 +6,7 @@ from fileIO import FileIO
 from mongoengine import *
 from mongoConfig import *
 import math
+import time
 
 connect('chefmateDB', host='18.222.251.5', port=27017)
 
@@ -101,12 +102,14 @@ class DatabaseBuilder:
 
   @staticmethod
   def calculateIDF():
+    startTime = time.time()
     terms = InvertedIndex.objects()
     for termEntry in terms:
       docsContaining = float(len(termEntry.doc_info))
       termEntry['idf'] = math.log(DatabaseBuilder.docCount / docsContaining, 2)
       log('update idf', termEntry['term']+"= "+str(termEntry['idf']))
       termEntry.save()
+    log('time', 'IDF Execution finished in '+str(time.time() - startTime)+' seconds.')
 
 if __name__ == "__main__":
   d = DatabaseBuilder('EpiCurious')
