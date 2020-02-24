@@ -1,12 +1,20 @@
 import React from 'react';
 import './homeScreen.css';
 import Box from '@material-ui/core/Box';
+import logo from '../images/logo.png';
+import LoginBox from './LoginBox';
+
+import { makeStyles } from '@material-ui/core/styles';
+
+
+ 
 // import cuisine1 from '../images/cuisine1';
 
 
 export default function FlexGrow() {
   return (
     <div style={{ width: '100%' }}>
+         
       <Box display="flex" p={1} >
         <Box p={1} flexGrow={1} 
         css={{ maxWidth: 270, height: "100vh", margin: 2 }}>

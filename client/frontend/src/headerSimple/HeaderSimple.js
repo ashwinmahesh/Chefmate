@@ -31,7 +31,7 @@ export default function HeaderSimple() {
             color="inherit"
             aria-label="menu"
           >
-            |||
+            {/* <i class="fas fa-bars"></i> */}
           </IconButton>
           <Typography variant="h5" className={classes.title}>
             CHEFMATE
