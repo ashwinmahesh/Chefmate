@@ -59,7 +59,6 @@ class DatabaseBuilder:
   
   def addDocumentToCollection(self, docId, url, title, body):
     log("new entry", "Adding "+url+" to collection.")
-    print("body:", body)
     crawlerDoc = Crawler(url=url, title=title, body=body, docId=docId)
     crawlerDoc.save()
     DatabaseBuilder.docCount+=1
