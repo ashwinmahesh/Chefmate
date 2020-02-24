@@ -29,7 +29,7 @@ def extractData(baseURL):
 
   """stoping and stemming below - contents will contain final list of words after stopping and stemming"""
 
-  nltk.download('stopwords')
+  nltk.download('stopwords', quiet=True)
   contents = [content.lower() for content in contents]
   table = str.maketrans('', '', string.punctuation)
   contents = [content.translate(table) for content in contents]
@@ -41,11 +41,9 @@ def extractData(baseURL):
   contents = [" ".join([stems.stem(word) for word in content]) for content in contents]
   contents = list(filter(lambda x : x != '', contents))
 
-  finalContents = []
-  dictionary = dict(link=baseURL, title=title, body=contents)
-  finalContents.append(dictionary)
+  output = dict(link=baseURL, title=title, body=contents)
   
-  return finalContents
+  return output
         
 if __name__ == "__main__":
     print(parse("https://www.google.com/"))
