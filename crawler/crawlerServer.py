@@ -12,7 +12,7 @@ log = helpers.log
 app = Flask(__name__)
 
 port = 8001
-# TODO change this to deployed db
+
 mongoUri = 'mongodb://18.222.251.5/chefmateDB'  # 'mongodb://localhost/chefmateDB'
 mongoServer = MongoClient(mongoUri)
 mongo = mongoServer.admin
@@ -33,8 +33,6 @@ def index():
 def testRoute():
   return helpers.sendPacket(
       1, 'successfully got packet from crawler', {'name': 'Ashwin'})
-
-# TODO Figure out how we want to implement/run crawler
 
 
 if __name__ == "__main__":
