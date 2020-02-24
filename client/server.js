@@ -23,7 +23,11 @@ const makeRequest = require('./makeRequest');
 
 const app = express();
 
-initializePassport(passport);
+initializePassport(
+  passport,
+  (email) => users.find((user) => user.email === email),
+  (id) => users.find((user) => user.id === id)
+);
 
 const port = process.env.PORT || 8000;
 const root = require('path').join(__dirname, 'frontend', 'build');
@@ -40,6 +44,10 @@ app.use(
     },
   })
 );
+
+app.use(passport.initialize());
+app.use(passport.expressSession());
+
 app.use(pino);
 app.use(express.static(root));
 
@@ -59,13 +67,34 @@ app.get('/testRoute', (request, response) => {
   return response.json(sendPacket(1, 'Successfully got response'));
 });
 
+app.post(
+  '/login',
+  checkNotAuthenticated,
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+  })
+);
+
 app.get('*', (request, response) => {
   return response.sendFile('index.html', { root });
 });
 
 //TODO
-function checkAuthentication(request) {
-  return request.isAuthenticated() && request.user.id; // == some stored value
+function checkAuthentication(request, response, next) {
+  if (request.isAuthenticated()) {
+    return next();
+  }
+
+  response.redirect('/login'); // if path for login page is different change this line
+}
+
+function checkNotAuthenticated(request, response, next) {
+  if (request.isAuthenticated()) {
+    return response.redirect('/'); //path may change if home page path after successfull login is different
+  }
+
+  next();
 }
 function sendPacket(success, message, content = {}) {
   return { success: success, message: message, content: content };
