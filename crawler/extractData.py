@@ -29,7 +29,7 @@ def extractData(baseURL):
 
   """stoping and stemming below - contents will contain final list of words after stopping and stemming"""
 
-  nltk.download('stopwords')
+  nltk.download('stopwords', quiet=True)
   contents = [content.lower() for content in contents]
   table = str.maketrans('', '', string.punctuation)
   contents = [content.translate(table) for content in contents]
