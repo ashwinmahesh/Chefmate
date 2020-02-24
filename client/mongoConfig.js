@@ -67,7 +67,7 @@ const InvertedIndexSchema = new mongoose.Schema(
       required: [true, "Term is required for InvertedIndex table"]
     },
     doc_info: {
-      type: [{ doc_id: String, termCount: Number, pos: [Number] }],
+      type: [{ url: String, termCount: Number, pos: [Number] }],
       required: [
         true,
         "Doc Info is required, resort to default [] if needed. {}"
