@@ -1,0 +1,71 @@
+
+.App {
+    text-align: center;
+    min-width: 100vw;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+  }
+  
+  .App-logo {
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  .App-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .App-link {
+    color: #61dafb;
+  }
+  div.wrapper {
+    min-width: 100vw;
+  }
+  .div1{
+    background-image: url('../images/cuisine4.png');
+    height: 100vh;
+    opacity: .8;
+    z-index: -1;
+  }
+  .div2{
+    background-image: url('../images/cuisine2.png');
+    height: 100vh;
+    opacity: .8;
+    z-index: -1;
+  }
+  .div3{
+    background-image: url('../images/cuisine3.png');
+    height: 100vh;
+    opacity: .8;
+    z-index: -1;
+  
+  }
+  .div4{
+    background-image: url('../images/cuisine1.png');
+    height: 100vh;
+    opacity: .8;
+  }
+  .div5{
+    background-image: url('../images/cuisine5.png');
+    height: 100vh;
+    opacity: .8;
+  }
+ 
+  #btn{
+    background-color: #38698E;
+    height: 40px;
+    width: 200px;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-top: 40px;
+  }
