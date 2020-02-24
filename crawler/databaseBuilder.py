@@ -96,7 +96,7 @@ class DatabaseBuilder:
         )
         newTermEntry.save()
 
-      if self.mode=='DEV' and termPos>=50:
+      if self.mode=='DEV' and termPos>=30:
         break
 
   @staticmethod

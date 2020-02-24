@@ -56,7 +56,7 @@ class Crawler:
 
       FileIO.setToFile(newLinks, self.queueFile)
       FileIO.setToFile(newCrawledLinks, self.crawledFile)
-    print("Execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(self.numCrawled))
+    log('crawler', "Execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(self.numCrawled))
 
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)

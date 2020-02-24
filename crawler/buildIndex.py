@@ -2,7 +2,12 @@ from crawler import Crawler
 from dataParser import DataParser
 from databaseBuilder import DatabaseBuilder
 import time
-import os
+from os.path import exists
+from shutil import rmtree
+import sys
+sys.path.append('..')
+import helpers
+log = helpers.log
 
 domains = [
     {'name': 'Tasty', 'root': 'https://tasty.co/'},
@@ -14,9 +19,9 @@ domains = [
 def buildIndex(iterations):
   log('build index', 'Running full suite of crawler programs.')
   programStartTime = time.time()
-  if os.path.exists('domains'):
+  if exists('domains'):
     log('cleanup', 'Removing old domains folder')
-    os.rmdir('domains')
+    rmtree('./domains')
   for domain in domains:
     domainStartTime = time.time()
     crawler = Crawler(domain['name'], domain['root'])
