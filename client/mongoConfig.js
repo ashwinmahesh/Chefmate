@@ -35,6 +35,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "Identifier is required for user"]
     },
+    password: {
+      type: String,
+      required: [true, "Password is required. Make sure it is hashed."]
+    },
     likes: {
       type: {},
       required: [true, "Likes are required. Resort to default {}"],

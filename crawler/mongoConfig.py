@@ -22,6 +22,7 @@ class InvertedIndex(Document):
 
 class User(Document):
   userid = StringField(required=True, primary_key=True)
+  password = StringField(required=True)
   likes = DictField(required=True, default={})
   dislikes = DictField(required=True, default={})
   history = DictField(required=True, default={})
