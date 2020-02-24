@@ -5,6 +5,7 @@ log = helpers.log
 from fileIO import FileIO
 from mongoengine import *
 from mongoConfig import *
+import math
 
 connect('chefmateDB', host='18.222.251.5', port=27017)
 
@@ -56,6 +57,7 @@ class DatabaseBuilder:
       termPos += 1
       try:
         termEntry = InvertedIndex.objects.get(term=term)
+        log('update entry', "Updating InvertedIndex entry for \'"+term+"\'.")
         hasDoc = False
 
         for i in range(0, len(termEntry.doc_info)):
@@ -71,6 +73,7 @@ class DatabaseBuilder:
         termEntry.save()
 
       except DoesNotExist:
+        log('new entry', 'Creating InvertedIndex entry for \''+term+'\'.')
         newTermEntry = InvertedIndex(term=term, 
         doc_info=[{
           'url': url,
@@ -81,11 +84,23 @@ class DatabaseBuilder:
         )
         newTermEntry.save()
 
-      if termPos==5:
+      if termPos==10:
         break
+  
+
+def calculateIDF(docCount):
+  terms = InvertedIndex.objects()
+  for termEntry in terms:
+    docsContaining = float(len(termEntry.doc_info))
+    termEntry['idf'] = math.log(docCount / docsContaining, 2)
+    log('update idf', termEntry['term']+"= "+str(termEntry['idf']))
+    termEntry.save()
 
 if __name__ == "__main__":
   d = DatabaseBuilder('EpiCurious')
-  print(InvertedIndex.objects.first().doc_info)
-  # d.build()
+  d.build()
+  calculateIDF(20)
+  terms = InvertedIndex.objects()
+  for term in terms:
+    print('idf:',term.idf)
         

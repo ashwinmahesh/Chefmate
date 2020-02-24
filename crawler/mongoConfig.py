@@ -14,7 +14,7 @@ class Crawler(Document):
 class InvertedIndex(Document):
   term = StringField(required=True, primary_key=True)
   doc_info = ListField(DictField(required=True), default=[])
-  idf = LongField(required=True, default=1)
+  idf = FloatField(required=True, default=1)
   tfidf = DictField(default={})
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
