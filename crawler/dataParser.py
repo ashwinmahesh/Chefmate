@@ -5,8 +5,8 @@ import os
 import sys
 sys.path.append('..')
 import helpers
-
 log = helpers.log
+from extractData import extractData
 
 class DataParser:
   def __init__(self, siteName):
@@ -14,9 +14,6 @@ class DataParser:
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
     self.indexFile = FileIO.createSiteIndexFile(self.siteName)
     self.links = set()
-
-  def parse(self, link):
-    return {'title':'test_title', 'body':'test_body'}
 
   def runParser(self):
     if not os.path.isfile(self.crawledFile):
@@ -29,13 +26,12 @@ class DataParser:
     data = FileIO.readJsonFile(self.indexFile)
     for link in self.links:
         if link not in data:
-          log('parser', link)
-          obj = self.parse(link)
-          data[link] = {
-              'docId': str(uuid.uuid1()),
-              'title': obj['title'],
-              'body': obj['body']
-          }
+            obj = extractData(link)
+            data[link] = {
+                'docId': str(uuid.uuid1()),
+                'title': obj['title'],
+                'body': obj['body']
+            }
     FileIO.deleteFileContents(self.indexFile)
     FileIO.writeJsonFile(data, self.indexFile)
 
