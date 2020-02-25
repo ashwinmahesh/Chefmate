@@ -9,3 +9,10 @@ __pycache__/
 .DS_STORE
 
 
+*.json
+*.js
+*.ts
+*.tsx
+node_modules/camelcase/license
+node_modules/react-icon-base/.npmignore
+node_modules/react-icons/LICENSE
