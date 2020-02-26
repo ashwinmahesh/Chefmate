@@ -46,7 +46,7 @@ app.use(
 );
 
 app.use(passport.initialize());
-app.use(passport.expressSession());
+app.use(passport.session());
 
 app.use(pino);
 app.use(express.static(root));
