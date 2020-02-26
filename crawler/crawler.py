@@ -3,6 +3,10 @@ import requests
 from urllib import parse
 from fileIO import FileIO
 import time
+import sys
+sys.path.append('..')
+import helpers
+log = helpers.log
 
 class Crawler:
   def __init__(self, siteName, baseURL):
@@ -34,7 +38,6 @@ class Crawler:
     return output
 
   def runSpider(self, iterations):
-    # while(True):
     startTime = time.time()
     for i in range(0, iterations):
       self.queue = FileIO.fileToSet(self.queueFile)
@@ -52,12 +55,12 @@ class Crawler:
 
       FileIO.setToFile(newLinks, self.queueFile)
       FileIO.setToFile(newCrawledLinks, self.crawledFile)
-    print("Execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(self.numCrawled))
+    log('time', "Crawler execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(self.numCrawled))
 
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)
     self.numCrawled += 1
-    print("Crawling page "+parseLink)
+    log("crawler", parseLink)
     foundLinks = self.findNewLinks(parseLink)
     newLinks = set()
     for link in foundLinks:

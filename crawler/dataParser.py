@@ -5,11 +5,10 @@ import os
 import sys
 sys.path.append('..')
 import helpers
+log = helpers.log
 from extractData import extractData
 
-log = helpers.log
-
-class Parser:
+class DataParser:
   def __init__(self, siteName):
     self.siteName = siteName
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
@@ -37,5 +36,5 @@ class Parser:
     FileIO.writeJsonFile(data, self.indexFile)
 
 if __name__ == "__main__":
-  parser = Parser('EpiCurious')
+  parser = DataParser('EpiCurious')
   parser.runParser()

@@ -16,7 +16,7 @@ const CrawlerSchema = new mongoose.Schema(
   {
     url: { type: String, required: [true, "URL is required "] },
     title: { type: String, required: [true, "Web Page title is required"] },
-    body: { type: String, required: [true, "Body of web page is required"] },
+    body: { type: [String], required: [true, "Body of web page is required"] },
     hub: { type: Number, required: [true, "Hub is required"], default: 1 },
     authority: {
       type: Number,
@@ -34,6 +34,10 @@ const UserSchema = new mongoose.Schema(
     userid: {
       type: String,
       required: [true, "Identifier is required for user"]
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required. Make sure it is hashed."]
     },
     likes: {
       type: {},
@@ -63,7 +67,7 @@ const InvertedIndexSchema = new mongoose.Schema(
       required: [true, "Term is required for InvertedIndex table"]
     },
     doc_info: {
-      type: [{ doc_id: String, termCount: Number, pos: [Number] }],
+      type: [{ url: String, termCount: Number, pos: [Number] }],
       required: [
         true,
         "Doc Info is required, resort to default [] if needed. {}"
