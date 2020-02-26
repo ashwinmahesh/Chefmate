@@ -35,7 +35,6 @@ class DataParser:
     FileIO.deleteFileContents(self.indexFile)
     FileIO.writeJsonFile(data, self.indexFile)
 
-
 if __name__ == "__main__":
   parser = DataParser('EpiCurious')
   DataParser.runParser()

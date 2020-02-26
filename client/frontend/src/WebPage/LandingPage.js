@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function HomepageSimple() {
+function LandingPage() {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
 
@@ -71,4 +71,4 @@ function HomepageSimple() {
   );
 }
 
-export default HomepageSimple;
+export default LandingPage;
