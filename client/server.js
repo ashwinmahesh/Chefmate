@@ -25,8 +25,8 @@ const app = express();
 
 initializePassport(
   passport,
-  (email) => users.find((user) => user.email === email),
-  (id) => users.find((user) => user.id === id)
+  (email) => User.find((user) => user.email === email),
+  (id) => User.find((user) => user.id === id)
 );
 
 const port = process.env.PORT || 8000;
