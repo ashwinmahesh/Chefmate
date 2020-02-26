@@ -37,4 +37,4 @@ class DataParser:
 
 if __name__ == "__main__":
   parser = DataParser('EpiCurious')
-  DataParser.runParser()
+  parser.runParser()
