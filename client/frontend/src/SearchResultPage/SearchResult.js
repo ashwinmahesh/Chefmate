@@ -3,22 +3,26 @@ import { TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
-
 import HeaderSimple from '../headerSimple/HeaderSimple';
+import Result from './Result';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '100vw',
   },
   searchField: {
-    width: '80vw',
+    width: '50vw',
     maxWidth: '700px',
-    marginBottom: '25px',
+    marginTop: '20px',
+    float: 'left',
+    marginLeft: '50px'
   },
   logo: {
-    width: '500px',
-    height: '125px',
-    marginBottom: '50px',
+    width: '100px',
+    height: '25px',
+    marginTop: '30px',
+    float: 'left',
+    marginLeft: '15px'
     // display: 'block',
   },
   buttonStyle: {
@@ -27,11 +31,12 @@ const useStyles = makeStyles((theme) => ({
     height: '55px',
   },
   contents: {
-    marginTop: '100px',
+    backgroundColor: 'blue'
+    // marginTop: '100px',
   },
 }));
 
-function LandingPage() {
+function SearchResult() {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
 
@@ -49,7 +54,6 @@ function LandingPage() {
       <HeaderSimple />
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
-        <br />
         <TextField
           id="outlined-search"
           label="Search"
@@ -59,17 +63,10 @@ function LandingPage() {
           value={query}
           onChange={handleQueryChange}
         />
-
-        <Button
-          variant="contained"
-          className={styles.buttonStyle}
-          onClick={makeSearch}
-        >
-          GO
-        </Button>
       </div>
+      <Result />
     </div>
   );
 }
 
-export default LandingPage;
+export default SearchResult;
