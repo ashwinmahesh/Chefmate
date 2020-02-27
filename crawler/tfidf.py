@@ -1,11 +1,12 @@
 from mongoengine import *
 from mongoConfig import *
 import math
-from DatabaseBuilder import DatabaseBuilder
+from databaseBuilder import DatabaseBuilder
 
 def tfidfScores(): 
     sparse_matrix = []
     terms = InvertedIndex.objects()
+    print("Hello")
     for termEntry in terms: 
         term = termEntry['term']
         idf = termEntry['idf']
@@ -21,7 +22,11 @@ def tfidfScores():
             docIDS[docNum] = tf_idf
         
         sparse_matrix.append(dict(term=term, tfIDF=docIDS))
+        print(sparse_matrix)
     
     return sparse_matrix
+
+if __name__ == "__main__":
+  tfidfScores()
     
 
