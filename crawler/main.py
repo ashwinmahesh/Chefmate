@@ -1,17 +1,13 @@
 from crawler import Crawler
 from dataParser import DataParser
 from databaseBuilder import DatabaseBuilder
-from mongoengine import *
-#from mongoConfig import *
 import time
 from os.path import exists
 from shutil import rmtree
-from pymongo import MongoClient
 import sys
 sys.path.append('..')
 import helpers
 log = helpers.log
-import json
 
 domains = [
     {'name': 'Tasty', 'root': 'https://tasty.co/'},
