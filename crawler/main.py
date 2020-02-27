@@ -1,13 +1,17 @@
 from crawler import Crawler
 from dataParser import DataParser
 from databaseBuilder import DatabaseBuilder
+from mongoengine import *
+from mongoConfig import *
 import time
 from os.path import exists
 from shutil import rmtree
+from pymongo import MongoClient
 import sys
 sys.path.append('..')
 import helpers
 log = helpers.log
+import json
 
 domains = [
     {'name': 'Tasty', 'root': 'https://tasty.co/'},
@@ -43,5 +47,12 @@ def buildIndex(iterations, reset=True):
   DatabaseBuilder.calculateIDF()
   log("time", "Program finished running in "+str(time.time()-programStartTime)+" seconds.")
 
+
+
 if __name__ == "__main__":
-  buildIndex(1, reset=False)
+  json_data = Crawler.objects.to_json()
+  json_object = json.loads(json_data)
+  for entry in json_object:
+    entry['body'] = entry['body'][0 : 100]
+    print("\n"+json.dumps(entry, indent=2))
+  #buildIndex(1, reset=False)
