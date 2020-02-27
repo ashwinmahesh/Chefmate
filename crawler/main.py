@@ -44,4 +44,4 @@ def buildIndex(iterations, reset=True):
   log("time", "Program finished running in "+str(time.time()-programStartTime)+" seconds.")
 
 if __name__ == "__main__":
-  buildIndex(1, reset=False)
+  buildIndex(1, reset=True)

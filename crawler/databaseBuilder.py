@@ -83,7 +83,7 @@ class DatabaseBuilder:
             break
 
         if not hasDoc:
-          termEntry.doc_info.append({'url':url, 'termCount': 1, 'pos':[termPos]})
+          termEntry.doc_info.append({'url':url, 'termCount': 1, 'pos':[termPos], 'docId':docId})
         termEntry.save()
 
       except DoesNotExist:
@@ -91,7 +91,7 @@ class DatabaseBuilder:
         newTermEntry = InvertedIndex(term=term, 
         doc_info=[{
           'url': url,
-          '_id': str(docId),
+          'docId': str(docId),
           'termCount': 1,
           'pos':[termPos]
         }],
