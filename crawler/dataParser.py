@@ -1,6 +1,6 @@
 from fileIO import FileIO
 import json
-import uuid
+# import uuid
 import os
 import sys
 sys.path.append('..')
@@ -9,6 +9,7 @@ log = helpers.log
 from extractData import extractData
 
 class DataParser:
+  docId=0
   def __init__(self, siteName):
     self.siteName = siteName
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
@@ -21,17 +22,18 @@ class DataParser:
       return self
     self.links = FileIO.fileToSet(self.crawledFile)
     if not self.links:
-        log('error','Crawled file is empty')
-        return self
+      log('error','Crawled file is empty')
+      return self
     data = FileIO.readJsonFile(self.indexFile)
     for link in self.links:
-        if link not in data:
-            obj = extractData(link)
-            data[link] = {
-                'docId': str(uuid.uuid1()),
-                'title': obj['title'],
-                'body': obj['body']
-            }
+      if link not in data:
+        obj = extractData(link)
+        data[link] = {
+            'docId': DataParser.docId,
+            'title': obj['title'],
+            'body': obj['body']
+        }
+        DataParser.docId+=1
     FileIO.deleteFileContents(self.indexFile)
     FileIO.writeJsonFile(data, self.indexFile)
 

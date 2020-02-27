@@ -2,8 +2,8 @@ import datetime
 from mongoengine import *
 
 class Crawler(Document):
-  url = StringField(required=True, primary_key=True)
-  docId = StringField(required=True)
+  url = StringField(required=True)
+  _id = StringField(required=True, primary_key=True)
   title = StringField(required=True)
   body = ListField(StringField(required=True))
   hub = LongField(required=True, default=1.0)
