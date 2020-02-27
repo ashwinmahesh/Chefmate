@@ -21,13 +21,14 @@ def calculateTFIDF():
             docNum = int(termEntry['doc_info'][i]['docId'])
             docIDS[docNum] = tf_idf
             termEntry['tfidf'] = dict(key=docNum, tf_idf=tf_idf)
+            termEntry.save()
         
         sparse_matrix.append(dict(term=term, tfIDF=docIDS))
 
     return sparse_matrix
 
 if __name__ == "__main__":
-#   Crawler.drop_collection()
+  #Crawler.drop_collection()
   calculateTFIDF()
     
 
