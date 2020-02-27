@@ -24,7 +24,7 @@ def buildIndex(iterations, reset=True):
     log('cleanup', 'Removing old domains folder')
     rmtree('./domains')
 
-  reset and DatabaseBuilder.resetInvertedIndex()
+  reset and DatabaseBuilder.resetInvertedIndex() and DatabaseBuilder.resetCrawler()
 
   for domain in domains:
     domainStartTime = time.time()
@@ -44,4 +44,4 @@ def buildIndex(iterations, reset=True):
   log("time", "Program finished running in "+str(time.time()-programStartTime)+" seconds.")
 
 if __name__ == "__main__":
-  buildIndex(1, reset=False)
+  buildIndex(1, reset=True)

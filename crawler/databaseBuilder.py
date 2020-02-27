@@ -117,6 +117,11 @@ class DatabaseBuilder:
   def resetInvertedIndex():
     log('reset', 'Resetting Inverted Index Database')
     InvertedIndex.drop_collection()
+  
+  @staticmethod
+  def resetCrawler():
+    log('reset', 'Resetting Crawler Database')
+    Crawler.drop_collection()
 
 if __name__ == "__main__":
   d = DatabaseBuilder('EpiCurious')
