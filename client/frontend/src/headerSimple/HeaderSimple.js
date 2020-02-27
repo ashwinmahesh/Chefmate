@@ -1,10 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button, IconButton } from '@material-ui/core';
-import { FaBars } from 'react-icons/fa';
-
-
-
 // import { MenuIcon } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,12 +31,10 @@ export default function HeaderSimple() {
             color="inherit"
             aria-label="menu"
           >
-
-          <FaBars />
-            {/* <i className={MoreHorizIcon}></i> */}
+            {/* <i class="fas fa-bars"></i> */}
           </IconButton>
           <Typography variant="h5" className={classes.title}>
-            C H E F M A T E
+            CHEFMATE
           </Typography>
           <Button color="inherit">Logout</Button>
         </Toolbar>
