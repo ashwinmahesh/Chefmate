@@ -47,12 +47,22 @@ def buildIndex(iterations, reset=True):
   DatabaseBuilder.calculateIDF()
   log("time", "Program finished running in "+str(time.time()-programStartTime)+" seconds.")
 
-
-
-if __name__ == "__main__":
+def dumpCrawlerTable():
   json_data = Crawler.objects.to_json()
   json_object = json.loads(json_data)
   for entry in json_object:
     entry['body'] = entry['body'][0 : 100]
     print("\n"+json.dumps(entry, indent=2))
+
+def dumpInvertedIndexTable():
+  json_data = InvertedIndex.objects.to_json()
+  json_object = json.loads(json_data)
+  for entry in json_object:
+    #entry['body'] = entry['body'][0 : 100
+    print("\n"+json.dumps(entry, indent=2))
+    #print("\n"+json.dumps(entry, indent=2))
+
+if __name__ == "__main__":
+  dumpInvertedIndexTable()
+  #dumpCrawlerTable()
   #buildIndex(1, reset=False)
