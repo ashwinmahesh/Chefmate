@@ -3,8 +3,6 @@ import { TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
-import { FaSearch } from 'react-icons/fa';
-
 
 import HeaderSimple from '../headerSimple/HeaderSimple';
 
