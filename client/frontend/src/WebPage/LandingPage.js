@@ -3,6 +3,8 @@ import { TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
+import { FaSearch } from 'react-icons/fa';
+
 
 import HeaderSimple from '../headerSimple/HeaderSimple';
 
@@ -59,6 +61,7 @@ function LandingPage() {
           value={query}
           onChange={handleQueryChange}
         />
+
         <Button
           variant="contained"
           className={styles.buttonStyle}

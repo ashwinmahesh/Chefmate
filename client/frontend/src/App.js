@@ -6,6 +6,8 @@ import LoginPage from './HomeScreen/LoginPage'
 import LoginCreds from './HomeScreen/LoginCreds';
 import SignUp from './HomeScreen/SignUp';
 import LandingPage from './WebPage/LandingPage';
+import SearchResult from './WebPage/SearchResult';
+import Result from './WebPage/Result';
 
 
 function App() {
