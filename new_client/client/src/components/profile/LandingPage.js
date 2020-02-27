@@ -3,7 +3,7 @@ import { TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../../img/logo.png';
 import axios from 'axios';
-import SearchResult from '../SearchResults/SearchResult'
+// import SearchResult from '../SearchResults/SearchResult'
 import HeaderSimple from './HeaderSimple';
 
 const useStyles = makeStyles((theme) => ({
