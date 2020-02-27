@@ -58,11 +58,16 @@ def dumpInvertedIndexTable():
   json_data = InvertedIndex.objects.to_json()
   json_object = json.loads(json_data)
   for entry in json_object:
-    #entry['body'] = entry['body'][0 : 100
     print("\n"+json.dumps(entry, indent=2))
-    #print("\n"+json.dumps(entry, indent=2))
+
+def dumpUserTable():
+  json_data = User.objects.to_json()
+  json_object = json.loads(json_data)
+  for entry in json_object:
+    print("\n"+json.dumps(entry, indent=2))
 
 if __name__ == "__main__":
-  dumpInvertedIndexTable()
+  dumpUserTable()
+  #dumpInvertedIndexTable()
   #dumpCrawlerTable()
   #buildIndex(1, reset=False)
