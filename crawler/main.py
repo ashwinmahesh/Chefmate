@@ -66,8 +66,18 @@ def dumpUserTable():
   for entry in json_object:
     print("\n"+json.dumps(entry, indent=2))
 
+def dumpTable(table):
+  json_data = table.objects.to_json()
+  json_object = json.loads(json_data)
+  for entry in json_object:
+    if(isinstance(table, Crawler)):
+      entry['body'] = entry['body'][0 : 100]
+    print("\n"+json.dumps(entry, indent=2))    
+
 if __name__ == "__main__":
-  dumpUserTable()
+  #dumpUserTable()
   #dumpInvertedIndexTable()
   #dumpCrawlerTable()
+  dumpTable(User)
   #buildIndex(1, reset=False)
+
