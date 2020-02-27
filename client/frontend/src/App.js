@@ -15,7 +15,7 @@ function App() {
     <div className="App">
       <header className="App-header"></header>
       <div className="wrapper">
-        <SearchResult/>
+        <LandingPage/>
       </div>
     </div>
   );
