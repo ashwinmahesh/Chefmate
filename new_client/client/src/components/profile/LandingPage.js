@@ -3,7 +3,7 @@ import { TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../../img/logo.png';
 import axios from 'axios';
-
+import SearchResult from '../SearchResults/SearchResult'
 import HeaderSimple from './HeaderSimple';
 
 const useStyles = makeStyles((theme) => ({
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '20px',
     width: '50px',
     height: '55px',
+    textDecoration: 'none',
   },
   contents: {
     marginTop: '100px',
@@ -59,13 +60,15 @@ function LandingPage() {
           value={query}
           onChange={handleQueryChange}
         />
+        <a href="/SearchResult">
         <Button
           variant="contained"
           className={styles.buttonStyle}
-          onClick={makeSearch}
-        >
-          GO
+          // onClick={makeSearch}
+        >GO
         </Button>
+        </a>
+        
       </div>
     </div>
   );

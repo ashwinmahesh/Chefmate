@@ -25,6 +25,13 @@ module.exports = app => {
       res.redirect("/LandingPage");
     }
   );
+  app.get(
+    "/SearchResult",
+    passport.authenticate("google"),
+    (req, res) => {
+      res.redirect("/SearchResult");
+    }
+  );
 
   app.get("/api/logout", (req, res) => {
     req.logout();

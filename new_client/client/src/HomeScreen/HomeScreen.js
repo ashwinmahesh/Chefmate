@@ -1,7 +1,7 @@
 import React from 'react';
 import './homeScreen.css';
 import Box from '@material-ui/core/Box';
-import logo from '../img/logo.png';
+// import logo from '../img/logo.png';
 // import LoginBox from './LoginBox';
 
 

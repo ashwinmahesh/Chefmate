@@ -7,7 +7,7 @@ import LandingPage from "./components/profile/LandingPage";
 import Landing from "./components/landing/Landing";
 import Footer from "./components/footer/Footer";
 import Navbar from "./components/navbar/Navbar";
-import PostForm from "./components/posts/PostForm";
+import SearchResult from "./components/SearchResults/SearchResult";
 import Posts from "./components/posts/Posts";
 
 import "./App.css";
@@ -22,7 +22,7 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <div className="container">
               <Route exact path="/LandingPage" component={LandingPage} />
-              <Route exact path="/create" component={PostForm} />
+              <Route exact path="/SearchResult" component={SearchResult} />
               <Route exact path="/all-posts" component={Posts} />
             </div>
             <Footer />
