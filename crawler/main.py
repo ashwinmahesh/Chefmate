@@ -2,7 +2,7 @@ from crawler import Crawler
 from dataParser import DataParser
 from databaseBuilder import DatabaseBuilder
 from mongoengine import *
-from mongoConfig import *
+#from mongoConfig import *
 import time
 from os.path import exists
 from shutil import rmtree
@@ -46,38 +46,7 @@ def buildIndex(iterations, reset=True):
   
   DatabaseBuilder.calculateIDF()
   log("time", "Program finished running in "+str(time.time()-programStartTime)+" seconds.")
-
-def dumpCrawlerTable():
-  json_data = Crawler.objects.to_json()
-  json_object = json.loads(json_data)
-  for entry in json_object:
-    entry['body'] = entry['body'][0 : 100]
-    print("\n"+json.dumps(entry, indent=2))
-
-def dumpInvertedIndexTable():
-  json_data = InvertedIndex.objects.to_json()
-  json_object = json.loads(json_data)
-  for entry in json_object:
-    print("\n"+json.dumps(entry, indent=2))
-
-def dumpUserTable():
-  json_data = User.objects.to_json()
-  json_object = json.loads(json_data)
-  for entry in json_object:
-    print("\n"+json.dumps(entry, indent=2))
-
-def dumpTable(table):
-  json_data = table.objects.to_json()
-  json_object = json.loads(json_data)
-  for entry in json_object:
-    if(isinstance(table, Crawler)):
-      entry['body'] = entry['body'][0 : 100]
-    print("\n"+json.dumps(entry, indent=2))    
-
+   
 if __name__ == "__main__":
-  #dumpUserTable()
-  #dumpInvertedIndexTable()
-  #dumpCrawlerTable()
-  dumpTable(User)
-  #buildIndex(1, reset=False)
+  buildIndex(1, reset=False)
 
