@@ -27,7 +27,7 @@ class DatabaseBuilder:
       if doc['title'] == None:
         doc['title']='No Title'
       self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'])
-      self.buildInvertedIndex(doc['body'], entry)
+      self.buildInvertedIndex(doc['body'], entry, doc['docId'])
 
       if self.mode=='DEV' and count>=10:
         break
@@ -61,11 +61,11 @@ class DatabaseBuilder:
   
   def addDocumentToCollection(self, docId, url, title, body):
     log("new entry", "Adding "+url+" to collection.")
-    crawlerDoc = Crawler(url=url, title=title, body=body, docId=docId)
+    crawlerDoc = Crawler(url=url, title=title, body=body, _id=str(docId))
     crawlerDoc.save()
     DatabaseBuilder.docCount+=1
     
-  def buildInvertedIndex(self, body, url):
+  def buildInvertedIndex(self, body, url, docId):
     termPos = 0
     for term in body:
       termPos += 1
@@ -91,6 +91,7 @@ class DatabaseBuilder:
         newTermEntry = InvertedIndex(term=term, 
         doc_info=[{
           'url': url,
+          '_id': str(docId),
           'termCount': 1,
           'pos':[termPos]
         }],
