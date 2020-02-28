@@ -1,0 +1,50 @@
+
+.App {
+    text-align: center;
+    min-width: 100vw;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(255, 255, 255);
+  }
+  
+
+  .div1{
+    background-image: url('../img/cuisine4.png');
+    height: 100vh;
+    opacity: .8;
+    z-index: -1;
+  }
+  .div2{
+    background-image: url('../img/cuisine2.png');
+    height: 100vh;
+    opacity: .8;
+    z-index: -1;
+  }
+  .div3{
+    background-image: url('../img/cuisine3.png');
+    height: 100vh;
+    opacity: .8;
+    z-index: -1;
+  
+  }
+  .div4{
+    background-image: url('../img/cuisine1.png');
+    height: 100vh;
+    opacity: .8;
+  }
+  .div5{
+    background-image: url('../img/cuisine5.png');
+    height: 100vh;
+    opacity: .8;
+  }
+ 
+  #btn{
+    background-color: #38698E;
+    height: 40px;
+    width: 200px;
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    border-radius: 4px;
+    margin-top: 40px;
+  }
