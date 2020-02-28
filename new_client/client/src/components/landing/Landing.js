@@ -38,7 +38,7 @@ class Landing extends React.Component {
                                 />
                               </div>
                               <p className="btn-text">
-                                <b>Log in with Google</b>
+                                <b >Log in with Google</b>
                               </p>
                             </div>
                           </a>
