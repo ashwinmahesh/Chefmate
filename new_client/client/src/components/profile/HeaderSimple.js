@@ -36,7 +36,7 @@ export default function HeaderSimple() {
           <Typography variant="h5" className={classes.title}>
             CHEFMATE
           </Typography>
-          <Button color="inherit">Logout</Button>
+          <Button color="inherit"><a href="/api/logout">Logout</a></Button>
         </Toolbar>
       </AppBar>
     </div>
