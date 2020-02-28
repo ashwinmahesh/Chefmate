@@ -1,16 +1,23 @@
 from mongoengine import *
 from mongoConfig import *
 import math
+import time
+import sys
+sys.path.append('..')
+from helpers import log
+
 connect('chefmateDB', host='18.222.251.5', port=27017)
 
+#TODO Update this to use NumPy b/c gonna be too slow to do this manually
 def calculateTFIDF(): 
+    startTime = time.time()
     sparse_matrix = []
     terms = InvertedIndex.objects()
 
     for termEntry in terms: 
         term = termEntry['term']
         idf = termEntry['idf']
-        docIDS = [0] * (len(Crawler.objects())) #count of docuemnts, line needs to be changed as of 8:46 PM
+        docIDS = [0] * (len(Crawler.objects()))
         for i in range(0, len(termEntry["doc_info"])):
             tf = termEntry['doc_info'][i]['termCount']
             log_tf = 0
@@ -24,11 +31,10 @@ def calculateTFIDF():
             termEntry.save()
         
         sparse_matrix.append(dict(term=term, tfIDF=docIDS))
-
+    log("tfidf", 'Execution finished in '+str(time.time()-startTime)+' seconds.')
     return sparse_matrix
 
 if __name__ == "__main__":
-  #Crawler.drop_collection()
   calculateTFIDF()
     
 

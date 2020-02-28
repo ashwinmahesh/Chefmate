@@ -1,6 +1,7 @@
 from crawler import Crawler
 from dataParser import DataParser
 from databaseBuilder import DatabaseBuilder
+from calculateTFIDF import calculateTFIDF
 import time
 from os.path import exists
 from shutil import rmtree
@@ -37,6 +38,8 @@ def buildIndex(iterations, reset=True):
 
     databaseBuilder = DatabaseBuilder(domain['name'], mode='DEV')
     databaseBuilder.build()
+
+    calculateTFIDF()
 
     log("time", domain['name']+" finished running in "+str(time.time()-domainStartTime)+" seconds.")
   
