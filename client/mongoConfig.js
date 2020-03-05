@@ -33,7 +33,7 @@ const UserSchema = new mongoose.Schema(
   {
     userid: {
       type: String,
-      required: [true, "Identifier is required for user"]
+      required: [true, "Identifier is required for user"],
     },
     password: {
       type: String,

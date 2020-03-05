@@ -1,25 +1,44 @@
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+const { User } = require('./mongoConfig');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const keys = require('./keys');
 
-function initialize(passport, getUserInfo, getUserById) {
-  const authenticateUser = async (username, password, done) => {
-    const user = getUserInfo(username);
-    if (user === false) return done(null, false, { message: "User not found"})
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
 
-    try {
-      if (await bcrypt.compare(password, user.password)) 
-        return done(null, user, { message: "Successfully found user."});
-      else 
-        return done(null, false, { message: "Password incorrect."});
-    } catch(err) {
-        return done(err)
+passport.deserializeUser((id, done) => {
+  User.findById(id).then((user) => {
+    done(null, user);
+  });
+});
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: '/auth/google/callback',
+      userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
+      proxy: true,
+    },
+    (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
+      User.findOne({ userid: profile.id }).then((existingUser) => {
+        if (existingUser) {
+          done(null, existingUser);
+        } else {
+          console.log('No user exists');
+          // new User({
+          //   //googleId: profile.id,
+          //   name: profile.displayName,
+          //   email: profile.emails[0].value,
+          //   photo: profile.photos[0].value.split('?')[0],
+          // })
+          //   .save()
+          //   .then((user) => done(null, user));
+        }
+      });
     }
-  }
-
-  passport.use(new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, authenticateUser));
-
-  passport.serializeUser((user, done) => done(null, user.id));
-  passport.deserializeUser((id, done) => done(null, getUserById(id)));
-}
-
-module.exports = initialize;
+  )
+);
