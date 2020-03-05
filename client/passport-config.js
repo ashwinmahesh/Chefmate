@@ -29,6 +29,7 @@ passport.use(
           done(null, existingUser);
         } else {
           console.log('No user exists');
+          done(null);
           // new User({
           //   //googleId: profile.id,
           //   name: profile.displayName,

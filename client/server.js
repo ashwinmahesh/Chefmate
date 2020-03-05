@@ -9,7 +9,7 @@ const path = require('path');
 const pino = require('express-pino-logger')();
 const fs = require('fs');
 const passport = require('passport');
-// const initializePassport = require('./passport-config');
+require('./passport-config');
 const bcrypt = require('bcrypt');
 const database = require('./mongoConfig');
 
@@ -22,8 +22,6 @@ const log = require('./logger');
 const makeRequest = require('./makeRequest');
 
 const app = express();
-
-// initializePassport(passport);
 
 const port = process.env.PORT || 8000;
 const root = require('path').join(__dirname, 'frontend', 'build');
@@ -42,6 +40,7 @@ app.use(
 );
 app.use(pino);
 app.use(express.static(root));
+app.use(passport.initialize());
 require('./authRoutes')(app);
 
 //Insert server response functions here

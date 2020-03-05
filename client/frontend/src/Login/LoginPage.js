@@ -20,8 +20,9 @@ export default function Login(props) {
       <HomepageBackground />
       <LoginBox>
         <img src={logo} className={styles.img} alt="Chefmate logo" />
-        <button id="btn"> LOGIN </button> <br></br>
-        <button id="btn"> SIGN UP </button>
+        <a href="/auth/google">Login with Google</a>
+        {/* <button id="btn"> LOGIN </button> <br></br>
+        <button id="btn"> SIGN UP </button> */}
       </LoginBox>
     </>
   );

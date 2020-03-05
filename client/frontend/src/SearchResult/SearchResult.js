@@ -15,15 +15,14 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '700px',
     marginTop: '20px',
     float: 'left',
-    marginLeft: '50px'
+    marginLeft: '50px',
   },
   logo: {
     width: '100px',
     height: '25px',
     marginTop: '30px',
     float: 'left',
-    marginLeft: '15px'
-    // display: 'block',
+    marginLeft: '15px',
   },
   buttonStyle: {
     marginLeft: '20px',
@@ -31,8 +30,7 @@ const useStyles = makeStyles((theme) => ({
     height: '55px',
   },
   contents: {
-    backgroundColor: 'blue'
-    // marginTop: '100px',
+    backgroundColor: 'blue',
   },
 }));
 
@@ -49,6 +47,7 @@ function SearchResult() {
     changeQuery('');
     console.log('Response: ' + data['message']);
   }
+
   return (
     <div className={styles.container}>
       <HeaderSimple />
