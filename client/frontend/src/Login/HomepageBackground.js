@@ -1,5 +1,5 @@
 import React from 'react';
-// import './HomepageBackground.css';
+import './HomepageBackground.css';
 import Box from '@material-ui/core/Box';
 
 export default function HomepageBackground() {

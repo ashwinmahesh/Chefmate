@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from '../images/logo.png';
 import LoginBox from './LoginBox';
+// import './HomepageBackground.css';
 import HomepageBackground from './HomepageBackground';
 import { makeStyles } from '@material-ui/core/styles';
 

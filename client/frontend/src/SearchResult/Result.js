@@ -1,10 +1,6 @@
 
-import React, { useState } from 'react';
-import { TextField, Button } from '@material-ui/core';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import logo from '../images/logo.png';
-import axios from 'axios';
-
 
 const useStyles = makeStyles((theme) => ({
     container: {

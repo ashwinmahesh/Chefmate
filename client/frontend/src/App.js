@@ -1,18 +1,23 @@
 import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
-// import LoginPage from './HomeScreen/LoginPage';
+import LoginPage from './Login/LoginPage';
 // import LoginCreds from './HomeScreen/LoginCreds';
 // import SignUp from './HomeScreen/SignUp';
 import Homepage from './Homepage/Homepage';
-// import SearchResult from './SearchResultPage/SearchResult';
+import SearchResult from './SearchResult/SearchResult';
 // import Result from './SearchResultPage/Result';
 
 function App() {
   return (
     <div className="App">
-      <div className="wrapper">
-        <Homepage />
-      </div>
+      <Router>
+        <div className="wrapper">
+          <Route exact path='/' component={Homepage} />
+          <Route exact path='/login' component={LoginPage} />
+          <Route path='/search/' component={SearchResult} />
+        </div>
+      </Router>
     </div>
   );
 }
