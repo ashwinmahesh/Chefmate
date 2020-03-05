@@ -1,4 +1,5 @@
 const { User } = require('./mongoConfig');
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('./keys');
@@ -29,15 +30,9 @@ passport.use(
           done(null, existingUser);
         } else {
           console.log('No user exists');
-          done(null);
-          // new User({
-          //   //googleId: profile.id,
-          //   name: profile.displayName,
-          //   email: profile.emails[0].value,
-          //   photo: profile.photos[0].value.split('?')[0],
-          // })
-          //   .save()
-          //   .then((user) => done(null, user));
+          new User({
+            userid: profile.emails[0].value
+          }).save().then((user) => done(null, user));
         }
       });
     }

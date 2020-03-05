@@ -20,9 +20,10 @@ module.exports = app => {
     "/auth/google/callback",
     passport.authenticate("google"),
     (req, res) => {
-      res.redirect("/LandingPage");
+      res.redirect("/");
     }
   );
+  //Maybe dont need this route (can change it)
   app.get(
     "/SearchResult",
     passport.authenticate("google"),
@@ -33,7 +34,7 @@ module.exports = app => {
 
   app.get("/api/logout", (req, res) => {
     req.logout();
-    res.redirect("/");
+    res.redirect("/login");
   });
 
   app.get("/api/current_user", (req, res) => {

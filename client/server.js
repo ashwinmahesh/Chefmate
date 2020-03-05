@@ -11,10 +11,10 @@ const fs = require('fs');
 const passport = require('passport');
 require('./passport-config');
 const bcrypt = require('bcrypt');
-const database = require('./mongoConfig');
 
+const database = require('./mongoConfig');
 const mongoose = database.mongoose;
-const User = database.User;
+const User = mongoose.model('User')
 const InvertedIndex = database.InvertedIndex;
 const Crawler = database.Crawler;
 
