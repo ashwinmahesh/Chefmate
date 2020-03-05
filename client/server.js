@@ -12,11 +12,7 @@ const passport = require('passport');
 require('./passport-config');
 const bcrypt = require('bcrypt');
 
-const database = require('./mongoConfig');
-const mongoose = database.mongoose;
-const User = mongoose.model('User')
-const InvertedIndex = database.InvertedIndex;
-const Crawler = database.Crawler;
+const { mongoose, User, InvertedIndex, Crawler} = require('./mongoConfig');
 
 const log = require('./logger');
 const makeRequest = require('./makeRequest');

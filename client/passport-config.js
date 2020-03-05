@@ -24,8 +24,7 @@ passport.use(
       userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
       proxy: true,
     },
-    (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
+    (_, _2, profile, done) => {
       User.findOne({ userid: profile.emails[0].value }).then((existingUser) => {
         if (existingUser) {
           log("login", "Found existing user")
