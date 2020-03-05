@@ -1,8 +1,7 @@
 import React from 'react';
-import logo from '../images/logo.png';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   container: {
     opacity: '.9',
     backgroundColor: 'white',
@@ -19,14 +18,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     minWidth: '500px',
-  }
+  },
 }));
 
 export default function LoginBox(props) {
   const styles = useStyles();
-  return (
-        <div className={styles.container} >
-            {props.children}
-        </div>
-  );
+  return <div className={styles.container}>{props.children}</div>;
 }

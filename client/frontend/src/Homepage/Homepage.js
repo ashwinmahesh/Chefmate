@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
     width: '500px',
     height: '125px',
     marginBottom: '50px',
-    // display: 'block',
   },
   buttonStyle: {
     marginLeft: '20px',
@@ -31,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function LandingPage() {
+function Homepage() {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
 
@@ -72,4 +71,4 @@ function LandingPage() {
   );
 }
 
-export default LandingPage;
+export default Homepage;
