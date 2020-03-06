@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import { TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
@@ -33,6 +34,18 @@ const useStyles = makeStyles((theme) => ({
 function Homepage() {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
+  const [loginRedirect, changeLoginRedirect] = useState(false);
+
+  async function checkAuthentication() {
+    const { data } = await axios.get('/checkAuthenticated');
+    if (data.success === 0) {
+      changeLoginRedirect(true);
+    }
+  }
+
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
 
   function handleQueryChange(event) {
     changeQuery(event.target.value);
@@ -43,9 +56,11 @@ function Homepage() {
     changeQuery('');
     console.log('Response: ' + data['message']);
   }
+
   return (
     <div className={styles.container}>
       <HeaderSimple />
+      {loginRedirect && <Redirect to="/login" />}
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
         <br />

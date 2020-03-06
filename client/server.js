@@ -37,6 +37,7 @@ app.use(
 app.use(pino);
 app.use(express.static(root));
 app.use(passport.initialize());
+app.use(passport.session());
 require('./authRoutes')(app);
 
 //Insert server response functions here
@@ -51,6 +52,16 @@ app.get('/search/:query', async (request, response) => {
   );
 });
 
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect("/login");
+})
+
+app.get('/checkAuthenticated', (req, res) => {
+  if(checkAuthentication(req)) return res.json(sendPacket(1, 'User is authenticated'));
+  else return res.json(sendPacket(0, 'User not authenticated'));
+})
+
 app.get('/testRoute', (request, response) => {
   return response.json(sendPacket(1, 'Successfully got response'));
 });
@@ -59,9 +70,8 @@ app.get('*', (request, response) => {
   return response.sendFile('index.html', { root });
 });
 
-//TODO
 function checkAuthentication(request) {
-  return request.isAuthenticated() && request.user.id; // == some stored value
+  return request.isAuthenticated() && request.user; // == some stored value
 }
 function sendPacket(success, message, content = {}) {
   return { success: success, message: message, content: content };

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
 import HeaderSimple from '../headerSimple/HeaderSimple';
 import Result from './Result';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -37,6 +38,18 @@ const useStyles = makeStyles((theme) => ({
 function SearchResult() {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
+  const [loginRedirect, changeLoginRedirect] = useState(false);
+
+  async function checkAuthentication() {
+    const { data } = await axios.get('/checkAuthenticated');
+    if (data.success === 0) {
+      changeLoginRedirect(true);
+    }
+  }
+
+  useEffect(() => {
+    checkAuthentication();
+  }, []);
 
   function handleQueryChange(event) {
     changeQuery(event.target.value);
@@ -50,6 +63,7 @@ function SearchResult() {
 
   return (
     <div className={styles.container}>
+      {loginRedirect && <Redirect to="/" />}
       <HeaderSimple />
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />

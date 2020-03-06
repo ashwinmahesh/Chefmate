@@ -23,21 +23,9 @@ module.exports = app => {
       res.redirect("/");
     }
   );
-  //Maybe dont need this route (can change it)
-  app.get(
-    "/SearchResult",
-    passport.authenticate("google"),
-    (req, res) => {
-      res.redirect("/SearchResult");
-    }
-  );
 
   app.get("/api/logout", (req, res) => {
     req.logout();
     res.redirect("/login");
-  });
-
-  app.get("/api/current_user", (req, res) => {
-    res.send(req.user);
   });
 };
