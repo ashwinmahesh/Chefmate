@@ -17,11 +17,11 @@ domains = [
     {'name': 'GoodFood', 'root': 'https://www.bbcgoodfood.com/'}
 ]
 
-def buildIndex(iterations, reset=True):
+def buildIndex(iterations, reset=True, options={'crawl':True, 'parse':True, 'database':True, 'idf':True, 'tfidf':True}):
   log('build index', 'Running full suite of crawler programs.')
   programStartTime = time.time()
 
-  if exists('domains'):
+  if reset and exists('domains'):
     log('cleanup', 'Removing old domains folder')
     rmtree('./domains')
 
@@ -30,21 +30,30 @@ def buildIndex(iterations, reset=True):
   for domain in domains:
     domainStartTime = time.time()
 
-    crawler = Crawler(domain['name'], domain['root'])
-    crawler.runSpider(iterations)
+    if options['crawl']:
+      crawler = Crawler(domain['name'], domain['root'])
+      crawler.runSpider(iterations)
 
-    dataParser = DataParser(domain['name'])
-    dataParser.runParser()
+    if options['parse']:
+      dataParser = DataParser(domain['name'])
+      dataParser.runParser()
 
-    databaseBuilder = DatabaseBuilder(domain['name'], mode='DEV')
-    databaseBuilder.build()
-
-    calculateTFIDF()
+    if options['database']:
+      databaseBuilder = DatabaseBuilder(domain['name'], mode='DEV')
+      databaseBuilder.build()
 
     log("time", domain['name']+" finished running in "+str(time.time()-domainStartTime)+" seconds.")
   
-  DatabaseBuilder.calculateIDF()
+  options['idf'] and DatabaseBuilder.calculateIDF()
+  options['tfidf'] and calculateTFIDF()
   log("time", "Program finished running in "+str(time.time()-programStartTime)+" seconds.")
    
 if __name__ == "__main__":
-  buildIndex(1, reset=True)
+  options = {
+    'crawl':False,
+    'parse':False,
+    'database':False,
+    'idf':False,
+    'tfidf':True
+  }
+  buildIndex(2, reset=False, options=options)
