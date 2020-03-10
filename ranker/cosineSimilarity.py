@@ -27,14 +27,17 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
   docIds = set()
   queryTermWeights = np.zeros(InvertedIndex.objects.count())
   for term in terms:
-    termEntry = InvertedIndex.objects.get(term=term)
+    try:
+      termEntry = InvertedIndex.objects.get(term=term)
 
-    docInfoList=termEntry['doc_info']
-    for doc in docInfoList:
-      docIds.add(int(doc['docId']))
+      docInfoList=termEntry['doc_info']
+      for doc in docInfoList:
+        docIds.add(int(doc['docId']))
 
-    termNum = int(termEntry['termNum'])
-    queryTermWeights[termNum] += 1
+      termNum = int(termEntry['termNum'])
+      queryTermWeights[termNum] += 1
+    except DoesNotExist:
+      log("query", 'Term not found - '+term)
   
   cosineSimilarities = []
   for docId in docIds:
@@ -45,8 +48,3 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
   
   log('time', 'Execution time for cosine similarities: ' +str(time.time()-startTime)+' seconds')
   return cosineSimilarities
-
-if __name__ =="__main__":
-  pass
-  # calculateCosineSimilarity(['meal', 'bake'])
-    # calculateAllCosineSimilarity(['recip'])

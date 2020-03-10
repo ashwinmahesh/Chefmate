@@ -8,6 +8,10 @@ import helpers
 log = helpers.log
 import numpy as np 
 
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer 
+
 from mongoengine import *
 from mongoConfig import *
 from cosineSimilarity import *
@@ -24,6 +28,8 @@ def index():
 @app.route('/query/<query>', methods=['GET'])
 def rankQuery(query):
   log('query', query)
+  queryTerms = stemQuery(query)
+  calculateAllCosineSimilarity(queryTerms, inMemoryTFIDF)
   return helpers.sendPacket(1, 'Successfully retrieved query', {'query':query})
 
 @app.route('/testRoute')
@@ -31,6 +37,7 @@ def testRoute():
   return helpers.sendPacket(
       1, 'successfully got packet from ranker', {'name': 'Ashwin'})
 
+#Insert Helper functions below here
 def loadInvertedIndexToMemory():
   log('info', 'Loading Inverted Index into main memory.')
   invertedIndex = InvertedIndex.objects()
@@ -45,9 +52,16 @@ def loadInvertedIndexToMemory():
 
   return inMemoryTFIDF
 
+def stemQuery(query):
+  output=[]
+  porterStemmer = PorterStemmer()
+  tokenedText = word_tokenize(query)
+  for word in tokenedText:
+    output.append(porterStemmer.stem(word))
+  return output
+
 inMemoryTFIDF = loadInvertedIndexToMemory()
 
 if __name__ == "__main__":
   log('info', f"Ranker is listening on port {port}, {app.config['ENV']} environment.")
-  calculateAllCosineSimilarity(['meal', 'bake', 'cloudflar'], inMemoryTFIDF)
   app.run(debug=True, host='0.0.0.0', port=port)
