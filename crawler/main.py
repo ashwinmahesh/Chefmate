@@ -17,7 +17,7 @@ domains = [
     {'name': 'GoodFood', 'root': 'https://www.bbcgoodfood.com/'}
 ]
 
-def buildIndex(iterations, reset=True, options={'crawl':True, 'parse':True, 'database':True, 'idf':True, 'tfidf':True}):
+def buildIndex(iterations, reset=True, options={'crawl':True, 'parse':True, 'database':True, 'idf':True, 'tfidf':True}, dev=True):
   log('build index', 'Running full suite of crawler programs.')
   programStartTime = time.time()
 
@@ -39,7 +39,7 @@ def buildIndex(iterations, reset=True, options={'crawl':True, 'parse':True, 'dat
       dataParser.runParser()
 
     if options['database']:
-      databaseBuilder = DatabaseBuilder(domain['name'], mode='DEV')
+      databaseBuilder = DatabaseBuilder(domain['name'], mode='DEV' if dev else 'PROD')
       databaseBuilder.build()
 
     log("time", domain['name']+" finished running in "+str(time.time()-domainStartTime)+" seconds.")
@@ -56,4 +56,5 @@ if __name__ == "__main__":
     'idf':False,
     'tfidf':True
   }
-  buildIndex(2, reset=False, options=options)
+  # buildIndex(1, reset=True, dev=False)
+  buildIndex(2, reset=False, options=options, dev=False)

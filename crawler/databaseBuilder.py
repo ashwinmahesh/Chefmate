@@ -10,6 +10,7 @@ import time
 
 class DatabaseBuilder:
   docCount = 0
+  termNum=0
   connect('chefmateDB', host='18.222.251.5', port=27017)
 
   def __init__(self, domain, mode='DEV'):
@@ -88,7 +89,8 @@ class DatabaseBuilder:
 
       except DoesNotExist:
         log('new entry', 'Creating InvertedIndex entry for \''+term+'\'.')
-        newTermEntry = InvertedIndex(term=term, 
+        newTermEntry = InvertedIndex(term=term,
+        termNum=DatabaseBuilder.termNum,
         doc_info=[{
           'url': url,
           'docId': str(docId),
@@ -98,6 +100,7 @@ class DatabaseBuilder:
         tfidf={}
         )
         newTermEntry.save()
+        DatabaseBuilder.termNum += 1
 
       if self.mode=='DEV' and termPos>=30:
         break
