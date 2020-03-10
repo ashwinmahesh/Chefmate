@@ -37,4 +37,4 @@ def calculateAllCosineSimilarity(terms):
 
 if __name__ =="__main__":
   # calculateCosineSimilarity(['meal', 'bake'])
-    calculateCosineSimilarity(['recip'])
+    calculateAllCosineSimilarity(['recip'])

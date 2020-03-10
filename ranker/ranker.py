@@ -1,26 +1,21 @@
 from flask import Flask, jsonify
-from pymongo import MongoClient
+
 import requests
-import json
+# import json
 import sys
 sys.path.append('..')
+sys.path.append('../crawler')
 import helpers
-
 log = helpers.log
+import numpy as np 
+
+from mongoengine import *
+from mongoConfig import *
 
 app = Flask(__name__)
 
 port = 8002
-# TODO change this to deployed db
-# mongoUri = 'mongodb://localhost/chefmateDB'
-mongoUri = 'mongodb://18.222.251.5/chefmateDB'
-mongoServer = MongoClient(mongoUri)
-mongo = mongoServer.admin
-try:
-  mongo.command('isMaster')
-  log("info", 'Connected successfully to database.')
-except ConnectionError:
-  log('error', 'Database connection failed.')
+connect('chefmateDB', host='18.222.251.5', port=27017)
 
 @app.route('/', methods=["GET"])
 def index():
@@ -36,7 +31,20 @@ def testRoute():
   return helpers.sendPacket(
       1, 'successfully got packet from ranker', {'name': 'Ashwin'})
 
+def loadInvertedIndexToMemory():
+  invertedIndex = InvertedIndex.objects()
+  inMemoryTFIDF= np.zeros((InvertedIndex.objects.count(), Crawler.objects.count()))
+
+  for termEntry in invertedIndex:
+    termNum = termEntry['termNum']
+    docInfoList = termEntry['doc_info']
+    for doc in docInfoList:
+      docId = int(doc['docId'])
+      inMemoryTFIDF[termNum][docId]=termEntry['tfidf'][str(docId)]
+
+  return inMemoryTFIDF
 
 if __name__ == "__main__":
   log('info', f"Ranker is listening on port {port}, {app.config['ENV']} environment.")
+  loadInvertedIndexToMemory()
   app.run(debug=True, host='0.0.0.0', port=port)
