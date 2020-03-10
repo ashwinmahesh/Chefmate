@@ -39,12 +39,17 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
     except DoesNotExist:
       log("query", 'Term not found - '+term)
   
+  docIdArr = []
   cosineSimilarities = []
+
   for docId in docIds:
     docWeight = inMemoryTFIDF[:,docId]
     cosSim = cosineSimilarity(queryTermWeights, docWeight)
     log('cosine', 'Cosine similarity with doc '+str(docId)+' = '+str(cosSim))
     cosineSimilarities.append(cosSim)
+    docIdArr.append(docId)
   
+  sortedDocIds = [docId for cosSim, docId in sorted(zip(cosineSimilarities, docIdArr), reverse=True)]
+
   log('time', 'Execution time for cosine similarities: ' +str(time.time()-startTime)+' seconds')
-  return cosineSimilarities
+  return sortedDocIds
