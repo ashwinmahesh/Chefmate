@@ -1,7 +1,6 @@
 from flask import Flask, jsonify
 
 import requests
-# import json
 import sys
 sys.path.append('..')
 sys.path.append('../crawler')
@@ -11,6 +10,7 @@ import numpy as np
 
 from mongoengine import *
 from mongoConfig import *
+from cosineSimilarity import *
 
 app = Flask(__name__)
 
@@ -32,6 +32,7 @@ def testRoute():
       1, 'successfully got packet from ranker', {'name': 'Ashwin'})
 
 def loadInvertedIndexToMemory():
+  log('info', 'Loading Inverted Index into main memory.')
   invertedIndex = InvertedIndex.objects()
   inMemoryTFIDF= np.zeros((InvertedIndex.objects.count(), Crawler.objects.count()))
 
@@ -44,7 +45,9 @@ def loadInvertedIndexToMemory():
 
   return inMemoryTFIDF
 
+inMemoryTFIDF = loadInvertedIndexToMemory()
+
 if __name__ == "__main__":
   log('info', f"Ranker is listening on port {port}, {app.config['ENV']} environment.")
-  loadInvertedIndexToMemory()
+  calculateAllCosineSimilarity(['meal', 'bake', 'cloudflar'], inMemoryTFIDF)
   app.run(debug=True, host='0.0.0.0', port=port)

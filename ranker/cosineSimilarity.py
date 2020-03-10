@@ -5,6 +5,7 @@ from mongoengine import *
 from mongoConfig import *
 from helpers import log
 import math
+import numpy as np
 
 # cos(D1, Q) = dot_product(TFIDF1, TFIDFq) / sqrt(sum(TFIDF1^2) * sum(TFIDFq^2))
 def cosineSimilarity(termWeights1, termWeights2,):
@@ -23,18 +24,29 @@ def cosineSimilarity(termWeights1, termWeights2,):
   bottom = math.sqrt(sumSquared1*sumSquared2)
   return top/bottom
 
-def calculateAllCosineSimilarity(terms):
+def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
   connect('chefmateDB', host='18.222.251.5', port=27017)
   docIds = set()
+  queryTermWeights = np.zeros(InvertedIndex.objects.count())
   for term in terms:
-    entry = InvertedIndex.objects.get(term=term)
-    doc_info_list = entry['doc_info']
-    for doc in doc_info_list:
-      print(doc)
+    termEntry = InvertedIndex.objects.get(term=term)
 
+    docInfoList=termEntry['doc_info']
+    for doc in docInfoList:
+      docIds.add(int(doc['docId']))
+
+    termNum = int(termEntry['termNum'])
+    queryTermWeights[termNum] += 1
   
-
+  cosineSimilarities = []
+  for docId in docIds:
+    docWeight = inMemoryTFIDF[:,docId]
+    cosSim = cosineSimilarity(queryTermWeights, docWeight)
+    cosineSimilarities.append(cosSim)
+  
+  return cosineSimilarities
 
 if __name__ =="__main__":
+  pass
   # calculateCosineSimilarity(['meal', 'bake'])
-    calculateAllCosineSimilarity(['recip'])
+    # calculateAllCosineSimilarity(['recip'])
