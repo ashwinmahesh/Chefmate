@@ -7,6 +7,9 @@ from helpers import log
 import math
 import numpy as np
 import time
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.stem import PorterStemmer 
 
 # cos(D1, Q) = dot_product(TFIDF1, TFIDFq) / sqrt(sum(TFIDF1^2) * sum(TFIDFq^2))
 def cosineSimilarity(termWeights1, termWeights2):
@@ -53,3 +56,25 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
 
   log('time', 'Execution time for cosine similarities: ' +str(time.time()-startTime)+' seconds')
   return sortedDocIds
+
+def loadInvertedIndexToMemory():
+  log('info', 'Loading Inverted Index into main memory.')
+  invertedIndex = InvertedIndex.objects()
+  inMemoryTFIDF= np.zeros((InvertedIndex.objects.count(), Crawler.objects.count()))
+
+  for termEntry in invertedIndex:
+    termNum = termEntry['termNum']
+    docInfoList = termEntry['doc_info']
+    for doc in docInfoList:
+      docId = int(doc['docId'])
+      inMemoryTFIDF[termNum][docId]=termEntry['tfidf'][str(docId)]
+
+  return inMemoryTFIDF
+
+def stemQuery(query):
+  output=[]
+  porterStemmer = PorterStemmer()
+  tokenedText = word_tokenize(query)
+  for word in tokenedText:
+    output.append(porterStemmer.stem(word))
+  return output
