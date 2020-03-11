@@ -29,7 +29,7 @@ class FileIO:
     if not os.path.exists(domainsSiteName):
       log('file', "Creating site directory " + siteName)
       os.mkdir('domains/'+siteName)
-    indexFile = siteName + '_index.txt'
+    indexFile = siteName + '_index.json'
     if not os.path.isfile(indexFile):
       FileIO.writeToFile(domainsSiteName + '/' + indexFile, '')
     return domainsSiteName + '/' + indexFile
@@ -68,7 +68,7 @@ class FileIO:
         data = json.load(json_file)
         json_file.close()
         return data
-      except json.decoder.JSONDecodeError:
+      except ValueError:
         return dict()
 
   @staticmethod
