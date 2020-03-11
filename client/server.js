@@ -51,7 +51,7 @@ app.get('/search/:query', async (request, response) => {
   const data = await makeRequest('ranker', `query/${query}`);
   log('ranker', data.message);
   return response.json(
-    sendPacket(data.success, `Successfully received response from ranker: ${query}`)
+    sendPacket(data.success, `Successfully received response from ranker: ${query}`, data.content)
   );
 });
 
@@ -67,6 +67,7 @@ app.get('*', (request, response) => {
 function checkAuthentication(request) {
   return request.isAuthenticated() && request.user.id; // == some stored value
 }
+
 function sendPacket(success, message, content = {}) {
   return { success: success, message: message, content: content };
 }
