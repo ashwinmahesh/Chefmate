@@ -1,17 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({}));
 
-}));
-
-function Template() {
+export default function Template() {
   const styles = useStyles();
-  return(
+  return (
     <div>
       <p>I am a template</p>
     </div>
-  )
+  );
 }
-
-export default Template;
