@@ -51,6 +51,8 @@ type Props = {
 
 export default function SingleResult(props: Props) {
   const styles = useStyles();
+  const url = changeUrl();
+  console.log('url', url);
 
   function likePressed() {
     console.log(`Like button pressed for doc #${props.docId}`);
@@ -60,9 +62,19 @@ export default function SingleResult(props: Props) {
     console.log(`Dislike button pressed for #${props.docId}`);
   }
 
+  function changeUrl() {
+    var output = '';
+    let i = props.url.substr(0, 8) == 'https://' ? 8 : 0;
+    for (i; i < props.url.length; i++) {
+      if (props.url[i] == '/') output += '>';
+      else output += props.url[i];
+    }
+    return output;
+  }
+
   return (
     <div className={styles.singleSiteContainer}>
-      <p className={styles.siteUrl}>{props.url}</p>
+      <p className={styles.siteUrl}>{url}</p>
       <a className={styles.link} href={props.url}>
         {props.title}
       </a>

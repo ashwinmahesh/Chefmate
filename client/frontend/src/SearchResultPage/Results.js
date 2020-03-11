@@ -27,6 +27,7 @@ function Results() {
           docId={'32'}
           likes={69420}
           likeStatus={0}
+          key={i}
         />
       );
     }
