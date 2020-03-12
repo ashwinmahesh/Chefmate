@@ -13,6 +13,7 @@ class Crawler(Document):
 
 class InvertedIndex(Document):
   term = StringField(required=True, primary_key=True)
+  termNum=IntField(required=True, min_value=0)
   doc_info = ListField(DictField(required=True), default=[])
   idf = FloatField(required=True, default=1)
   tfidf = DictField(default={})
