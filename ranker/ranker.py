@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 import requests
 import sys
@@ -29,6 +29,14 @@ def rankQuery(query):
   sortedDocIds=calculateAllCosineSimilarity(queryTerms, inMemoryTFIDF)
   print(sortedDocIds)
   return helpers.sendPacket(1, 'Successfully retrieved query', {'sortedDocIds':sortedDocIds})
+
+@app.route('/fetchDocuments', methods=['POST'])
+def fetchDocuments():
+  docIds = request.json['docIds']
+  documents=[]
+  for docId in docIds:
+    documents.append(Crawler.objects.get(_id=str(docId)).to_json())
+  return helpers.sendPacket(1, 'Successfully retrieved documents', {'documents':documents})
 
 @app.route('/testRoute')
 def testRoute():

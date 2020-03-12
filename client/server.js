@@ -63,9 +63,11 @@ app.get('/checkAuthenticated', (req, res) => {
   else return res.json(sendPacket(0, 'User not authenticated'));
 })
 
-app.post('/fetchDocuments', (req, res) => {
+app.post('/fetchDocuments', async (req, res) => {
   const docIds = req.body['docIds']
   console.log(docIds)
+  const documents = await makeRequest('ranker', 'fetchDocuments', 'POST', {docIds: docIds})
+  console.log("documents:", documents);
   return res.json(sendPacket(1, 'Successfully fetched documents'))
 })
 
