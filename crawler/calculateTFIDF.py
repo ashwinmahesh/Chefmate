@@ -28,7 +28,7 @@ def calculateTFIDF():
             
         termEntry.save()
         
-    log("tfidf", 'Execution finished in '+str(time.time()-startTime)+' seconds.')
+    log("time", 'Execution finished in '+str(time.time()-startTime)+' seconds.')
 
 if __name__ == "__main__":
   calculateTFIDF()
