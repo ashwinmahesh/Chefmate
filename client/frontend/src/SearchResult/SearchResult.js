@@ -4,8 +4,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
 import HeaderSimple from '../headerSimple/HeaderSimple';
-import Result from './Result';
 import { Redirect } from 'react-router-dom';
+import Results from './Results';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -24,14 +24,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '30px',
     float: 'left',
     marginLeft: '15px',
+    // display: 'block',
   },
   buttonStyle: {
-    marginLeft: '20px',
+    // marginLeft: '20px',
     width: '50px',
     height: '55px',
   },
   contents: {
-    backgroundColor: 'blue',
+    // backgroundColor: 'blue',
+    // marginTop: '100px',
   },
 }));
 
@@ -77,7 +79,7 @@ function SearchResult() {
           onChange={handleQueryChange}
         />
       </div>
-      <Result />
+      <Results />
     </div>
   );
 }
