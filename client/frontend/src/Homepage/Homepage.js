@@ -38,6 +38,7 @@ function Homepage() {
   const [queryRedirect, changeQueryRedirect] = useState(false);
 
   async function checkAuthentication() {
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
     const { data } = await axios.get('/checkAuthenticated');
     if (data.success === 0) {
       changeLoginRedirect(true);
