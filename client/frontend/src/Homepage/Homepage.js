@@ -35,6 +35,7 @@ function Homepage() {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
+  const [queryRedirect, changeQueryRedirect] = useState(false);
 
   async function checkAuthentication() {
     const { data } = await axios.get('/checkAuthenticated');
@@ -51,16 +52,15 @@ function Homepage() {
     changeQuery(event.target.value);
   }
 
-  async function makeSearch() {
-    const { data } = await axios.get(`/search/${query}`);
-    changeQuery('');
-    console.log('Response: ' + data['message']);
+  function searchPressed() {
+    changeQueryRedirect(true);
   }
 
   return (
     <div className={styles.container}>
       <HeaderSimple />
       {loginRedirect && <Redirect to="/login" />}
+      {queryRedirect && <Redirect to={`/result/${query}`} />}
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
         <br />
@@ -77,7 +77,7 @@ function Homepage() {
         <Button
           variant="contained"
           className={styles.buttonStyle}
-          onClick={makeSearch}
+          onClick={searchPressed}
         >
           GO
         </Button>

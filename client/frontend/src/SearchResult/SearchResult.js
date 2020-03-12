@@ -37,10 +37,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SearchResult() {
+function SearchResult(props) {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
+  const [queryRedirect, changeQueryRedirect] = useState(false);
+  const oldQuery = props.match.params.query;
 
   async function checkAuthentication() {
     const { data } = await axios.get('/checkAuthenticated');
@@ -51,21 +53,27 @@ function SearchResult() {
 
   useEffect(() => {
     checkAuthentication();
+    fetchQueryResults();
   }, []);
 
   function handleQueryChange(event) {
     changeQuery(event.target.value);
   }
 
-  async function makeSearch() {
+  async function fetchQueryResults() {
     const { data } = await axios.get(`/search/${query}`);
     changeQuery('');
     console.log('Response: ' + data['message']);
   }
 
+  function searchPressed(e) {
+    if (e.keyCode == 13) changeQueryRedirect(true);
+  }
+
   return (
     <div className={styles.container}>
       {loginRedirect && <Redirect to="/" />}
+      {queryRedirect && <Redirect to={`/result/${query}`} />}
       <HeaderSimple />
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
@@ -77,6 +85,7 @@ function SearchResult() {
           className={styles.searchField}
           value={query}
           onChange={handleQueryChange}
+          onKeyDown={searchPressed}
         />
       </div>
       <Results />
