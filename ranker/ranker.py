@@ -27,7 +27,6 @@ def rankQuery(query):
   log('query', query)
   queryTerms = stemQuery(query)
   sortedDocIds=calculateAllCosineSimilarity(queryTerms, inMemoryTFIDF)
-  print(sortedDocIds)
   return helpers.sendPacket(1, 'Successfully retrieved query', {'sortedDocIds':sortedDocIds})
 
 @app.route('/fetchDocuments', methods=['POST'])

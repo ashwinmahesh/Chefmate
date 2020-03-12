@@ -52,7 +52,6 @@ type Props = {
 export default function SingleResult(props: Props) {
   const styles = useStyles();
   const url = changeUrl();
-  console.log('url', url);
 
   function likePressed() {
     console.log(`Like button pressed for doc #${props.docId}`);

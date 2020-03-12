@@ -64,11 +64,12 @@ app.get('/checkAuthenticated', (req, res) => {
 })
 
 app.post('/fetchDocuments', async (req, res) => {
+  log('fetch', 'Fetching documents from ranker using docIDs')
   const docIds = req.body['docIds']
-  console.log(docIds)
-  const documents = await makeRequest('ranker', 'fetchDocuments', 'POST', {docIds: docIds})
-  console.log("documents:", documents);
-  return res.json(sendPacket(1, 'Successfully fetched documents'))
+  const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {docIds: docIds})
+  const documents = data['content']['documents']
+  
+  return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents}))
 })
 
 app.get('/testRoute', (request, response) => {

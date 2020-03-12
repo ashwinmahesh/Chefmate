@@ -43,7 +43,7 @@ function SearchResult(props) {
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [queryRedirect, changeQueryRedirect] = useState(false);
   const oldQuery = props.match.params.query;
-  var docIdList = [];
+  const [documents, changeDocuments] = useState([]);
 
   async function checkAuthentication() {
     const { data } = await axios.get('/checkAuthenticated');
@@ -64,13 +64,14 @@ function SearchResult(props) {
   async function fetchQueryResults() {
     const { data } = await axios.get(`/search/${oldQuery}`);
     changeQuery('');
-    docIdList = data['content']['sortedDocIds'];
+    const docIdList = data['content']['sortedDocIds'];
     fetchDocuments(docIdList);
   }
 
   async function fetchDocuments(docIdList) {
     const { data } = await axios.post('/fetchDocuments', { docIds: docIdList });
     console.log(data);
+    changeDocuments(data['content']['documents']);
   }
 
   function searchPressed(e) {
@@ -95,7 +96,7 @@ function SearchResult(props) {
           onKeyDown={searchPressed}
         />
       </div>
-      <Results />
+      <Results documents={documents} />
     </div>
   );
 }
