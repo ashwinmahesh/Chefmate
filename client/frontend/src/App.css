@@ -1,0 +1,11 @@
+.App {
+  text-align: center;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(255, 255, 255);
+}
+
+div.wrapper {
+  min-width: 100vw;
+}

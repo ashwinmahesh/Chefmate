@@ -9,21 +9,15 @@ const path = require('path');
 const pino = require('express-pino-logger')();
 const fs = require('fs');
 const passport = require('passport');
-const initializePassport = require('./passport-config');
+require('./passport-config');
 const bcrypt = require('bcrypt');
-const database = require('./mongoConfig');
 
-const mongoose = database.mongoose;
-const User = database.User;
-const InvertedIndex = database.InvertedIndex;
-const Crawler = database.Crawler;
+const { mongoose, User, InvertedIndex, Crawler} = require('./mongoConfig');
 
 const log = require('./logger');
 const makeRequest = require('./makeRequest');
 
 const app = express();
-
-initializePassport(passport);
 
 const port = process.env.PORT || 8000;
 const root = require('path').join(__dirname, 'frontend', 'build');
@@ -42,6 +36,9 @@ app.use(
 );
 app.use(pino);
 app.use(express.static(root));
+app.use(passport.initialize());
+app.use(passport.session());
+require('./authRoutes')(app);
 
 //Insert server response functions here
 
@@ -55,6 +52,16 @@ app.get('/search/:query', async (request, response) => {
   );
 });
 
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect("/login");
+})
+
+app.get('/checkAuthenticated', (req, res) => {
+  if(checkAuthentication(req)) return res.json(sendPacket(1, 'User is authenticated'));
+  else return res.json(sendPacket(0, 'User not authenticated'));
+})
+
 app.get('/testRoute', (request, response) => {
   return response.json(sendPacket(1, 'Successfully got response'));
 });
@@ -63,9 +70,8 @@ app.get('*', (request, response) => {
   return response.sendFile('index.html', { root });
 });
 
-//TODO
 function checkAuthentication(request) {
-  return request.isAuthenticated() && request.user.id; // == some stored value
+  return request.isAuthenticated() && request.user; // == some stored value
 }
 
 function sendPacket(success, message, content = {}) {
@@ -75,5 +81,4 @@ function sendPacket(success, message, content = {}) {
 
 app.listen(port, () => {
   log('info', `Client server is listening on port ${port}.`);
-  // console.log(`Client server is listening on port ${port}.`);
 });

@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  buttonStyle: {
+    textDecoration: 'none',
+    color: 'white',
+  },
 }));
 
 export default function HeaderSimple() {
@@ -36,7 +40,9 @@ export default function HeaderSimple() {
           <Typography variant="h5" className={classes.title}>
             CHEFMATE
           </Typography>
-          <Button color="inherit">Logout</Button>
+          <a className={classes.buttonStyle} href="/logout">
+            <Button color="inherit">Logout</Button>
+          </a>
         </Toolbar>
       </AppBar>
     </div>
