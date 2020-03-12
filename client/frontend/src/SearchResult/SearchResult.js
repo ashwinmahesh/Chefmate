@@ -61,7 +61,7 @@ function SearchResult(props) {
   }
 
   async function fetchQueryResults() {
-    const { data } = await axios.get(`/search/${query}`);
+    const { data } = await axios.get(`/search/${oldQuery}`);
     changeQuery('');
     console.log('Response: ' + data['message']);
   }
