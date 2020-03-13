@@ -12,6 +12,7 @@ const passport = require('passport');
 require('./passport-config');
 const bcrypt = require('bcrypt');
 
+// const { mongoose } = require('./mongoConfig');
 const { mongoose, User, InvertedIndex, Crawler} = require('./mongoConfig');
 
 const log = require('./logger');
@@ -60,6 +61,15 @@ app.get('/logout', (req, res) => {
 app.get('/checkAuthenticated', (req, res) => {
   if(checkAuthentication(req)) return res.json(sendPacket(1, 'User is authenticated'));
   else return res.json(sendPacket(0, 'User not authenticated'));
+})
+
+app.post('/fetchDocuments', async (req, res) => {
+  log('fetch', 'Fetching documents from ranker using docIDs')
+  const docIds = req.body['docIds']
+  const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {docIds: docIds})
+  const documents = data['content']['documents']
+  
+  return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents}))
 })
 
 app.get('/testRoute', (request, response) => {

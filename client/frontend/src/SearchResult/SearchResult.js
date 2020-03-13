@@ -37,12 +37,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SearchResult() {
+function SearchResult(props) {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
+  const [queryRedirect, changeQueryRedirect] = useState(false);
+  const oldQuery = props.match.params.query;
+  const [documents, changeDocuments] = useState([]);
 
   async function checkAuthentication() {
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
     const { data } = await axios.get('/checkAuthenticated');
     if (data.success === 0) {
       changeLoginRedirect(true);
@@ -51,21 +55,34 @@ function SearchResult() {
 
   useEffect(() => {
     checkAuthentication();
+    fetchQueryResults();
   }, []);
 
   function handleQueryChange(event) {
     changeQuery(event.target.value);
   }
 
-  async function makeSearch() {
-    const { data } = await axios.get(`/search/${query}`);
+  async function fetchQueryResults() {
+    const { data } = await axios.get(`/search/${oldQuery}`);
     changeQuery('');
-    console.log('Response: ' + data['message']);
+    const docIdList = data['content']['sortedDocIds'];
+    fetchDocuments(docIdList);
+  }
+
+  async function fetchDocuments(docIdList) {
+    const { data } = await axios.post('/fetchDocuments', { docIds: docIdList });
+    console.log(data);
+    changeDocuments(data['content']['documents']);
+  }
+
+  function searchPressed(e) {
+    if (e.keyCode == 13) changeQueryRedirect(true);
   }
 
   return (
     <div className={styles.container}>
       {loginRedirect && <Redirect to="/" />}
+      {queryRedirect && <Redirect to={`/result/${query}`} />}
       <HeaderSimple />
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
@@ -77,9 +94,10 @@ function SearchResult() {
           className={styles.searchField}
           value={query}
           onChange={handleQueryChange}
+          onKeyDown={searchPressed}
         />
       </div>
-      <Results />
+      <Results documents={documents} />
     </div>
   );
 }
