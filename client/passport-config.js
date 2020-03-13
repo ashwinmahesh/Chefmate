@@ -1,25 +1,41 @@
-const LocalStrategy = require('passport-local').Strategy;
-const bcrypt = require('bcrypt');
+const { User } = require('./mongoConfig');
 
-function initialize(passport, getUserInfo, getUserById) {
-  const authenticateUser = async (username, password, done) => {
-    const user = getUserInfo(username);
-    if (user === false) return done(null, false, { message: "User not found"})
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const keys = require('./keys');
+const log = require('./logger');
 
-    try {
-      if (await bcrypt.compare(password, user.password)) 
-        return done(null, user, { message: "Successfully found user."});
-      else 
-        return done(null, false, { message: "Password incorrect."});
-    } catch(err) {
-        return done(err)
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id).then((user) => {
+    done(null, user);
+  });
+});
+
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: keys.googleClientID,
+      clientSecret: keys.googleClientSecret,
+      callbackURL: '/auth/google/callback',
+      userProfileURL: 'https://www.googleapis.com/oauth2/v3/userinfo',
+      proxy: true,
+    },
+    (_, _2, profile, done) => {
+      User.findOne({ userid: profile.emails[0].value }).then((existingUser) => {
+        if (existingUser) {
+          log("login", "Found existing user")
+          done(null, existingUser);
+        } else {
+          log("login", 'No user exists')
+          new User({
+            userid: profile.emails[0].value
+          }).save().then((user) => done(null, user));
+        }
+      });
     }
-  }
-
-  passport.use(new LocalStrategy({ usernameField: 'username', passwordField: 'password' }, authenticateUser));
-
-  passport.serializeUser((user, done) => done(null, user.id));
-  passport.deserializeUser((id, done) => done(null, getUserById(id)));
-}
-
-module.exports = initialize;
+  )
+);

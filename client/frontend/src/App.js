@@ -1,21 +1,20 @@
 import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import './App.css';
-import HomepageSimple from './homepageSimple/HomepageSimple';
-import HomeScreen from './HomeScreen/HomeScreen';
-import LoginPage from './HomeScreen/LoginPage';
-import LoginCreds from './HomeScreen/LoginCreds';
-import SignUp from './HomeScreen/SignUp';
-import LandingPage from './WebPage/LandingPage';
-import SearchResult from './SearchResultPage/SearchResult';
-import Result from './SearchResultPage/Result';
+import LoginPage from './Login/LoginPage';
+import Homepage from './Homepage/Homepage';
+import SearchResult from './SearchResult/SearchResult';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header"></header>
-      <div className="wrapper">
-        <LandingPage />
-      </div>
+      <Router>
+        <div className="wrapper">
+          <Route exact path="/" component={Homepage} />
+          <Route exact path="/login" component={LoginPage} />
+          <Route path="/result/:query" component={SearchResult} />
+        </div>
+      </Router>
     </div>
   );
 }

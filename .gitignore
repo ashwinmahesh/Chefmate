@@ -8,3 +8,4 @@ __pycache__/
 *.md
 *.pem
 .DS_STORE
+*/.vscode/

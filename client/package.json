@@ -21,6 +21,7 @@
     "express-session": "^1.17.0",
     "mongoose": "^5.8.11",
     "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "pino-colada": "^1.5.1"

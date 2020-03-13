@@ -33,11 +33,11 @@ const UserSchema = new mongoose.Schema(
   {
     userid: {
       type: String,
-      required: [true, "Identifier is required for user"]
+      required: [true, "Identifier is required for user"],
     },
     password: {
       type: String,
-      required: [true, "Password is required. Make sure it is hashed."]
+      // required: [true, "Password is required. Make sure it is hashed."]
     },
     likes: {
       type: {},
@@ -90,4 +90,4 @@ const InvertedIndexSchema = new mongoose.Schema(
 mongoose.model("InvertedIndex", InvertedIndexSchema);
 const InvertedIndex = mongoose.model("InvertedIndex");
 
-module.exports = [mongoose, Crawler, User, InvertedIndex];
+module.exports = { mongoose, Crawler, User, InvertedIndex };
