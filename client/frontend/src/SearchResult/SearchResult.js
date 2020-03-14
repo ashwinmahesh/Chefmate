@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
 import HeaderSimple from '../headerSimple/HeaderSimple';
+import HeaderSearch from '../headerSearch/HeaderSearch';
 import { Redirect } from 'react-router-dom';
 import Results from './Results';
 
@@ -83,7 +84,8 @@ function SearchResult(props) {
     <div className={styles.container}>
       {loginRedirect && <Redirect to="/" />}
       {queryRedirect && <Redirect to={`/result/${query}`} />}
-      <HeaderSimple />
+      {/* <HeaderSimple /> */}
+      <HeaderSearch />
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
         <TextField
