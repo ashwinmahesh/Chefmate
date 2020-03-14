@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, Button, Typography, TextField } from '@material-ui/core';
+import { IconButton, Button } from '@material-ui/core';
 import { FaBars, FaSearch } from 'react-icons/fa';
 import logo from '../images/logo.png';
 
@@ -51,22 +51,15 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgb(249,249,249)',
     fontSize: '13pt',
     marginRight: '30px',
-    // marginTop: '8px',
   },
   leftDiv: {},
   rightDiv: {
-    // marginTop: '15px',
     padding: '1px',
     paddingRight: '15px',
-    // verticalAlign: 'center',
   },
   logo: {
     width: '100px',
     height: '25px',
-    // marginTop: '10px',
-    // float: 'left',
-    // marginLeft: '15px',
-    // display: 'block',
   },
 }));
 
@@ -76,15 +69,6 @@ export default function HeaderSearch() {
     <div className={styles.wrapper}>
       <div className={styles.leftDiv}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
-
-        {/* <IconButton
-          edge="start"
-          className={styles.menuButton}
-          color="inherit"
-          aria-label="menu"
-        >
-          <FaBars className={styles.barsStyle} />
-        </IconButton> */}
         <input className={styles.searchField} placeholder="Search" />
         <IconButton
           edge="start"
