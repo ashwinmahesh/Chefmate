@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, Button } from '@material-ui/core';
 import { FaBars, FaSearch } from 'react-icons/fa';
+
 import logo from '../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
@@ -63,18 +64,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function HeaderSearch() {
+type Props = {
+  initialSearch: String,
+  searchPressed: (String) => void,
+};
+
+export default function HeaderSearch(props: Props) {
   const styles = useStyles();
+  const [query, changeQuery] = useState(props.initialSearch);
+
+  function handleQueryChange(event) {
+    changeQuery(event.target.value);
+  }
+
+  function searchPressed() {
+    props.searchPressed(query);
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.leftDiv}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
-        <input className={styles.searchField} placeholder="Search" />
+        <input
+          className={styles.searchField}
+          placeholder="Search"
+          value={query}
+          onChange={handleQueryChange}
+        />
         <IconButton
           edge="start"
           className={styles.searchButton}
           color="inherit"
           aria-label="menu"
+          onClick={searchPressed}
         >
           <FaSearch className={styles.barsStyle} />
         </IconButton>
