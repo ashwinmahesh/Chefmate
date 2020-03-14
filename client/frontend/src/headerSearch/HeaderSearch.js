@@ -84,7 +84,9 @@ export default function HeaderSearch(props: Props) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.leftDiv}>
-        <img src={logo} className={styles.logo} alt="Chefmate logo" />
+        <a href="/">
+          <img src={logo} className={styles.logo} alt="Chefmate logo" />
+        </a>
         <input
           className={styles.searchField}
           placeholder="Search"
