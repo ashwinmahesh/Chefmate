@@ -1,15 +1,22 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, Button } from '@material-ui/core';
+import { IconButton, Button, Typography, TextField } from '@material-ui/core';
 import { FaBars, FaSearch } from 'react-icons/fa';
+import logo from '../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    height: '55px',
+    height: '45px',
     background: 'rgb(230, 95, 85)',
     padding: '1px',
     textAlign: 'left',
-    // verticalAlign: 'center',
+    display: 'flex',
+    justifyContent: 'space-between',
+    paddingTop: '12px',
+    paddingBottom: '12px',
+    paddingLeft: '15px',
+    paddingRight: '5px',
+    minWidth: '700px',
   },
   barsStyle: {
     color: 'white',
@@ -24,7 +31,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '5px',
     paddingLeft: '15px',
     paddingRight: '15px',
-    marginTop: '5px',
     marginLeft: '15px',
     width: '350px',
   },
@@ -36,39 +42,72 @@ const useStyles = makeStyles((theme) => ({
   searchButton: {
     marginLeft: '3px',
   },
+  logoutButton: {
+    textDecoration: 'none',
+    color: 'white',
+  },
+  welcomeText: {
+    display: 'inline-block',
+    color: 'rgb(249,249,249)',
+    fontSize: '13pt',
+    marginRight: '30px',
+    // marginTop: '8px',
+  },
+  leftDiv: {},
+  rightDiv: {
+    // marginTop: '15px',
+    padding: '1px',
+    paddingRight: '15px',
+    // verticalAlign: 'center',
+  },
+  logo: {
+    width: '100px',
+    height: '25px',
+    // marginTop: '10px',
+    // float: 'left',
+    // marginLeft: '15px',
+    // display: 'block',
+  },
 }));
 
 export default function HeaderSearch() {
   const styles = useStyles();
   return (
     <div className={styles.wrapper}>
-      <IconButton
-        edge="start"
-        className={styles.menuButton}
-        color="inherit"
-        aria-label="menu"
-      >
-        <FaBars className={styles.barsStyle} />
-      </IconButton>
-      <input className={styles.searchField} placeholder="Search" />
-      <IconButton
-        edge="start"
-        className={styles.searchButton}
-        color="inherit"
-        aria-label="menu"
-      >
-        <FaSearch className={styles.barsStyle} />
-      </IconButton>
-      {/* <TextField
-        id="outlined-search"
-        label="Search"
-        type="search"
-        variant="outlined"
-        className={styles.searchField}
-        // value={query}
-        // onChange={handleQueryChange}
-        // onKeyDown={searchPressed}
-      /> */}
+      <div className={styles.leftDiv}>
+        <img src={logo} className={styles.logo} alt="Chefmate logo" />
+
+        {/* <IconButton
+          edge="start"
+          className={styles.menuButton}
+          color="inherit"
+          aria-label="menu"
+        >
+          <FaBars className={styles.barsStyle} />
+        </IconButton> */}
+        <input className={styles.searchField} placeholder="Search" />
+        <IconButton
+          edge="start"
+          className={styles.searchButton}
+          color="inherit"
+          aria-label="menu"
+        >
+          <FaSearch className={styles.barsStyle} />
+        </IconButton>
+      </div>
+      <div className={styles.rightDiv}>
+        <a className={styles.logoutButton} href="/logout">
+          <Button color="inherit">Logout</Button>
+        </a>
+        <IconButton
+          edge="start"
+          className={styles.menuButton}
+          color="inherit"
+          aria-label="menu"
+        >
+          <FaBars className={styles.barsStyle} />
+        </IconButton>
+      </div>
     </div>
   );
 }
