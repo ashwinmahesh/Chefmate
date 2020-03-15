@@ -48,13 +48,16 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
   for docId in docIds:
     docWeight = inMemoryTFIDF[:,docId]
     cosSim = cosineSimilarity(queryTermWeights, docWeight)
-    log('cosine', 'Cosine similarity with doc '+str(docId)+' = '+str(cosSim))
+    # log('cosine', 'Cosine similarity with doc '+str(docId)+' = '+str(cosSim))
     cosineSimilarities.append(cosSim)
     docIdArr.append(docId)
   
   sortedDocIds = [docId for cosSim, docId in sorted(zip(cosineSimilarities, docIdArr), reverse=True)]
+  queryStr=''
+  for term in terms:
+    queryStr+=term + ' '
 
-  log('time', 'Execution time for cosine similarities: ' +str(time.time()-startTime)+' seconds')
+  log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
   return sortedDocIds
 
 def loadInvertedIndexToMemory():
@@ -67,8 +70,12 @@ def loadInvertedIndexToMemory():
     docInfoList = termEntry['doc_info']
     for doc in docInfoList:
       docId = int(doc['docId'])
-      inMemoryTFIDF[termNum][docId]=termEntry['tfidf'][str(docId)]
+      try:
+        inMemoryTFIDF[termNum][docId]=termEntry['tfidf'][str(docId)]
+      except KeyError:
+        inMemoryTFIDF[termNum][docId]=0
 
+  log('info', 'Finished loading Inverted Index into main memory.')
   return inMemoryTFIDF
 
 def stemQuery(query):

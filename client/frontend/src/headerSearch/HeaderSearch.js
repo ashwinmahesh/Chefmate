@@ -70,7 +70,6 @@ const useStyles = makeStyles((theme) => ({
 
 type Props = {
   initialSearch: String,
-  searchPressed: (String) => void,
 };
 
 export default function HeaderSearch(props: Props) {
@@ -80,10 +79,6 @@ export default function HeaderSearch(props: Props) {
 
   function handleQueryChange(event) {
     changeQuery(event.target.value);
-  }
-
-  function searchPressed() {
-    props.searchPressed(query);
   }
 
   function goToHomePressed() {
@@ -103,15 +98,16 @@ export default function HeaderSearch(props: Props) {
           value={query}
           onChange={handleQueryChange}
         />
-        <IconButton
-          edge="start"
-          className={styles.searchButton}
-          color="inherit"
-          aria-label="menu"
-          onClick={searchPressed}
-        >
-          <FaSearch className={styles.barsStyle} />
-        </IconButton>
+        <a href={`/result/${query}`}>
+          <IconButton
+            edge="start"
+            className={styles.searchButton}
+            color="inherit"
+            aria-label="menu"
+          >
+            <FaSearch className={styles.barsStyle} />
+          </IconButton>
+        </a>
       </div>
       <div className={styles.rightDiv}>
         <a className={styles.logoutButton} href="/logout">

@@ -1,6 +1,7 @@
 const axios = require('axios');
 const log = require('./logger');
 
+//TODO Update with deployed IPs
 function getServerPath(serverName) {
   if(serverName == 'client')
     return 'http://localhost:8000'

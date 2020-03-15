@@ -64,7 +64,7 @@ app.get('/checkAuthenticated', (req, res) => {
 })
 
 app.post('/fetchDocuments', async (req, res) => {
-  log('fetch', 'Fetching documents from ranker using docIDs')
+  log('fetch', 'Fetching documents from ranker')
   const docIds = req.body['docIds']
   const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {docIds: docIds})
   const documents = data['content']['documents']

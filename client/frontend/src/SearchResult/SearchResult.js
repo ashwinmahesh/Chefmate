@@ -63,21 +63,11 @@ function SearchResult(props) {
     changeDocuments(data['content']['documents']);
   }
 
-  function searchPressed(newQuery) {
-    changeQuery(newQuery);
-    changeQueryRedirect(true);
-    //Might need this, might not depending on whether useEffect gets called again
-    // fetchQueryResults();
-  }
-  // function searchPressed(e) {
-  //   if (e.keyCode == 13) changeQueryRedirect(true);
-  // }
-
   return (
     <div className={styles.container}>
       {loginRedirect && <Redirect to="/" />}
       {queryRedirect && <Redirect to={`/result/${query}`} />}
-      <HeaderSearch initialSearch={oldQuery} searchPressed={searchPressed} />
+      <HeaderSearch initialSearch={oldQuery} />
       <Results documents={documents} />
     </div>
   );
