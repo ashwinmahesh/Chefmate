@@ -38,11 +38,6 @@ def fetchDocuments():
     documents.append(Crawler.objects.get(_id=str(docId)).to_json())
   return helpers.sendPacket(1, 'Successfully retrieved documents', {'documents':documents})
 
-@app.route('/testRoute')
-def testRoute():
-  return helpers.sendPacket(
-      1, 'successfully got packet from ranker', {'name': 'Ashwin'})
-
 #Insert Helper functions below here
 
 if __name__ == "__main__":
