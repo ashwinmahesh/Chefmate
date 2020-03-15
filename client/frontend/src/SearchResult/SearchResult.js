@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import logo from '../images/logo.png';
 import axios from 'axios';
-import HeaderSimple from '../headerSimple/HeaderSimple';
+import HeaderSearch from '../headerSearch/HeaderSearch';
 import { Redirect } from 'react-router-dom';
 import Results from './Results';
 
@@ -24,17 +22,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '30px',
     float: 'left',
     marginLeft: '15px',
-    // display: 'block',
   },
   buttonStyle: {
-    // marginLeft: '20px',
     width: '50px',
     height: '55px',
   },
-  contents: {
-    // backgroundColor: 'blue',
-    // marginTop: '100px',
-  },
+  contents: {},
 }));
 
 function SearchResult(props) {
@@ -58,10 +51,6 @@ function SearchResult(props) {
     fetchQueryResults();
   }, []);
 
-  function handleQueryChange(event) {
-    changeQuery(event.target.value);
-  }
-
   async function fetchQueryResults() {
     const { data } = await axios.get(`/search/${oldQuery}`);
     changeQuery('');
@@ -71,32 +60,24 @@ function SearchResult(props) {
 
   async function fetchDocuments(docIdList) {
     const { data } = await axios.post('/fetchDocuments', { docIds: docIdList });
-    console.log(data);
     changeDocuments(data['content']['documents']);
   }
 
-  function searchPressed(e) {
-    if (e.keyCode == 13) changeQueryRedirect(true);
+  function searchPressed(newQuery) {
+    changeQuery(newQuery);
+    changeQueryRedirect(true);
+    //Might need this, might not depending on whether useEffect gets called again
+    // fetchQueryResults();
   }
+  // function searchPressed(e) {
+  //   if (e.keyCode == 13) changeQueryRedirect(true);
+  // }
 
   return (
     <div className={styles.container}>
       {loginRedirect && <Redirect to="/" />}
       {queryRedirect && <Redirect to={`/result/${query}`} />}
-      <HeaderSimple />
-      <div className={styles.contents}>
-        <img src={logo} className={styles.logo} alt="Chefmate logo" />
-        <TextField
-          id="outlined-search"
-          label="Search"
-          type="search"
-          variant="outlined"
-          className={styles.searchField}
-          value={query}
-          onChange={handleQueryChange}
-          onKeyDown={searchPressed}
-        />
-      </div>
+      <HeaderSearch initialSearch={oldQuery} searchPressed={searchPressed} />
       <Results documents={documents} />
     </div>
   );
