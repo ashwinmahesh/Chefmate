@@ -8,6 +8,8 @@ sys.path.append('..')
 import helpers
 log = helpers.log
 
+from graph import Graph
+
 class Crawler:
   def __init__(self, siteName, baseURL):
     self.siteName = siteName
@@ -19,6 +21,8 @@ class Crawler:
     self.queue = set()
     self.crawled = set()
     self.numCrawled = 0
+    self.outlinkGraph = Graph()
+    self.inlinkGraph = Graph()
 
   def findNewLinks(self, parseLink):
     output = set()
@@ -33,8 +37,13 @@ class Crawler:
         continue
       if href[0] == '/':
         output.add(self.baseURL + href)
+        self.outlinkGraph.addLink(parseLink, self.baseURL + href)
+        self.inlinkGraph.addLink(self.baseURL + href, parseLink)
       elif href[:len(self.baseURL)] == self.baseURL:
         output.add(href)
+        self.outlinkGraph.addLink(parseLink, href)
+        self.inlinkGraph.addLink(href, parseLink)
+
     return output
 
   def runSpider(self, iterations):
@@ -55,6 +64,7 @@ class Crawler:
 
       FileIO.setToFile(newLinks, self.queueFile)
       FileIO.setToFile(newCrawledLinks, self.crawledFile)
+
     log('time', "Crawler execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(self.numCrawled))
 
   def crawlPage(self, parseLink):
