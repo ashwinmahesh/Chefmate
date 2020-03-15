@@ -24,7 +24,7 @@ def index():
 
 @app.route('/query/<query>', methods=['GET'])
 def rankQuery(query):
-  log('query', query)
+  log('Ranker', 'Received query: '+query)
   queryTerms = stemQuery(query)
   sortedDocIds=calculateAllCosineSimilarity(queryTerms, inMemoryTFIDF)
   return helpers.sendPacket(1, 'Successfully retrieved query', {'sortedDocIds':sortedDocIds})
@@ -32,15 +32,11 @@ def rankQuery(query):
 @app.route('/fetchDocuments', methods=['POST'])
 def fetchDocuments():
   docIds = request.json['docIds']
+  log('ranker', 'Fetching documents')
   documents=[]
   for docId in docIds:
     documents.append(Crawler.objects.get(_id=str(docId)).to_json())
   return helpers.sendPacket(1, 'Successfully retrieved documents', {'documents':documents})
-
-@app.route('/testRoute')
-def testRoute():
-  return helpers.sendPacket(
-      1, 'successfully got packet from ranker', {'name': 'Ashwin'})
 
 #Insert Helper functions below here
 

@@ -64,17 +64,13 @@ app.get('/checkAuthenticated', (req, res) => {
 })
 
 app.post('/fetchDocuments', async (req, res) => {
-  log('fetch', 'Fetching documents from ranker using docIDs')
+  log('fetch', 'Fetching documents from ranker')
   const docIds = req.body['docIds']
   const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {docIds: docIds})
   const documents = data['content']['documents']
-  
+  log('fetch', 'Received documents from ranker')
   return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents}))
 })
-
-app.get('/testRoute', (request, response) => {
-  return response.json(sendPacket(1, 'Successfully got response'));
-});
 
 app.get('*', (request, response) => {
   return response.sendFile('index.html', { root });

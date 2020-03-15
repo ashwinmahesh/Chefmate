@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, Button } from '@material-ui/core';
 import { FaBars, FaSearch } from 'react-icons/fa';
-import { Redirect } from 'react-router-dom';
 
 import logo from '../images/logo.png';
 
@@ -62,39 +61,25 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     width: '100px',
     height: '25px',
-    '&:hover': {
-      cursor: 'pointer',
-    },
   },
 }));
 
 type Props = {
   initialSearch: String,
-  searchPressed: (String) => void,
 };
 
 export default function HeaderSearch(props: Props) {
   const styles = useStyles();
   const [query, changeQuery] = useState(props.initialSearch);
-  const [homepageRedirect, changeHomepageRedirect] = useState(false);
 
   function handleQueryChange(event) {
     changeQuery(event.target.value);
   }
 
-  function searchPressed() {
-    props.searchPressed(query);
-  }
-
-  function goToHomePressed() {
-    changeHomepageRedirect(true);
-  }
-
   return (
     <div className={styles.wrapper}>
-      {homepageRedirect && <Redirect to="/" />}
       <div className={styles.leftDiv}>
-        <a onClick={goToHomePressed}>
+        <a href="/">
           <img src={logo} className={styles.logo} alt="Chefmate logo" />
         </a>
         <input
@@ -103,15 +88,16 @@ export default function HeaderSearch(props: Props) {
           value={query}
           onChange={handleQueryChange}
         />
-        <IconButton
-          edge="start"
-          className={styles.searchButton}
-          color="inherit"
-          aria-label="menu"
-          onClick={searchPressed}
-        >
-          <FaSearch className={styles.barsStyle} />
-        </IconButton>
+        <a href={`/result/${query}`}>
+          <IconButton
+            edge="start"
+            className={styles.searchButton}
+            color="inherit"
+            aria-label="menu"
+          >
+            <FaSearch className={styles.barsStyle} />
+          </IconButton>
+        </a>
       </div>
       <div className={styles.rightDiv}>
         <a className={styles.logoutButton} href="/logout">
