@@ -28,5 +28,5 @@ if __name__ == "__main__":
     print("Usage: python3 databaseTest.py <table_name: Crawler, User, or InvertedIndex>\n")
     exit()
   else:
-    connect('chefmateDB', host='18.222.251.5', port=27017)
+    connect(databaseAddr, host='18.222.251.5', port=27017)
     dumpTable(str(sys.argv[1]))
