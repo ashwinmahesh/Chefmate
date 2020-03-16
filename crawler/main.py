@@ -14,25 +14,28 @@ import bcrypt
 domains = [
     {'name': 'Tasty', 'root': 'https://tasty.co/'},
     {'name': 'SimplyRecipes', 'root': 'https://www.simplyrecipes.com/'},
-    # {'name': 'EpiCurious', 'root': 'https://www.epicurious.com/'},
-    # {'name': 'GoodFood', 'root': 'https://www.bbcgoodfood.com/'}
+    {'name': 'EpiCurious', 'root': 'https://www.epicurious.com/'},
+    {'name': 'GoodFood', 'root': 'https://www.bbcgoodfood.com/'}
 ]
 
 loginPwd = '$2b$12$xteJc6kD6a3QSpi3MCHz5OyJWFY47uls8iw33Y.mwhqPtd168bOt.'.encode('UTF-8')
 
-def buildIndex(iterations, reset=True, options={'crawl':True, 'parse':True, 'database':True, 'idf':True, 'tfidf':True}, dev=True):
+def buildIndex(iterations, reset=True, options={'crawl':True, 'parse':True, 'database':True, 'idf':True, 'tfidf':True}, dev=True, passwordLock=True):
   log('build index', 'Running full suite of crawler programs.')
   programStartTime = time.time()
 
-  loginSuccess=False
-  if reset:
+  loginSuccess = False
+  if reset and passwordLock:
     log("info", "You are about to reset the database")
     pwd = getpass('Enter password to continue:').encode('UTF-8')
     if(bcrypt.checkpw(pwd, loginPwd)):
-      loginSuccess=True
+      loginSuccess = True
       log('login', 'Login successful. Resetting databases.')
     else:
       log('login', 'Login failed. Reset operation not performed')
+  
+  else:
+    loginSuccess = True
 
   if reset and loginSuccess and exists('domains'):
     log('cleanup', 'Removing old domains folder')
@@ -69,5 +72,5 @@ if __name__ == "__main__":
     'idf':False,
     'tfidf':False
   }
-  # buildIndex(1, reset=True, dev=False)
-  buildIndex(1, reset=False, options=options, dev=False)
+  buildIndex(1, reset=True, dev=False)
+  # buildIndex(1, reset=True, options=options, dev=False)
