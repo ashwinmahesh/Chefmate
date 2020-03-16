@@ -28,3 +28,7 @@ class User(Document):
   history = DictField(required=True, default={})
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
+
+# databaseAddr = 'ChefmateDB'
+databaseAddr = 'ChefmateDB_Alt'
+
