@@ -11,7 +11,7 @@ import time
 class DatabaseBuilder:
   docCount = 0
   termNum=0
-  connect('chefmateDB', host='18.222.251.5', port=27017)
+  connect(databaseAddr, host='18.222.251.5', port=27017)
 
   def __init__(self, domain, mode='DEV'):
     self.domain = domain

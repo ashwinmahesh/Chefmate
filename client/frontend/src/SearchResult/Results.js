@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
   container: {
     textAlign: 'Left',
     marginLeft: '100px',
-    marginTop: '100px',
+    marginTop: '50px',
     width: '650px',
   },
 }));
