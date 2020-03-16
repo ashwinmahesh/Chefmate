@@ -35,12 +35,15 @@ class Crawler:
     soup = BeautifulSoup(page.content, 'html.parser')
     for link in soup.find_all('a'):
       href = link.get('href')
+
       if href is None or len(href) == 0:
         continue
+
       if href[0] == '/':
         output.add(self.baseURL + href)
         self.outlinkGraph.addLink(parseLink, self.baseURL + href)
         self.inlinkGraph.addLink(self.baseURL + href, parseLink)
+
       elif href[:len(self.baseURL)] == self.baseURL:
         output.add(href)
         self.outlinkGraph.addLink(parseLink, href)
@@ -67,8 +70,8 @@ class Crawler:
       FileIO.setToFile(newLinks, self.queueFile)
       FileIO.setToFile(newCrawledLinks, self.crawledFile)
 
-    # FileIO.writeJsonFile(self.outlinkGraph.nodes, self.outlinkGraphFile)
-    # FileIO.writeJsonFile(self.inlinkGraph.nodes, self.inlinkGraphFile)
+    FileIO.writeJsonFile(self.outlinkGraph.nodes, self.outlinkGraphFile)
+    FileIO.writeJsonFile(self.inlinkGraph.nodes, self.inlinkGraphFile)
 
     log('time', "Crawler execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(self.numCrawled))
 

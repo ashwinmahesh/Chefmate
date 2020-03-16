@@ -15,7 +15,6 @@ domains = [
     {'name': 'Tasty', 'root': 'https://tasty.co/'},
     {'name': 'SimplyRecipes', 'root': 'https://www.simplyrecipes.com/'},
     {'name': 'EpiCurious', 'root': 'https://www.epicurious.com/'},
-    {'name': 'GoodFood', 'root': 'https://www.bbcgoodfood.com/'}
 ]
 
 loginPwd = '$2b$12$xteJc6kD6a3QSpi3MCHz5OyJWFY47uls8iw33Y.mwhqPtd168bOt.'.encode('UTF-8')
@@ -72,5 +71,5 @@ if __name__ == "__main__":
     'idf':False,
     'tfidf':False
   }
-  buildIndex(1, reset=True, dev=False)
-  # buildIndex(1, reset=True, options=options, dev=False)
+  # buildIndex(1, reset=True, dev=False)
+  buildIndex(1, reset=True, options=options, dev=False)
