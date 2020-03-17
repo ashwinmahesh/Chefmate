@@ -1,9 +1,20 @@
 import time
-from fileIO import FileIO
-from graph import Graph
+import sys
+# sys.path.append('..')
+sys.path.append('../..')
 
-def calculatePageRank(url):
-  pass
+from Chefmate.crawler.fileIO import FileIO
+from Chefmate.crawler.graph import Graph
+from Chefmate.helpers import log
 
-def calculateAllPageRanks():
-  pass
+def calculatePageRanks(domain, inlinkGraphFile, outlinkGraphFile):
+  startTime = time.time()
+  inlinkGraph = Graph(FileIO.readJsonFile(inlinkGraphFile))
+  outlinkGraph = Graph(FileIO.readJsonFile(outlinkGraphFile))
+  outlinkGraph.printGraph()
+  inlinkGraph.printGraph()
+
+  log('time', 'Page rank calculation for ' + domain + ' completed in ' + str(time.time()-startTime) + ' seconds')
+
+if __name__ == '__main__':
+  calculatePageRanks('Tasty', './domains/Tasty/Tasty_inlinks.json', './domains/Tasty/Tasty_outlinks.json')
