@@ -13,7 +13,7 @@ class Graph:
   def get(self, node):
     if node in self.nodes:
       return self.nodes[node]
-    return set()
+    return {}
   
   def printGraph(self):
     print(json.dumps(self.nodes, indent=2))
