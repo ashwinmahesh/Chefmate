@@ -1,6 +1,5 @@
 import time
 import sys
-# sys.path.append('..')
 sys.path.append('../..')
 
 from Chefmate.crawler.fileIO import FileIO
@@ -47,4 +46,5 @@ if __name__ == '__main__':
     outlinkGraphFile='./domains/Tasty/Tasty_outlinks.json', 
     iterations=3
   )
+  # pageRanks = calculatePageRanks(domain='test', inlinkGraphFile='test/inlinks.json', outlinkGraphFile='test/outlinks.json', iterations=3)
   print('PageRanks:', pageRanks)
