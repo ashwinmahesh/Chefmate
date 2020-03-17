@@ -6,7 +6,7 @@ from Chefmate.crawler.fileIO import FileIO
 from Chefmate.crawler.graph import Graph
 from Chefmate.helpers import log
 
-def calculatePageRanks(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iterations:int, lambdaVar:float=0.0001):
+def calculatePageRank(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iterations:int, lambdaVar:float=0.0001):
   startTime = time.time()
   inlinkGraph = Graph(FileIO.readJsonFile(inlinkGraphFile))
   outlinkGraph = Graph(FileIO.readJsonFile(outlinkGraphFile))
@@ -37,14 +37,16 @@ def calculatePageRanks(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, it
     for rank in updatedRank_R:
       currentRank_I[rank] = updatedRank_R[rank]
 
+  FileIO.writeJsonFile(currentRank_I, 'domains/' + domain + '/' + domain + '_pageRank.json')
   log('time', 'PageRank calculation for ' + domain + ' completed in ' + str(time.time()-startTime) + ' seconds')
+
   return currentRank_I
 
 if __name__ == '__main__':
-  pageRanks = calculatePageRanks(domain='Tasty', 
+  pageRanks = calculatePageRank(domain='Tasty', 
     inlinkGraphFile='./domains/Tasty/Tasty_inlinks.json', 
     outlinkGraphFile='./domains/Tasty/Tasty_outlinks.json', 
     iterations=3
   )
-  # pageRanks = calculatePageRanks(domain='test', inlinkGraphFile='test/inlinks.json', outlinkGraphFile='test/outlinks.json', iterations=3)
+  # pageRanks = calculatePageRank(domain='test', inlinkGraphFile='test/inlinks.json', outlinkGraphFile='test/outlinks.json', iterations=3)
   print('PageRanks:', pageRanks)
