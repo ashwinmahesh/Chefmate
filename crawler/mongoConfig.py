@@ -8,6 +8,7 @@ class Crawler(Document):
   body = ListField(StringField(required=True))
   hub = LongField(required=True, default=1.0)
   authority = LongField(required=True, default=1.0)
+  pageRank = LongField(required=True, default=1.0)
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
