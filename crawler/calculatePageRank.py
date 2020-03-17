@@ -42,8 +42,9 @@ def calculatePageRanks(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, it
   return currentRank_I
 
 if __name__ == '__main__':
-  print(calculatePageRanks(domain='Tasty', 
+  pageRanks = calculatePageRanks(domain='Tasty', 
     inlinkGraphFile='./domains/Tasty/Tasty_inlinks.json', 
     outlinkGraphFile='./domains/Tasty/Tasty_outlinks.json', 
     iterations=3
-  ))
+  )
+  print('PageRanks:', pageRanks)
