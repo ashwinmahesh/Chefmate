@@ -40,6 +40,8 @@ function SearchResult(props) {
   const oldQuery = props.match.params.query;
   const [documents, changeDocuments] = useState([]);
   const [isLoading, changeLoading] = useState(true);
+  const [numSearched, updateNumSearched] = useState(0);
+  const [searchTime, changeSearchTime] = useState(1.12);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -55,10 +57,12 @@ function SearchResult(props) {
   }, []);
 
   async function fetchQueryResults() {
+    const startTime = Date.now();
     const { data } = await axios.get(`/search/${oldQuery}`);
     const docIdList = data['content']['sortedDocIds'];
-    console.log('Before fetching');
+    updateNumSearched(docIdList.length);
     fetchDocuments(docIdList).then(() => {
+      changeSearchTime((Date.now() - startTime) / 1000);
       changeLoading(false);
     });
   }
@@ -75,7 +79,11 @@ function SearchResult(props) {
       {isLoading ? (
         <img className={styles.loading} src={loading} alt="loading..." />
       ) : (
-        <Results documents={documents} />
+        <Results
+          documents={documents}
+          numSearched={numSearched}
+          searchTime={searchTime}
+        />
       )}
     </div>
   );
