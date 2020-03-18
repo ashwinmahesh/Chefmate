@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const log = require('./logger');
 
 // var mongoUri = 'mongodb://localhost/chefmateDB'
-var mongoUri = "mongodb://18.222.251.5/chefmateDB";
+var mongoUri = "mongodb://18.222.251.5/ChefmateDB";
 mongoose
   .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
