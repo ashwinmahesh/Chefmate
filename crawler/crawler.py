@@ -27,10 +27,29 @@ class Crawler:
     self.outlinkGraphFile = 'domains/' + siteName + '/' + siteName + '_outlinks.json'
 
   def findNewLinks(self, parseLink):
+    ##TODO Handle case where we get response 403
     output = set()
+    try:
+      head=requests.head(parseLink)
+      if 'content-type' not in head.headers or "text/html" not in head.headers['content-type']:
+        return set()
+    except requests.exceptions.HTTPError as errh:
+      log('error', 'HTTPError')
+      return set()
+    except requests.exceptions.ConnectionError as errc:
+      log('error', 'ConnectionError')
+      return set()
+    except requests.exceptions.Timeout as errt:
+      log('error', 'Timeout Error')
+      return set()
+    except requests.exceptions.RequestException as err:
+      log('error', 'Request exception')
+      return set()
+    
     head = requests.head(parseLink)
     if 'content-type' not in head.headers or "text/html" not in head.headers['content-type']:
       return set()
+
     page = requests.get(parseLink)
     soup = BeautifulSoup(page.content, 'html.parser')
     for link in soup.find_all('a'):
@@ -104,4 +123,8 @@ class Crawler:
 
 if __name__ == "__main__":
   crawler = Crawler('simpleRecipes', 'https://www.simplyrecipes.com/')
-  crawler.runSpider(3)
+  # crawler.runSpider(3)
+  print(crawler.findNewLinks('https://www.simplyrecipes.com/recipes/cowboy_beans/%5d'))
+  # print(crawler.findNewLinks('https://www.simplyrecipes.com/recipes/type/grill/low_carb/'))
+  # print(crawler.findNewLinks('https://www.simplyrecipes.com/'))
+  
