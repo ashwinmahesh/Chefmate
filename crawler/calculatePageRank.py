@@ -48,5 +48,5 @@ if __name__ == '__main__':
     outlinkGraphFile='./domains/Tasty/Tasty_outlinks.json', 
     iterations=3
   )
-  # pageRanks = calculatePageRank(domain='test', inlinkGraphFile='test/inlinks.json', outlinkGraphFile='test/outlinks.json', iterations=3)
+  # pageRanks = calculatePageRank(domain='test', inlinkGraphFile='./test/inlinks.json', outlinkGraphFile='./test/outlinks.json', iterations=3)
   print('PageRanks:', pageRanks)
