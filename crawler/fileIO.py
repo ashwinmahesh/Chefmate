@@ -68,7 +68,7 @@ class FileIO:
         data = json.load(json_file)
         json_file.close()
         return data
-      except json.decoder.JSONDecodeError:
+      except ValueError:
         return dict()
 
   @staticmethod
