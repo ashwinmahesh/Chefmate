@@ -4,6 +4,7 @@ import axios from 'axios';
 import HeaderSearch from '../headerSearch/HeaderSearch';
 import { Redirect } from 'react-router-dom';
 import Results from './Results';
+import loading from '../images/loading.gif';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -28,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
     height: '55px',
   },
   contents: {},
+  loading: {
+    marginTop: '80px',
+  },
 }));
 
 function SearchResult(props) {
@@ -35,6 +39,7 @@ function SearchResult(props) {
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const oldQuery = props.match.params.query;
   const [documents, changeDocuments] = useState([]);
+  const [isLoading, changeLoading] = useState(true);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -52,7 +57,10 @@ function SearchResult(props) {
   async function fetchQueryResults() {
     const { data } = await axios.get(`/search/${oldQuery}`);
     const docIdList = data['content']['sortedDocIds'];
-    fetchDocuments(docIdList);
+    console.log('Before fetching');
+    fetchDocuments(docIdList).then(() => {
+      changeLoading(false);
+    });
   }
 
   async function fetchDocuments(docIdList) {
@@ -64,7 +72,11 @@ function SearchResult(props) {
     <div className={styles.container}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch={oldQuery} />
-      <Results documents={documents} />
+      {isLoading ? (
+        <img className={styles.loading} src={loading} alt="loading..." />
+      ) : (
+        <Results documents={documents} />
+      )}
     </div>
   );
 }
