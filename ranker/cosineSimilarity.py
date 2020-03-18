@@ -10,6 +10,7 @@ import time
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer 
+import rankerDBConfig
 
 # cos(D1, Q) = dot_product(TFIDF1, TFIDFq) / sqrt(sum(TFIDF1^2) * sum(TFIDFq^2))
 def cosineSimilarity(termWeights1, termWeights2):
@@ -26,7 +27,7 @@ def cosineSimilarity(termWeights1, termWeights2):
 
 def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
   startTime = time.time()
-  connect('chefmateDB', host='18.222.251.5', port=27017)
+  connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
   docIds = set()
   queryTermWeights = np.zeros(InvertedIndex.objects.count())
   for term in terms:

@@ -8,7 +8,7 @@ from helpers import log
 
 def calculateTFIDF(): 
     startTime = time.time()
-    connect(databaseAddr, host='18.222.251.5', port=27017)
+    connect(databaseName, host=databaseAddr, port=27017)
     terms = InvertedIndex.objects()
 
     for termEntry in terms: 

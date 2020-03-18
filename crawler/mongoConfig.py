@@ -30,6 +30,9 @@ class User(Document):
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
-# databaseAddr = 'ChefmateDB'
-databaseAddr = 'ChefmateDB_Alt'
+databaseName = 'ChefmateDB'
+# databaseName = 'ChefmateDB_Alt'
+
+databaseAddr = '3.21.35.193'
+# databaseAddr = '18.222.251.5'
 

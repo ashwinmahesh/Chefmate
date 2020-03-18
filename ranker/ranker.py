@@ -11,12 +11,12 @@ log = helpers.log
 from mongoengine import *
 from mongoConfig import *
 from cosineSimilarity import *
-
+import rankerDBConfig
 
 app = Flask(__name__)
 
 port = 8002
-connect('chefmateDB', host='18.222.251.5', port=27017)
+connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 
 inMemoryTFIDF = loadInvertedIndexToMemory()
 
