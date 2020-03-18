@@ -19,18 +19,21 @@ class DatabaseBuilder:
   
   def build(self):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
+    pageRankFile = 'domains/'+self.domain +'/'+self.domain+"_pageRank.json" 
 
     rawData = FileIO.readJsonFile(filePath)
+    pageRanks = FileIO.readJsonFile(pageRankFile)
     count=0
     for entry in rawData.keys():
       count+=1
       doc = rawData[entry]
       if doc['title'] == None:
         doc['title']='No Title'
-      self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'])
+
+      self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'], pageRank=pageRanks[entry])
       self.buildInvertedIndex(doc['body'], entry, doc['docId'])
 
-      if self.mode=='DEV' and count>=10:
+      if self.mode=='DEV' and count>=5:
         break
  
   def buildRawText(self, printStatements=False):
@@ -60,9 +63,9 @@ class DatabaseBuilder:
         log('entry', body)
       
   
-  def addDocumentToCollection(self, docId, url, title, body):
+  def addDocumentToCollection(self, docId, url, title, body, pageRank):
     log("new entry", "Adding "+url+" to collection.")
-    crawlerDoc = Crawler(url=url, title=title, body=body, _id=str(docId))
+    crawlerDoc = Crawler(url=url, title=title, body=body, _id=str(docId), pageRank=pageRank)
     crawlerDoc.save()
     DatabaseBuilder.docCount+=1
     
@@ -102,7 +105,7 @@ class DatabaseBuilder:
         newTermEntry.save()
         DatabaseBuilder.termNum += 1
 
-      if self.mode=='DEV' and termPos>=30:
+      if self.mode=='DEV' and termPos>=10:
         break
 
   @staticmethod
@@ -120,15 +123,16 @@ class DatabaseBuilder:
   def resetInvertedIndex():
     log('reset', 'Resetting Inverted Index Database')
     InvertedIndex.drop_collection()
+    return True
   
   @staticmethod
   def resetCrawler():
     log('reset', 'Resetting Crawler Database')
     Crawler.drop_collection()
+    return True
 
 if __name__ == "__main__":
   d = DatabaseBuilder('EpiCurious')
   d.build()
-  calculateIDF(20)
-  # terms = InvertedIndex.objects()
+  DatabaseBuilder.calculateIDF()
         

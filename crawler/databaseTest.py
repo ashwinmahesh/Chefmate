@@ -17,7 +17,7 @@ def dumpTable(x):
 
   for entry in json_object:
     if(x == "Crawler"):
-      entry['body'] = entry['body'][0 : 100]
+      entry['body'] = entry['body'][0 : 30]
     print("\n"+json.dumps(entry, indent=2))
 
 if __name__ == "__main__":

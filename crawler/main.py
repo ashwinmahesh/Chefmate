@@ -77,4 +77,4 @@ if __name__ == "__main__":
     'tfidf':False
   }
   # buildIndex(1, reset=True, dev=False)
-  buildIndex(1, reset=False, resetFiles=True, options=options, dev=False)
+  buildIndex(1, reset=False, resetFiles=True, options=options, dev=True)
