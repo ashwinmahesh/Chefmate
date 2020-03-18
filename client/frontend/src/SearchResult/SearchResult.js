@@ -32,9 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SearchResult(props) {
   const styles = useStyles();
-  const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
-  const [queryRedirect, changeQueryRedirect] = useState(false);
   const oldQuery = props.match.params.query;
   const [documents, changeDocuments] = useState([]);
 
@@ -53,7 +51,6 @@ function SearchResult(props) {
 
   async function fetchQueryResults() {
     const { data } = await axios.get(`/search/${oldQuery}`);
-    changeQuery('');
     const docIdList = data['content']['sortedDocIds'];
     fetchDocuments(docIdList);
   }
@@ -66,7 +63,6 @@ function SearchResult(props) {
   return (
     <div className={styles.container}>
       {loginRedirect && <Redirect to="/" />}
-      {queryRedirect && <Redirect to={`/result/${query}`} />}
       <HeaderSearch initialSearch={oldQuery} />
       <Results documents={documents} />
     </div>
