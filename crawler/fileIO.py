@@ -29,7 +29,7 @@ class FileIO:
     if not os.path.exists(domainsSiteName):
       log('file', "Creating site directory " + siteName)
       os.mkdir('domains/'+siteName)
-    indexFile = siteName + '_index.json'
+    indexFile = siteName + '_index.txt'
     if not os.path.isfile(indexFile):
       FileIO.writeToFile(domainsSiteName + '/' + indexFile, '')
     return domainsSiteName + '/' + indexFile
