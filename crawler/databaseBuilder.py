@@ -64,18 +64,19 @@ class DatabaseBuilder:
       
   
   def addDocumentToCollection(self, docId, url, title, body, pageRank):
-    log("new entry", "Adding "+url+" to collection.")
+    log("crawler", "Adding "+url+" to collection.")
     crawlerDoc = Crawler(url=url, title=title, body=body, _id=str(docId), pageRank=pageRank)
     crawlerDoc.save()
     DatabaseBuilder.docCount+=1
     
   def buildInvertedIndex(self, body, url, docId):
     termPos = 0
+    log('inverted index', 'Building inverted index for '+url)
+    startTime=time.time()
     for term in body:
       termPos += 1
       try:
         termEntry = InvertedIndex.objects.get(term=term)
-        log('update entry', "Updating InvertedIndex entry for \'"+term+"\'.")
         hasDoc = False
 
         for i in range(0, len(termEntry.doc_info)):
@@ -91,7 +92,6 @@ class DatabaseBuilder:
         termEntry.save()
 
       except DoesNotExist:
-        log('new entry', 'Creating InvertedIndex entry for \''+term+'\'.')
         newTermEntry = InvertedIndex(term=term,
         termNum=DatabaseBuilder.termNum,
         doc_info=[{
@@ -107,6 +107,7 @@ class DatabaseBuilder:
 
       if self.mode=='DEV' and termPos>=10:
         break
+    log('time', 'Finished building InvertedIndex for '+url+' in '+str(time.time()-startTime) +' seconds')
 
   @staticmethod
   def calculateIDF():
@@ -115,7 +116,7 @@ class DatabaseBuilder:
     for termEntry in terms:
       docsContaining = float(len(termEntry.doc_info))
       termEntry['idf'] = math.log(DatabaseBuilder.docCount / docsContaining, 2)
-      log('update idf', termEntry['term']+"= "+str(termEntry['idf']))
+      log('idf', termEntry['term']+"= "+str(termEntry['idf']))
       termEntry.save()
     log('time', 'IDF Execution finished in '+str(time.time() - startTime)+' seconds.')
   
