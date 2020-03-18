@@ -73,7 +73,7 @@ class Crawler:
     FileIO.writeJsonFile(self.outlinkGraph.nodes, self.outlinkGraphFile)
     FileIO.writeJsonFile(self.inlinkGraph.nodes, self.inlinkGraphFile)
 
-    log('time', "Crawler execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(self.numCrawled))
+    log('time', "Crawler for " + self.siteName + " execution Finished. Runtime: " + str(time.time() - startTime) + "seconds. Total links crawled: " + str(self.numCrawled))
 
   def crawlPage(self, parseLink):
     self.crawled.add(parseLink)
