@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 
 import requests
 import sys
+import time
 sys.path.append('..')
 sys.path.append('../crawler')
 import helpers
@@ -10,6 +11,7 @@ log = helpers.log
 from mongoengine import *
 from mongoConfig import *
 from cosineSimilarity import *
+
 
 app = Flask(__name__)
 
@@ -31,11 +33,13 @@ def rankQuery(query):
 
 @app.route('/fetchDocuments', methods=['POST'])
 def fetchDocuments():
+  startTime = time.time()
   docIds = request.json['docIds']
   log('ranker', 'Fetching documents')
   documents=[]
   for docId in docIds:
     documents.append(Crawler.objects.get(_id=str(docId)).to_json())
+  log('ranker', 'Finished fetching documents in '+str(time.time() - startTime) + ' seconds')
   return helpers.sendPacket(1, 'Successfully retrieved documents', {'documents':documents})
 
 #Insert Helper functions below here

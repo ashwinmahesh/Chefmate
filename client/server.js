@@ -64,11 +64,12 @@ app.get('/checkAuthenticated', (req, res) => {
 })
 
 app.post('/fetchDocuments', async (req, res) => {
+  const startTime = Date.now()
   log('fetch', 'Fetching documents from ranker')
-  const docIds = req.body['docIds']
+  const docIds = req.body['docIds'].slice(0, 60)
   const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {docIds: docIds})
   const documents = data['content']['documents']
-  log('fetch', 'Received documents from ranker')
+  log('fetch', `Received documents from ranker. Execution time ${(Date.now() - startTime) / 1000} seconds.`)
   return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents}))
 })
 
