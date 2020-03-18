@@ -1,8 +1,8 @@
 import json
 
 class Graph:
-  def __init__(self):
-    self.nodes={}
+  def __init__(self, nodes=False):
+    self.nodes = nodes if nodes else {}
   
   def addLink(self, nodeUrl, link):
     if nodeUrl not in self.nodes:
@@ -13,7 +13,7 @@ class Graph:
   def get(self, node):
     if node in self.nodes:
       return self.nodes[node]
-    return set()
+    return {}
   
   def printGraph(self):
     print(json.dumps(self.nodes, indent=2))

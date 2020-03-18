@@ -22,7 +22,8 @@ const CrawlerSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Authority is required"],
       default: 1
-    }
+    },
+    pageRank: { type: Number, required: [true, "PageRank is required"], default: 1 }
   },
   { timestamps: true }
 );
