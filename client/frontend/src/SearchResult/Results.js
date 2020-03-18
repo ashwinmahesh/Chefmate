@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import SingleResult from './SingleResult';
-import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     textAlign: 'Left',
     marginLeft: '100px',
-    marginTop: '50px',
     width: '650px',
+  },
+  resultContainer: {
+    marginTop: '30px',
+  },
+  resultCount: {
+    fontSize: '12pt',
+    color: 'rgb(120,120,120)',
+    marginTop: '20px',
   },
 }));
 
-type Props = { documents: [{}] };
+type Props = { documents: [{}], numSearched: Number, searchTime: Number };
 
 function Results(props: Props) {
   const styles = useStyles();
@@ -55,7 +61,14 @@ function Results(props: Props) {
     }
     return output;
   }
-  return <div className={styles.container}>{renderSites()}</div>;
+  return (
+    <div className={styles.container}>
+      <p className={styles.resultCount}>
+        Found {props.numSearched} results ({props.searchTime} seconds)
+      </p>
+      <div className={styles.resultContainer}>{renderSites()}</div>
+    </div>
+  );
 }
 
 export default Results;
