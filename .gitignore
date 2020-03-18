@@ -4,6 +4,7 @@ client/node_modules/
 crawler/venv/
 ranker/venv/
 crawler/domains/
+crawler/test/
 __pycache__/
 *.md
 *.pem
