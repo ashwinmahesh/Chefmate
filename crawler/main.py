@@ -78,5 +78,5 @@ if __name__ == "__main__":
     'idf':False,
     'tfidf':False
   }
-  # buildIndex(1, reset=True, dev=False)
-  buildIndex(1, reset=False, resetFiles=True, options=options, dev=True)
+  buildIndex(3, passwordLock=False)
+  # buildIndex(1, reset=False, resetFiles=True, options=options, dev=True)
