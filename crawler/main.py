@@ -51,7 +51,9 @@ def buildIndex(iterations, reset=True, resetFiles=True, passwordLock=True, dev=F
       crawler = Crawler(domain['name'], domain['root'])
       crawler.runSpider(iterations)
 
-    options['pageRank'] and calculatePageRank(domain['name'], 'domains/'+siteName+'/'+siteName+'_inlinks.json', 'domains/'+siteName+'/'+siteName+'_outlinks.json', 3)
+    inlinkGraphFile = 'domains/'+domain['name']+'/'+domain['name']+'_inlinks.json'
+    outlinkGraphFile = 'domains/'+domain['name']+'/'+domain['name']+'_outlinks.json'
+    options['pageRank'] and calculatePageRank(domain['name'], inlinkGraphFile, outlinkGraphFile, 3)
 
     if options['parse']:
       dataParser = DataParser(domain['name'])
