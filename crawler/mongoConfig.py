@@ -5,7 +5,7 @@ class Crawler(Document):
   url = StringField(required=True)
   _id = StringField(required=True, primary_key=True)
   title = StringField(required=True)
-  body = ListField(StringField(required=True))
+  body = StringField(required=True)
   hub = FloatField(required=True, default=1.0)
   authority = FloatField(required=True, default=1.0)
   pageRank = FloatField(required=True, default=1.0)
@@ -30,9 +30,9 @@ class User(Document):
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
-databaseName = 'ChefmateDB'
-# databaseName = 'ChefmateDB_Alt'
+# databaseName = 'ChefmateDB'
+databaseName = 'ChefmateDB_Alt'
 
-databaseAddr = '3.21.167.180'
-# databaseAddr = '18.222.251.5'
+# databaseAddr = '3.21.167.180'
+databaseAddr = '18.222.251.5'
 
