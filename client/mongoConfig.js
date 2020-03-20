@@ -17,6 +17,7 @@ const CrawlerSchema = new mongoose.Schema(
     url: { type: String, required: [true, "URL is required "] },
     title: { type: String, required: [true, "Web Page title is required"] },
     body: { type: String, required: [true, "Body of web page is required"] },
+    description: { type: String, required: [true, "Description is required."]},
     hub: { type: Number, required: [true, "Hub is required"], default: 1 },
     authority: {
       type: Number,

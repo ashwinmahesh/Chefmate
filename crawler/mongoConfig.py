@@ -5,6 +5,7 @@ class Crawler(Document):
   url = StringField(required=True)
   _id = StringField(required=True, primary_key=True)
   title = StringField(required=True)
+  description = StringField(required=True)
   body = StringField(required=True)
   hub = FloatField(required=True, default=1.0)
   authority = FloatField(required=True, default=1.0)
@@ -23,7 +24,7 @@ class InvertedIndex(Document):
 
 class User(Document):
   userid = StringField(required=True, primary_key=True)
-  password = StringField(required=True)
+  password = StringField(required=False)
   likes = DictField(required=True, default={})
   dislikes = DictField(required=True, default={})
   history = DictField(required=True, default={})

@@ -31,7 +31,8 @@ class DataParser:
         data[link] = {
             'docId': DataParser.docId,
             'title': obj['title'],
-            'body': obj['body']
+            'body': obj['body'],
+            'description': obj['description']
         }
         DataParser.docId+=1
     FileIO.deleteFileContents(self.indexFile)
