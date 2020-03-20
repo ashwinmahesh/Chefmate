@@ -103,7 +103,6 @@ class Crawler:
     startTime = time.time()
     for i in range(0, iterations):
       self.queue = FileIO.fileToSet(self.queueFile)
-      FileIO.deleteFileContents(self.queueFile)
       self.crawled = FileIO.fileToSet(self.crawledFile)
 
       newLinks = set()
@@ -115,6 +114,7 @@ class Crawler:
         newCrawledLinks.add(nextLink)
         newLinks = newLinks.union(res)
 
+      FileIO.deleteFileContents(self.queueFile)
       FileIO.setToFile(newLinks, self.queueFile)
       FileIO.setToFile(newCrawledLinks, self.crawledFile)
 
