@@ -23,6 +23,8 @@ const app = express();
 const port = process.env.PORT || 8000;
 const root = require('path').join(__dirname, 'frontend', 'build');
 
+const maxHistoryLength = 100;
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -71,6 +73,36 @@ app.post('/fetchDocuments', async (req, res) => {
   const documents = data['content']['documents']
   log('fetch', `Received documents from ranker. Execution time ${(Date.now() - startTime) / 1000} seconds.`)
   return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents}))
+})
+
+app.get('/updateHistory', async (req, res) => {
+  const redirectUrl = req.query.redirect
+  const user = await User.findOne({ _id: req.user._id })
+
+  if (!('history' in user)) user['history']=[];
+  if (user.history.length >= maxHistoryLength) user.history.shift();
+  
+  user.history.push(redirectUrl);
+  await user.save(err => {
+    if (err) log("error", 'Error saving user history update');
+  })
+
+  if (user!==null) log("redirect", `Sending user ${user.userid} to ${redirectUrl}`)
+  return res.redirect(redirectUrl)
+})
+
+app.get('/test', (req, res) => {
+  User.find({}, (err, users) => {
+    if(err) {
+      console.log("Error:", err)
+      return res.json({message: 'No!'})
+    }
+    else {
+      console.log("Found users")
+      console.log(users)
+      return res.json({message: 'Yes!'})
+    }
+  })
 })
 
 app.get('*', (request, response) => {

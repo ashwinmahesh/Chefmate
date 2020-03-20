@@ -51,9 +51,9 @@ const UserSchema = new mongoose.Schema(
       default: {}
     },
     history: {
-      type: { webpageID: String },
+      type: [String],
       required: [true, "History required. Resort to default {}"],
-      default: {}
+      default: []
     }
   },
   { timestamps: true }
