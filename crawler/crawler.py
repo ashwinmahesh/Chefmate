@@ -27,11 +27,10 @@ class Crawler:
     self.outlinkGraphFile = 'domains/' + siteName + '/' + siteName + '_outlinks.json'
 
   def findNewLinks(self, parseLink):
-    ##TODO Handle case where we get response 403
-    output = set()
     try:
       head=requests.head(parseLink)
-      if 'content-type' not in head.headers or "text/html" not in head.headers['content-type']:
+      if ('content-type' not in head.headers and 'Content-type' not in head.headers) or ("text/html" not in head.headers['content-type'] and "text/xml" not in head.headers['Content-type']):
+        log("error", 'Invalid page type')
         return set()
     except requests.exceptions.HTTPError as errh:
       log('error', 'HTTPError')
@@ -45,13 +44,43 @@ class Crawler:
     except requests.exceptions.RequestException as err:
       log('error', 'Request exception')
       return set()
-    
-    head = requests.head(parseLink)
-    if 'content-type' not in head.headers or "text/html" not in head.headers['content-type']:
-      return set()
 
     page = requests.get(parseLink)
-    soup = BeautifulSoup(page.content, 'html.parser')
+    contentType = 'content-type' if 'content-type' in head.headers else 'Content-type'
+    if head.headers[contentType] == 'text/xml':
+      return self.findNewLinksXML(parseLink, page)
+
+    return self.findNewLinksHTML(parseLink, page)
+
+  def findNewLinksXML(self, parseLink, page):
+    soup = BeautifulSoup(page.content, 'xml')
+    output = set()
+
+    ##ISSUE - Need to update that base URL file
+    for link in soup.find_all('loc'):
+      href = link.text
+      print(href)
+      print(self.baseURL)
+
+      if href is None or len(href) == 0:
+        continue
+
+      if href[0] == '/':
+        output.add(self.baseURL + href)
+        self.outlinkGraph.addLink(parseLink, self.baseURL + href)
+        self.inlinkGraph.addLink(self.baseURL + href, parseLink)
+
+      elif href[:len(self.baseURL)] == self.baseURL:
+        output.add(href)
+        self.outlinkGraph.addLink(parseLink, href)
+        self.inlinkGraph.addLink(href, parseLink)
+
+    return output
+
+  def findNewLinksHTML(self, parseLink, page):
+    soup = BeautifulSoup(page.content, 'lxml')
+    output = set()
+   
     for link in soup.find_all('a'):
       href = link.get('href')
 
