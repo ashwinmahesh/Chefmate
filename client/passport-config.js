@@ -32,7 +32,10 @@ passport.use(
         } else {
           log("login", 'No user exists')
           new User({
-            userid: profile.emails[0].value
+            userid: profile.emails[0].value,
+            likes: {},
+            dislikes: {},
+            history: {}
           }).save().then((user) => done(null, user));
         }
       });

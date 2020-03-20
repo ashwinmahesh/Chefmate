@@ -52,6 +52,7 @@ type Props = {
 export default function SingleResult(props: Props) {
   const styles = useStyles();
   const url = changeUrl();
+  const redirectUrl = '/updateHistory?redirect=' + props.url;
 
   function likePressed() {
     console.log(`Like button pressed for doc #${props.docId}`);
@@ -74,7 +75,7 @@ export default function SingleResult(props: Props) {
   return (
     <div className={styles.singleSiteContainer}>
       <p className={styles.siteUrl}>{url}</p>
-      <a className={styles.link} href={props.url}>
+      <a className={styles.link} href={redirectUrl}>
         {props.title}
       </a>
       <p className={styles.sampleText}>{props.sampleText}</p>
