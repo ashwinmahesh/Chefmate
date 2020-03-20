@@ -23,6 +23,8 @@ const app = express();
 const port = process.env.PORT || 8000;
 const root = require('path').join(__dirname, 'frontend', 'build');
 
+const maxHistoryLength = 100;
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -73,10 +75,19 @@ app.post('/fetchDocuments', async (req, res) => {
   return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents}))
 })
 
-app.get('/updateHistory', (req, res) => {
-  // http://localhost:8000/updateHistory/?redirect=https://www.google.com
+app.get('/updateHistory', async (req, res) => {
   const redirectUrl = req.query.redirect
-  console.log("Redirecting to:", redirectUrl)
+  const user = await User.findOne({ _id: req.user._id })
+
+  if (!('history' in user)) user['history']=[];
+  if (user.history.length >= maxHistoryLength) user.history.shift();
+  
+  user.history.push(redirectUrl);
+  await user.save(err => {
+    if (err) log("error", 'Error saving user history update');
+  })
+
+  if (user!==null) log("redirect", `Sending user ${user.userid} to ${redirectUrl}`)
   return res.redirect(redirectUrl)
 })
 

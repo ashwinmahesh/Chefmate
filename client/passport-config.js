@@ -35,7 +35,7 @@ passport.use(
             userid: profile.emails[0].value,
             likes: {},
             dislikes: {},
-            history: {}
+            history: []
           }).save().then((user) => done(null, user));
         }
       });
