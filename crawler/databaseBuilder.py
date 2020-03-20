@@ -1,17 +1,22 @@
 import sys
 sys.path.append('..')
-import helpers
-log = helpers.log
+from helpers import log
+
 from fileIO import FileIO
 from mongoengine import *
 from mongoConfig import *
 import math
 import time
 
+import nltk
+nltk.download('stopwords', quiet=True)
+
 class DatabaseBuilder:
   docCount = 0
   termNum=0
   connect(databaseName, host=databaseAddr, port=27017)
+  stopwords = set(nltk.corpus.stopwords.words('english'))
+  porterStemmer = nltk.stem.PorterStemmer()
 
   def __init__(self, domain, mode='DEV'):
     self.domain = domain
@@ -73,8 +78,14 @@ class DatabaseBuilder:
     termPos = 0
     log('inverted index', 'Building inverted index for '+url)
     startTime=time.time()
-    for term in body:
+    for termRaw in body.split():
       termPos += 1
+
+      if termRaw in DatabaseBuilder.stopwords:
+        continue
+
+      term=DatabaseBuilder.porterStemmer.stem(termRaw)
+
       try:
         termEntry = InvertedIndex.objects.get(term=term)
         hasDoc = False
@@ -107,16 +118,18 @@ class DatabaseBuilder:
 
       if self.mode=='DEV' and termPos>=10:
         break
+      
     log('time', 'Finished building InvertedIndex for '+url+' in '+str(time.time()-startTime) +' seconds')
 
   @staticmethod
   def calculateIDF():
     startTime = time.time()
     terms = InvertedIndex.objects()
+    log('idf', 'Calculating IDF scores for all terms.')
     for termEntry in terms:
       docsContaining = float(len(termEntry.doc_info))
       termEntry['idf'] = math.log(DatabaseBuilder.docCount / docsContaining, 2)
-      log('idf', termEntry['term']+"= "+str(termEntry['idf']))
+      # log('idf', termEntry['term']+"= "+str(termEntry['idf']))
       termEntry.save()
     log('time', 'IDF Execution finished in '+str(time.time() - startTime)+' seconds.')
   
