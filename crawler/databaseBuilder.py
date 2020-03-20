@@ -35,7 +35,7 @@ class DatabaseBuilder:
       if doc['title'] == None:
         doc['title']='No Title'
 
-      self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'], pageRank=pageRanks[entry])
+      self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'], description=doc['description'], pageRank=pageRanks[entry])
       self.buildInvertedIndex(doc['body'], entry, doc['docId'])
 
       if self.mode=='DEV' and count>=5:
@@ -68,9 +68,9 @@ class DatabaseBuilder:
         log('entry', body)
       
   
-  def addDocumentToCollection(self, docId, url, title, body, pageRank):
+  def addDocumentToCollection(self, docId, url, title, body, description, pageRank):
     log("crawler", "Adding "+url+" to collection.")
-    crawlerDoc = Crawler(url=url, title=title, body=body, _id=str(docId), pageRank=pageRank)
+    crawlerDoc = Crawler(url=url, title=title, body=body, _id=str(docId), description=description, pageRank=pageRank)
     crawlerDoc.save()
     DatabaseBuilder.docCount+=1
     
@@ -129,7 +129,6 @@ class DatabaseBuilder:
     for termEntry in terms:
       docsContaining = float(len(termEntry.doc_info))
       termEntry['idf'] = math.log(DatabaseBuilder.docCount / docsContaining, 2)
-      # log('idf', termEntry['term']+"= "+str(termEntry['idf']))
       termEntry.save()
     log('time', 'IDF Execution finished in '+str(time.time() - startTime)+' seconds.')
   

@@ -10,12 +10,12 @@ def calculateTFIDF():
     startTime = time.time()
     connect(databaseName, host=databaseAddr, port=27017)
     terms = InvertedIndex.objects()
-
+    log('tfidf', 'Calculating TFIDF scores')
     for termEntry in terms: 
         term = termEntry['term']
         idf = termEntry['idf']
 
-        log("tfidf", 'Calculating '+term)
+        # log("tfidf", 'Calculating '+term)
 
         for i in range(0, len(termEntry["doc_info"])):
             tf = termEntry['doc_info'][i]['termCount']
