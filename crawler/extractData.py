@@ -6,6 +6,7 @@ nltk.download('stopwords', quiet=True)
 import string
 import re
 
+#TODO need to do something else if XML
 def extractData(baseURL):
   page = requests.get(baseURL).content
   soup = BeautifulSoup(page, "lxml")
@@ -48,9 +49,9 @@ def extractData(baseURL):
 #   contents = [" ".join([stems.stem(word) for word in content]) for content in contents]
 #   contents = list(filter(lambda x : x != '', contents))
 
-  output = dict(link=baseURL, title=title, body=parsed2)
+  output = dict(link=baseURL, title=title, body=body)
   
-#   return output
+  return output
         
 if __name__ == "__main__":
     # print(parse("https://www.google.com/"))
