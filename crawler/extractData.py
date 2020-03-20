@@ -8,7 +8,9 @@ def extractData(baseURL):
   page = requests.get(baseURL).content
   soup = BeautifulSoup(page, "lxml")
   title = soup.title.string if soup.title!=None else baseURL
-  description = soup.find('meta', {'name':'description'}).get('content')
+  
+  metaDesc = soup.find('meta', {'name':'description'})
+  description = metaDesc.get('content') if metaDesc!=None else 'No description provided.'
 
   body=''
   for node in soup.findAll(['p', 'a']):
