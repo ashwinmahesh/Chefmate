@@ -23,15 +23,8 @@ def calculateTFIDF():
                 log_tf = math.log(tf, 2) + 1
             tf_idf = log_tf * idf
             termEntry['doc_info'][docKey]['tfidf']=tf_idf
-        # for i in range(0, len(termEntry["doc_info"])):
-        #     tf = termEntry['doc_info'][i]['termCount']
-        #     log_tf = 0
-        #     if (tf != 0):
-        #         log_tf = math.log(tf, 2) + 1
-        #     tf_idf = log_tf * idf
-        #     termEntry['doc_info'][i]['tfidf']=tf_idf
         
-        # termEntry.save()
+        termEntry.save()
         
     log("time", 'Execution finished in '+str(time.time()-startTime)+' seconds.')
 
