@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 
 type Props = {
   url: string,
-  docId: string,
   title: string,
   sampleText: string,
   likes: number,
@@ -56,11 +55,11 @@ export default function SingleResult(props: Props) {
   const maxLength = 170;
 
   function likePressed() {
-    console.log(`Like button pressed for doc #${props.docId}`);
+    console.log(`Like button pressed for doc #${props.url}`);
   }
 
   function dislikePressed() {
-    console.log(`Dislike button pressed for #${props.docId}`);
+    console.log(`Dislike button pressed for #${props.url}`);
   }
 
   function changeUrl() {

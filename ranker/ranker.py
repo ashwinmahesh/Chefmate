@@ -40,8 +40,7 @@ def fetchDocuments():
   documents=[]
   for url in docUrls:
     documents.append(Crawler.objects.get(url=url).to_json())
-  # for docId in docIds:
-    # documents.append(Crawler.objects.get(_id=str(docId)).to_json())
+
   log('ranker', 'Finished fetching documents in '+str(time.time() - startTime) + ' seconds')
   return helpers.sendPacket(1, 'Successfully retrieved documents', {'documents':documents})
 

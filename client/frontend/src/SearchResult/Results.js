@@ -32,7 +32,6 @@ function Results(props: Props) {
           title="Google - Images"
           sampleText="Hello i am random sample text for google. This is text related to what you
         have searched for. Blah blah blah here is some more text."
-          docId={'32'}
           likes={69420}
           likeStatus={0}
           key={i}
@@ -49,9 +48,8 @@ function Results(props: Props) {
       console.log(document);
       output.push(
         <SingleResult
-          url={document['url']}
+          url={document['_id']}
           title={document['title']}
-          docId={document['_id']}
           likeStatus={0}
           likes={0}
           key={document['_id']}
