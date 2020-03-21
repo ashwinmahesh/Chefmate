@@ -1,4 +1,5 @@
 <h1>CS 407: ChefMate</h1>
+![Screenshot](client/frontend/src/images/logo.png)
 <h3>
 Arshad Khan,
 Ashwin Mahesh,
