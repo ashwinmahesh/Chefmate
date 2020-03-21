@@ -59,16 +59,18 @@ function SearchResult(props) {
   async function fetchQueryResults() {
     const startTime = Date.now();
     const { data } = await axios.get(`/search/${oldQuery}`);
-    const docIdList = data['content']['sortedDocIds'];
-    updateNumSearched(docIdList.length);
-    fetchDocuments(docIdList).then(() => {
+    const docUrls = data['content']['sortedDocUrls'];
+    updateNumSearched(docUrls.length);
+    // const docIdList = data['content']['sortedDocIds'];
+    // updateNumSearched(docIdList.length);
+    fetchDocuments(docUrls).then(() => {
       changeSearchTime((Date.now() - startTime) / 1000);
       changeLoading(false);
     });
   }
 
-  async function fetchDocuments(docIdList) {
-    const { data } = await axios.post('/fetchDocuments', { docIds: docIdList });
+  async function fetchDocuments(docUrls) {
+    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
     changeDocuments(data['content']['documents']);
   }
 
