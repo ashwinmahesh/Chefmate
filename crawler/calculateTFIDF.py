@@ -23,9 +23,10 @@ def calculateTFIDF():
             if (tf != 0):
                 log_tf = math.log(tf, 2) + 1
             tf_idf = log_tf * idf
-            url = termEntry['doc_info'][i]['url']
-            termEntry['tfidf'][url] = tf_idf
-            
+            # url = termEntry['doc_info'][i]['url']
+            # termEntry['tfidf'][url] = tf_idf
+            termEntry['doc_info'][i]['tfidf']=tf_idf
+        
         termEntry.save()
         
     log("time", 'Execution finished in '+str(time.time()-startTime)+' seconds.')

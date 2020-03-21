@@ -94,7 +94,7 @@ class DatabaseBuilder:
             break
 
         if not hasDoc:
-          termEntry.doc_info.append({'url':url, 'termCount': 1, 'pos':[termPos]})
+          termEntry.doc_info.append({'url':url, 'termCount': 1, 'pos':[termPos], 'tfidf':0})
         termEntry.save()
 
       except DoesNotExist:
@@ -103,7 +103,8 @@ class DatabaseBuilder:
         doc_info=[{
           'url': url,
           'termCount': 1,
-          'pos':[termPos]
+          'pos':[termPos],
+          'tfidf': 0
         }],
         tfidf={}
         )
