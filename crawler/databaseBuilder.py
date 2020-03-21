@@ -105,9 +105,7 @@ class DatabaseBuilder:
           'termCount': 1,
           'pos':[termPos],
           'tfidf': 0
-        }],
-        tfidf={}
-        )
+        }])
         newTermEntry.save()
         DatabaseBuilder.termNum += 1
 
