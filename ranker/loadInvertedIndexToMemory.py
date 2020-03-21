@@ -16,17 +16,13 @@ def loadInvertedIndexToMemory():
   crawler = [document['url'] for document in Crawler.objects()]
   inMemoryTFIDF= np.zeros((InvertedIndex.objects.count(), Crawler.objects.count()))
 
-  crawlerMapTime = time.time()
   crawlerReverseMap = {}
   for i in range(0, len(crawler)):
     crawlerReverseMap[crawler[i]] = i
-  log('time', 'Finished building Crawler ReverseMap in ' + str(time.time()-crawlerMapTime) + ' seconds')
 
-  termMapTime = time.time()
   termReverseMap = {}
   for i in range(0, len(invertedIndex)):
     termReverseMap[invertedIndex[i][1]]=i
-  log('time', 'Finished building Term ReverseMap in ' + str(time.time()-crawlerMapTime) + ' seconds')
 
   for termEntry in invertedIndex:
     termNum = termReverseMap[termEntry[1]]
