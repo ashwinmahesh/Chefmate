@@ -12,7 +12,6 @@ import nltk
 nltk.download('stopwords', quiet=True)
 
 class DatabaseBuilder:
-  termNum=0
   connect(databaseName, host=databaseAddr, port=27017)
   stopwords = set(nltk.corpus.stopwords.words('english'))
   porterStemmer = nltk.stem.PorterStemmer()
@@ -99,7 +98,6 @@ class DatabaseBuilder:
 
       except DoesNotExist:
         newTermEntry = InvertedIndex(term=term,
-        termNum=DatabaseBuilder.termNum,
         doc_info=[{
           'url': url,
           'termCount': 1,
@@ -107,7 +105,6 @@ class DatabaseBuilder:
           'tfidf': 0
         }])
         newTermEntry.save()
-        DatabaseBuilder.termNum += 1
 
       if self.mode=='DEV' and termPos>=10:
         break
