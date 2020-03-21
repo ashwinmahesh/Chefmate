@@ -82,9 +82,11 @@ class DatabaseBuilder:
 
       try:
         termEntry = InvertedIndex.objects.get(term=term)
-        if url in termEntry.doc_info:
-          termEntry.doc_info[url]['termCount']+=1
-          termEntry.doc_info[url]['pos'].append(termPos)
+        #Replace URL . with something else
+        dotRemovedUrl = url.replace('.', '%114')
+        if dotRemovedUrl in termEntry.doc_info:
+          termEntry.doc_info[dotRemovedUrl]['termCount']+=1
+          termEntry.doc_info[dotRemovedUrl]['pos'].append(termPos)
         # hasDoc = False
 
         # for i in range(0, len(termEntry.doc_info)):
@@ -97,12 +99,12 @@ class DatabaseBuilder:
 
         # if not hasDoc:
         else:
-          termEntry.doc_info[url]={'url':url, 'termCount': 1, 'pos':[termPos], 'tfidf':0}
+          termEntry.doc_info[dotRemovedUrl]={'url':url, 'termCount': 1, 'pos':[termPos], 'tfidf':0}
         termEntry.save()
 
       except DoesNotExist:
         newTermEntry = InvertedIndex(term=term,
-        doc_info={'url': {
+        doc_info={dotRemovedUrl: {
           'url': url,
           'termCount': 1,
           'pos':[termPos],

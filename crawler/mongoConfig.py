@@ -15,7 +15,7 @@ class Crawler(Document):
 class InvertedIndex(Document):
   term = StringField(required=True, primary_key=True)
   # doc_info = ListField(DictField(required=True), default=[])
-  doc_info = DictField(required=True, default=[])
+  doc_info = DictField()
   """
   doc_info = {
     url: {
