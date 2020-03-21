@@ -17,6 +17,7 @@ class InvertedIndex(Document):
   termNum=IntField(required=True, min_value=0)
   doc_info = ListField(DictField(required=True), default=[])
   idf = FloatField(required=True, default=1)
+  #TODO we need to get rid of tfidf, check if it breaks later builds
   tfidf = DictField(default={})
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
@@ -30,8 +31,8 @@ class User(Document):
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
-# databaseName = 'ChefmateDB'
-databaseName = 'ChefmateDB_Alt'
+databaseName = 'ChefmateDB'
+# databaseName = 'ChefmateDB_Alt'
 
 # databaseAddr = '3.21.167.180'
 databaseAddr = '18.222.251.5'
