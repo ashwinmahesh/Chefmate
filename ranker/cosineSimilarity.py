@@ -25,7 +25,7 @@ def cosineSimilarity(termWeights1, termWeights2):
 
   return top/bottom
 
-def calculateAllCosineSimilarity(terms, inMemoryTFIDF, crawlerReverseMap):
+def calculateAllCosineSimilarity(terms, inMemoryTFIDF, crawlerReverseMap, termReverseMap):
   startTime = time.time()
   connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 
@@ -39,7 +39,7 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF, crawlerReverseMap):
       for doc in docInfoList:
         docURLs.add(doc['url'])
 
-      termNum = int(termEntry['termNum'])
+      termNum = termReverseMap[term]
       queryTermWeights[termNum] += 1
     except DoesNotExist:
       log("query", 'Term not found - '+term)

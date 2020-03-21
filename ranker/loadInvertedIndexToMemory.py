@@ -12,7 +12,7 @@ def loadInvertedIndexToMemory():
   log('info', 'Loading Inverted Index into main memory.')
   startTime=time.time()
 
-  invertedIndex = [(term['doc_info'], term['termNum']) for term in InvertedIndex.objects()]
+  invertedIndex = [(term['doc_info'], term['term']) for term in InvertedIndex.objects()]
   crawler = [document['url'] for document in Crawler.objects()]
   inMemoryTFIDF= np.zeros((InvertedIndex.objects.count(), Crawler.objects.count()))
 
@@ -20,10 +20,16 @@ def loadInvertedIndexToMemory():
   crawlerReverseMap = {}
   for i in range(0, len(crawler)):
     crawlerReverseMap[crawler[i]] = i
-  log('time', 'Finished building Crawler Reverse Map in ' + str(time.time()-crawlerMapTime) + ' seconds')
+  log('time', 'Finished building Crawler ReverseMap in ' + str(time.time()-crawlerMapTime) + ' seconds')
+
+  termMapTime = time.time()
+  termReverseMap = {}
+  for i in range(0, len(invertedIndex)):
+    termReverseMap[invertedIndex[i][1]]=i
+  log('time', 'Finished building Term ReverseMap in ' + str(time.time()-crawlerMapTime) + ' seconds')
 
   for termEntry in invertedIndex:
-    termNum = termEntry[1]
+    termNum = termReverseMap[termEntry[1]]
     for doc in termEntry[0]:
       url=doc['url']
       crawlerAxisPos = crawlerReverseMap[url]
@@ -33,4 +39,4 @@ def loadInvertedIndexToMemory():
         inMemoryTFIDF[termNum][crawlerAxisPos] = 0
 
   log('time', 'Finished loading Inverted Index into main memory in ' + str(time.time()-startTime) + ' seconds.')
-  return inMemoryTFIDF, crawlerReverseMap
+  return inMemoryTFIDF, crawlerReverseMap, termReverseMap
