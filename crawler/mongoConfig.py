@@ -2,8 +2,7 @@ import datetime
 from mongoengine import *
 
 class Crawler(Document):
-  url = StringField(required=True)
-  _id = StringField(required=True, primary_key=True)
+  url = StringField(required=True, primary_key=True)
   title = StringField(required=True)
   description = StringField(required=True)
   body = StringField(required=True)
@@ -15,10 +14,8 @@ class Crawler(Document):
 
 class InvertedIndex(Document):
   term = StringField(required=True, primary_key=True)
-  termNum=IntField(required=True, min_value=0)
   doc_info = ListField(DictField(required=True), default=[])
   idf = FloatField(required=True, default=1)
-  tfidf = DictField(default={})
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
@@ -31,8 +28,8 @@ class User(Document):
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
-# databaseName = 'ChefmateDB'
-databaseName = 'ChefmateDB_Alt'
+databaseName = 'ChefmateDB'
+# databaseName = 'ChefmateDB_Alt'
 
 # databaseAddr = '3.21.167.180'
 databaseAddr = '18.222.251.5'

@@ -23,9 +23,8 @@ def calculateTFIDF():
             if (tf != 0):
                 log_tf = math.log(tf, 2) + 1
             tf_idf = log_tf * idf
-            docNum = int(termEntry['doc_info'][i]['docId'])
-            termEntry['tfidf'][str(docNum)] = tf_idf
-            
+            termEntry['doc_info'][i]['tfidf']=tf_idf
+        
         termEntry.save()
         
     log("time", 'Execution finished in '+str(time.time()-startTime)+' seconds.')

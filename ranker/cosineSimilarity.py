@@ -25,10 +25,11 @@ def cosineSimilarity(termWeights1, termWeights2):
 
   return top/bottom
 
-def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
+def calculateAllCosineSimilarity(terms, inMemoryTFIDF, crawlerReverseMap, termReverseMap):
   startTime = time.time()
   connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
-  docIds = set()
+
+  docURLs = set()
   queryTermWeights = np.zeros(InvertedIndex.objects.count())
   for term in terms:
     try:
@@ -36,48 +37,32 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
 
       docInfoList=termEntry['doc_info']
       for doc in docInfoList:
-        docIds.add(int(doc['docId']))
+        docURLs.add(doc['url'])
 
-      termNum = int(termEntry['termNum'])
+      termNum = termReverseMap[term]
       queryTermWeights[termNum] += 1
     except DoesNotExist:
       log("query", 'Term not found - '+term)
   
-  docIdArr = []
+  docUrlArr = []
   cosineSimilarities = []
 
-  for docId in docIds:
-    docWeight = inMemoryTFIDF[:,docId]
+  for url in docURLs:
+    docIndex = crawlerReverseMap[url]
+    docWeight = inMemoryTFIDF[:,docIndex]
     cosSim = cosineSimilarity(queryTermWeights, docWeight)
     # log('cosine', 'Cosine similarity with doc '+str(docId)+' = '+str(cosSim))
     cosineSimilarities.append(cosSim)
-    docIdArr.append(docId)
-  
-  sortedDocIds = [docId for cosSim, docId in sorted(zip(cosineSimilarities, docIdArr), reverse=True)]
+    docUrlArr.append(url)
+
+  sortedDocUrls = [docUrl for cosSim, docUrl in sorted(zip(cosineSimilarities, docUrlArr), reverse=True)]
+
   queryStr=''
   for term in terms:
     queryStr+=term + ' '
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
-  return sortedDocIds
-
-def loadInvertedIndexToMemory():
-  log('info', 'Loading Inverted Index into main memory.')
-  invertedIndex = InvertedIndex.objects()
-  inMemoryTFIDF= np.zeros((InvertedIndex.objects.count(), Crawler.objects.count()))
-
-  for termEntry in invertedIndex:
-    termNum = termEntry['termNum']
-    docInfoList = termEntry['doc_info']
-    for doc in docInfoList:
-      docId = int(doc['docId'])
-      try:
-        inMemoryTFIDF[termNum][docId]=termEntry['tfidf'][str(docId)]
-      except KeyError:
-        inMemoryTFIDF[termNum][docId]=0
-
-  log('info', 'Finished loading Inverted Index into main memory.')
-  return inMemoryTFIDF
+  return sortedDocUrls
 
 def stemQuery(query):
   output=[]

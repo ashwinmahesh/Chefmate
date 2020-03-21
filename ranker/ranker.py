@@ -12,13 +12,14 @@ from mongoengine import *
 from mongoConfig import *
 from cosineSimilarity import *
 import rankerDBConfig
+from loadInvertedIndexToMemory import loadInvertedIndexToMemory
 
 app = Flask(__name__)
 
 port = 8002
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 
-inMemoryTFIDF = loadInvertedIndexToMemory()
+inMemoryTFIDF, crawlerReverseMap, termReverseMap = loadInvertedIndexToMemory()
 
 @app.route('/', methods=["GET"])
 def index():
@@ -28,17 +29,18 @@ def index():
 def rankQuery(query):
   log('Ranker', 'Received query: '+query)
   queryTerms = stemQuery(query)
-  sortedDocIds=calculateAllCosineSimilarity(queryTerms, inMemoryTFIDF)
-  return helpers.sendPacket(1, 'Successfully retrieved query', {'sortedDocIds':sortedDocIds})
+  sortedDocUrls=calculateAllCosineSimilarity(queryTerms, inMemoryTFIDF, crawlerReverseMap, termReverseMap)
+  return helpers.sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls})
 
 @app.route('/fetchDocuments', methods=['POST'])
 def fetchDocuments():
   startTime = time.time()
-  docIds = request.json['docIds']
+  docUrls = request.json['docUrls']
   log('ranker', 'Fetching documents')
   documents=[]
-  for docId in docIds:
-    documents.append(Crawler.objects.get(_id=str(docId)).to_json())
+  for url in docUrls:
+    documents.append(Crawler.objects.get(url=url).to_json())
+
   log('ranker', 'Finished fetching documents in '+str(time.time() - startTime) + ' seconds')
   return helpers.sendPacket(1, 'Successfully retrieved documents', {'documents':documents})
 
