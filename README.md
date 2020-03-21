@@ -1,5 +1,3 @@
-<h1>CS 407: ChefMate</h1>
-
 ![Chefmate Logo](client/frontend/src/images/logo.png)
 
 <h3>
