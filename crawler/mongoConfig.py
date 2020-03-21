@@ -14,12 +14,8 @@ class Crawler(Document):
 
 class InvertedIndex(Document):
   term = StringField(required=True, primary_key=True)
-  #TODO we need to remove termNum once all other changes are made.
-  # termNum=IntField(required=True, min_value=0)
   doc_info = ListField(DictField(required=True), default=[])
   idf = FloatField(required=True, default=1)
-  #TODO we need to get rid of tfidf, check if it breaks later builds
-  tfidf = DictField(default={})
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
