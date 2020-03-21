@@ -72,7 +72,7 @@ class DatabaseBuilder:
     termPos = 0
     log('inverted index', 'Building inverted index for '+url)
     startTime=time.time()
-    #Replace URL . with something else
+
     dotRemovedUrl = url.replace('.', '%114')
     for termRaw in body.split():
       termPos += 1
@@ -88,17 +88,7 @@ class DatabaseBuilder:
         if dotRemovedUrl in termEntry.doc_info:
           termEntry.doc_info[dotRemovedUrl]['termCount']+=1
           termEntry.doc_info[dotRemovedUrl]['pos'].append(termPos)
-        # hasDoc = False
 
-        # for i in range(0, len(termEntry.doc_info)):
-        #   doc = termEntry.doc_info[i]
-        #   if doc['url'] == url:
-        #     hasDoc=True
-        #     termEntry.doc_info[i]['termCount']+=1
-        #     termEntry.doc_info[i]['pos'].append(termPos)
-        #     break
-
-        # if not hasDoc:
         else:
           termEntry.doc_info[dotRemovedUrl]={'url':url, 'termCount': 1, 'pos':[termPos], 'tfidf':0}
         termEntry.save()
