@@ -29,17 +29,19 @@ def index():
 def rankQuery(query):
   log('Ranker', 'Received query: '+query)
   queryTerms = stemQuery(query)
-  sortedDocIds=calculateAllCosineSimilarity(queryTerms, inMemoryTFIDF, crawlerReverseMap)
-  return helpers.sendPacket(1, 'Successfully retrieved query', {'sortedDocIds':sortedDocIds})
+  sortedDocUrls=calculateAllCosineSimilarity(queryTerms, inMemoryTFIDF, crawlerReverseMap)
+  return helpers.sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls})
 
 @app.route('/fetchDocuments', methods=['POST'])
 def fetchDocuments():
   startTime = time.time()
-  docIds = request.json['docIds']
+  docUrls = request.json['docUrls']
   log('ranker', 'Fetching documents')
   documents=[]
-  for docId in docIds:
-    documents.append(Crawler.objects.get(_id=str(docId)).to_json())
+  for url in docUrls:
+    documents.append(Crawler.objects.get(url=url).to_json())
+  # for docId in docIds:
+    # documents.append(Crawler.objects.get(_id=str(docId)).to_json())
   log('ranker', 'Finished fetching documents in '+str(time.time() - startTime) + ' seconds')
   return helpers.sendPacket(1, 'Successfully retrieved documents', {'documents':documents})
 
