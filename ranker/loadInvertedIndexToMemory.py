@@ -26,7 +26,8 @@ def loadInvertedIndexToMemory():
 
   for termEntry in invertedIndex:
     termNum = termReverseMap[termEntry[1]]
-    for doc in termEntry[0]:
+    for docKey in termEntry[0]:
+      doc = termEntry[0][docKey]
       url=doc['url']
       crawlerAxisPos = crawlerReverseMap[url]
       try:

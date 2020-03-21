@@ -36,8 +36,8 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF, crawlerReverseMap, termRe
       termEntry = InvertedIndex.objects.get(term=term)
 
       docInfoList=termEntry['doc_info']
-      for doc in docInfoList:
-        docURLs.add(doc['url'])
+      for docKey in docInfoList:
+        docURLs.add(docInfoList[docKey]['url'])
 
       termNum = termReverseMap[term]
       queryTermWeights[termNum] += 1
@@ -51,7 +51,9 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF, crawlerReverseMap, termRe
     docIndex = crawlerReverseMap[url]
     docWeight = inMemoryTFIDF[:,docIndex]
     cosSim = cosineSimilarity(queryTermWeights, docWeight)
-    # log('cosine', 'Cosine similarity with doc '+str(docId)+' = '+str(cosSim))
+
+    # log('cosine', 'Cosine similarity with '+url+' = '+str(cosSim))
+
     cosineSimilarities.append(cosSim)
     docUrlArr.append(url)
 
