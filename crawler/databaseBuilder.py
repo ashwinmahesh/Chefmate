@@ -82,28 +82,32 @@ class DatabaseBuilder:
 
       try:
         termEntry = InvertedIndex.objects.get(term=term)
-        hasDoc = False
+        if url in termEntry.doc_info:
+          termEntry.doc_info[url]['termCount']+=1
+          termEntry.doc_info[url]['pos'].append(termPos)
+        # hasDoc = False
 
-        for i in range(0, len(termEntry.doc_info)):
-          doc = termEntry.doc_info[i]
-          if doc['url'] == url:
-            hasDoc=True
-            termEntry.doc_info[i]['termCount']+=1
-            termEntry.doc_info[i]['pos'].append(termPos)
-            break
+        # for i in range(0, len(termEntry.doc_info)):
+        #   doc = termEntry.doc_info[i]
+        #   if doc['url'] == url:
+        #     hasDoc=True
+        #     termEntry.doc_info[i]['termCount']+=1
+        #     termEntry.doc_info[i]['pos'].append(termPos)
+        #     break
 
-        if not hasDoc:
-          termEntry.doc_info.append({'url':url, 'termCount': 1, 'pos':[termPos], 'tfidf':0})
+        # if not hasDoc:
+        else:
+          termEntry.doc_info[url]={'url':url, 'termCount': 1, 'pos':[termPos], 'tfidf':0}
         termEntry.save()
 
       except DoesNotExist:
         newTermEntry = InvertedIndex(term=term,
-        doc_info=[{
+        doc_info={'url': {
           'url': url,
           'termCount': 1,
           'pos':[termPos],
           'tfidf': 0
-        }])
+        }})
         newTermEntry.save()
 
       if self.mode=='DEV' and termPos>=10:

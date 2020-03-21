@@ -14,7 +14,16 @@ class Crawler(Document):
 
 class InvertedIndex(Document):
   term = StringField(required=True, primary_key=True)
-  doc_info = ListField(DictField(required=True), default=[])
+  # doc_info = ListField(DictField(required=True), default=[])
+  doc_info = DictField(required=True, default=[])
+  """
+  doc_info = {
+    url: {
+      same_doc_info
+    }
+  }
+  #We can remove url from the inside later down the line. It's not important right now.
+  """
   idf = FloatField(required=True, default=1)
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
