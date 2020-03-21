@@ -122,7 +122,7 @@ class DatabaseBuilder:
     log('idf', 'Calculating IDF scores for all terms.')
     for termEntry in terms:
       docsContaining = float(len(termEntry.doc_info))
-      termEntry['idf'] = math.log(Crawler.objects.count / docsContaining, 2)
+      termEntry['idf'] = math.log(Crawler.objects.count() / docsContaining, 2)
       termEntry.save()
     log('time', 'IDF Execution finished in '+str(time.time() - startTime)+' seconds.')
   

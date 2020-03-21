@@ -23,8 +23,8 @@ def calculateTFIDF():
             if (tf != 0):
                 log_tf = math.log(tf, 2) + 1
             tf_idf = log_tf * idf
-            docNum = int(termEntry['doc_info'][i]['docId'])
-            termEntry['tfidf'][str(docNum)] = tf_idf
+            url = termEntry['doc_info'][i]['url']
+            termEntry['tfidf'][url] = tf_idf
             
         termEntry.save()
         
