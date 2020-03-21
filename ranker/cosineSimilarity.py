@@ -52,8 +52,8 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF, crawlerReverseMap, termRe
     docWeight = inMemoryTFIDF[:,docIndex]
     cosSim = cosineSimilarity(queryTermWeights, docWeight)
 
-    log('cosine', 'Cosine similarity with '+url+' = '+str(cosSim))
-    
+    # log('cosine', 'Cosine similarity with '+url+' = '+str(cosSim))
+
     cosineSimilarities.append(cosSim)
     docUrlArr.append(url)
 
