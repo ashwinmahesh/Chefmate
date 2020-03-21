@@ -53,6 +53,7 @@ export default function SingleResult(props: Props) {
   const styles = useStyles();
   const url = changeUrl();
   const redirectUrl = '/updateHistory?redirect=' + props.url;
+  const maxLength = 170;
 
   function likePressed() {
     console.log(`Like button pressed for doc #${props.docId}`);
@@ -78,7 +79,7 @@ export default function SingleResult(props: Props) {
       <a className={styles.link} href={redirectUrl}>
         {props.title}
       </a>
-      <p className={styles.sampleText}>{props.sampleText}</p>
+      <p className={styles.sampleText}>{props.sampleText.substr(0, maxLength)}</p>
       <div>
         <IconButton aria-label="Like" onClick={likePressed}>
           <FaThumbsUp className={styles.thumbsUp} />
