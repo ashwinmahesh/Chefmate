@@ -1,8 +1,14 @@
 const mongoose = require("mongoose");
 const log = require('./logger');
 
-// var mongoUri = 'mongodb://localhost/chefmateDB'
-var mongoUri = "mongodb://18.222.251.5/ChefmateDB";
+// const databaseAddr = '18.222.251.5';
+const databaseAddr = '3.21.167.180';
+
+const databaseName = 'ChefmateDB'
+// const databaseName = 'ChefmateDB_Alt'
+
+const mongoUri = `mongodb://${databaseAddr}/${databaseName}`;
+
 mongoose
   .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {

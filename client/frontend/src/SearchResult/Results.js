@@ -46,6 +46,7 @@ function Results(props: Props) {
     const output = [];
     for (var i = 0; i < props.documents.length; i++) {
       const document = JSON.parse(props.documents[i]);
+      console.log(document);
       output.push(
         <SingleResult
           url={document['url']}
@@ -54,8 +55,7 @@ function Results(props: Props) {
           likeStatus={0}
           likes={0}
           key={document['_id']}
-          sampleText="Hello i am random sample text for google. This is text related to what you
-          have searched for. Blah blah blah here is some more text."
+          sampleText={document['description']}
         />
       );
     }
