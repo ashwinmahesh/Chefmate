@@ -12,7 +12,6 @@ import nltk
 nltk.download('stopwords', quiet=True)
 
 class DatabaseBuilder:
-  docCount = 0
   termNum=0
   connect(databaseName, host=databaseAddr, port=27017)
   stopwords = set(nltk.corpus.stopwords.words('english'))
@@ -35,8 +34,8 @@ class DatabaseBuilder:
       if doc['title'] == None:
         doc['title']='No Title'
 
-      self.addDocumentToCollection(docId=doc['docId'], url=entry, title=doc['title'], body=doc['body'], description=doc['description'], pageRank=pageRanks[entry])
-      self.buildInvertedIndex(doc['body'], entry, doc['docId'])
+      self.addDocumentToCollection(url=entry, title=doc['title'], body=doc['body'], description=doc['description'], pageRank=pageRanks[entry])
+      self.buildInvertedIndex(doc['body'], entry)
 
       if self.mode=='DEV' and count>=5:
         break
@@ -48,33 +47,29 @@ class DatabaseBuilder:
     for line in file:
       if line == "\n":
         continue
-      docID = line
       url = file.readline()
       title = file.readline()
       body = file.readline()
 
-      docID = docID[7:len(docID)-1]
       url = link[6:len(link)-1]
       title = title[7:len(title)-1]
       body = body[6:len(body)-1]
 
-      self.addDocumentToCollection(docID, url, title, body)
+      self.addDocumentToCollection(url, title, body)
       self.buildInvertedIndex(body, url)
       
       if printStatements:
-        log('entry', docID)
         log('entry', link)
         log('entry', title)
         log('entry', body)
       
   
-  def addDocumentToCollection(self, docId, url, title, body, description, pageRank):
+  def addDocumentToCollection(self, url, title, body, description, pageRank):
     log("crawler", "Adding "+url+" to collection.")
-    crawlerDoc = Crawler(url=url, title=title, body=body, _id=str(docId), description=description, pageRank=pageRank)
+    crawlerDoc = Crawler(url=url, title=title, body=body, description=description, pageRank=pageRank)
     crawlerDoc.save()
-    DatabaseBuilder.docCount+=1
     
-  def buildInvertedIndex(self, body, url, docId):
+  def buildInvertedIndex(self, body, url):
     termPos = 0
     log('inverted index', 'Building inverted index for '+url)
     startTime=time.time()
@@ -99,7 +94,7 @@ class DatabaseBuilder:
             break
 
         if not hasDoc:
-          termEntry.doc_info.append({'url':url, 'termCount': 1, 'pos':[termPos], 'docId':docId})
+          termEntry.doc_info.append({'url':url, 'termCount': 1, 'pos':[termPos]})
         termEntry.save()
 
       except DoesNotExist:
@@ -107,7 +102,6 @@ class DatabaseBuilder:
         termNum=DatabaseBuilder.termNum,
         doc_info=[{
           'url': url,
-          'docId': str(docId),
           'termCount': 1,
           'pos':[termPos]
         }],
@@ -128,7 +122,7 @@ class DatabaseBuilder:
     log('idf', 'Calculating IDF scores for all terms.')
     for termEntry in terms:
       docsContaining = float(len(termEntry.doc_info))
-      termEntry['idf'] = math.log(DatabaseBuilder.docCount / docsContaining, 2)
+      termEntry['idf'] = math.log(Crawler.objects.count / docsContaining, 2)
       termEntry.save()
     log('time', 'IDF Execution finished in '+str(time.time() - startTime)+' seconds.')
   
