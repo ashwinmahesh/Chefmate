@@ -63,20 +63,39 @@ def calculateAllCosineSimilarity(terms, inMemoryTFIDF):
 
 def loadInvertedIndexToMemory():
   log('info', 'Loading Inverted Index into main memory.')
-  invertedIndex = InvertedIndex.objects()
+  startTime=time.time()
+  # invertedIndex = InvertedIndex.objects()
+  invertedIndex = [(term['doc_info'], term['termNum']) for term in InvertedIndex.objects()]
+  crawler = [document['url'] for document in Crawler.objects()]
   inMemoryTFIDF= np.zeros((InvertedIndex.objects.count(), Crawler.objects.count()))
 
-  for termEntry in invertedIndex:
-    termNum = termEntry['termNum']
-    docInfoList = termEntry['doc_info']
-    for doc in docInfoList:
-      docId = int(doc['docId'])
-      try:
-        inMemoryTFIDF[termNum][docId]=termEntry['tfidf'][str(docId)]
-      except KeyError:
-        inMemoryTFIDF[termNum][docId]=0
+  crawlerMapTime = time.time()
+  crawlerReverseMap = {}
+  for i in range(0, len(crawler)):
+    crawlerReverseMap[crawler[i]] = i
+  log('time', 'Finished building crawler reverse map in' + str(time.time()-crawlerMapTime) + ' seconds')
 
-  log('info', 'Finished loading Inverted Index into main memory.')
+  for termEntry in invertedIndex:
+    termNum = termEntry[1]
+    for doc in termEntry[0]:
+      url=doc['url']
+      crawlerAxisPos = crawlerReverseMap[url]
+      try:
+        inMemoryTFIDF[termNum][crawlerAxisPos] = doc['tfidf']
+      except:
+        inMemoryTFIDF[termNum][crawlerAxisPos] = 0
+
+  # for termEntry in invertedIndex:
+  #   termNum = termEntry['termNum']
+  #   docInfoList = termEntry['doc_info']
+  #   for doc in docInfoList:
+  #     docId = int(doc['docId'])
+  #     try:
+  #       inMemoryTFIDF[termNum][docId]=termEntry['tfidf'][str(docId)]
+  #     except KeyError:
+  #       inMemoryTFIDF[termNum][docId]=0
+
+  log('time', 'Finished loading Inverted Index into main memory in ' + str(time.time()-startTime) + ' seconds.')
   return inMemoryTFIDF
 
 def stemQuery(query):
