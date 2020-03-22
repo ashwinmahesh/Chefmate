@@ -25,7 +25,7 @@ def calculatePageRank(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, ite
       updatedRank_R[page] = lambdaVar / pageLength
 
     for page in pages:
-      Q = outlinkGraph.get(page).keys()
+      Q = inlinkGraph.get(page).keys()
 
       if len(Q) > 0:
         for linkPage in Q:
