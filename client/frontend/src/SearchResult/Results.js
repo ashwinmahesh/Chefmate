@@ -134,7 +134,7 @@ function Results(props: Props) {
         <button
           value={i}
           className={styles.pageNum}
-          onClick={(event) => changeCurrentPage(event.target.value)}
+          onClick={(event) => changeCurrentPage(Number(event.target.value))}
         >
           {i}
         </button>
