@@ -70,8 +70,8 @@ type Props = { documents: [{}], numSearched: Number, searchTime: Number };
 function Results(props: Props) {
   const styles = useStyles();
   const pagesPerScreen = 10;
-  // const pages = Math.ceil(props.documents.length / pagesPerScreen);
-  const pages = 4;
+  const pages = Math.ceil(props.documents.length / pagesPerScreen);
+  // const pages = 4;
   const [currentPage, changeCurrentPage] = useState(1);
 
   function renderTestSites() {
@@ -143,8 +143,8 @@ function Results(props: Props) {
         Found {props.numSearched} results ({props.searchTime} seconds)
       </p>
       <div className={styles.resultContainer}>
-        {renderTestSites()}
-        {/* {renderSites()} */}
+        {/* {renderTestSites()} */}
+        {renderSites()}
         <div className={styles.logoAndNext}>
           <a
             onClick={prevPressed}
