@@ -4,6 +4,7 @@ import axios from 'axios';
 import HeaderSearch from '../headerSearch/HeaderSearch';
 import { Redirect } from 'react-router-dom';
 import Results from './Results';
+import NoResults from './NoResults';
 import loading from '../images/loading.gif';
 
 const useStyles = makeStyles((theme) => ({
@@ -78,12 +79,14 @@ function SearchResult(props) {
       <HeaderSearch initialSearch={oldQuery} />
       {isLoading ? (
         <img className={styles.loading} src={loading} alt="loading..." />
-      ) : (
+      ) : documents.length > 0 ? (
         <Results
           documents={documents}
           numSearched={numSearched}
           searchTime={searchTime}
         />
+      ) : (
+        <NoResults />
       )}
     </div>
   );
