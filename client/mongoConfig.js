@@ -87,15 +87,22 @@ const InvertedIndexSchema = new mongoose.Schema(
       default: 1,
       required: [true, "IDF is required, resort to default (1) if needed."]
     },
-    tfidf: {
-      type: {},
-      default: {},
-      required: [true, "TFIDF is required, resort to default {} if needed."]
-    }
   },
   { timestamps: true }
 );
 mongoose.model("InvertedIndex", InvertedIndexSchema);
 const InvertedIndex = mongoose.model("InvertedIndex");
 
-module.exports = { mongoose, Crawler, User, InvertedIndex };
+const QuerySchema = new mongoose.Schema({
+  query: {
+    type: String,
+    required: [true, "Query is required for Query object."]
+  },
+  userid: {
+    type: String
+  }
+});
+mongoose.model("Query", QuerySchema);
+const Query = mongoose.model("Query")
+
+module.exports = { mongoose, Crawler, User, InvertedIndex, Query };

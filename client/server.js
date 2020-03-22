@@ -13,7 +13,7 @@ require('./passport-config');
 const bcrypt = require('bcrypt');
 
 // const { mongoose } = require('./mongoConfig');
-const { mongoose, User, InvertedIndex, Crawler} = require('./mongoConfig');
+const { mongoose, User, InvertedIndex, Crawler, Query } = require('./mongoConfig');
 
 const log = require('./logger');
 const makeRequest = require('./makeRequest');
