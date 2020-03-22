@@ -99,10 +99,14 @@ app.get('/updateHistory', async (req, res) => {
 })
 
 app.get('/test', (req, res) => {
-  Query.findOne({query: 'chicken sauce'}, (err, query) => {
+  Query.find((err, docs) => {
     if(err) return res.json({error: err})
-    else return res.json({query: query})
+    else return res.json({query: docs})
   })
+  // Query.findOne({query: 'chicken sauce'}, (err, query) => {
+  //   if(err) return res.json({error: err})
+  //   else return res.json({query: query})
+  // })
   // User.find({}, (err, users) => {
   //   if(err) {
   //     console.log("Error:", err)
