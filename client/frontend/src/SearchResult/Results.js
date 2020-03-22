@@ -71,7 +71,10 @@ type Props = { documents: [{}], numSearched: Number, searchTime: Number };
 function Results(props: Props) {
   const styles = useStyles();
   const pagesPerScreen = 10;
-  const pages = Math.ceil(props.documents.length / pagesPerScreen);
+  const pages =
+    Math.ceil(props.documents.length / pagesPerScreen) > 0
+      ? Math.ceil(props.documents.length / pagesPerScreen)
+      : 1;
   const [currentPage, changeCurrentPage] = useState(1);
 
   function renderTestSites() {
