@@ -101,8 +101,34 @@ app.get('/updateHistory', async (req, res) => {
 
 app.post('/changeLikeStatus', (req, res) => {
   const { likeStatus, url } = req.body;
-  if(req.user === undefined) return res.json(sendPacket(0, 'Unable to save because User not logged in.'))
-  return res.json(sendPacket(1, 'Document like status successfully changed', {newLikeStatus: likeStatus}));
+  if(req.user === undefined) return res.json(sendPacket(0, 'Unable to save because User not logged in.'));
+  User.findById(req.user._id, (err, user) => {
+    if(err){
+      log('error', 'Error finding user. Could not change like status');
+      return res.json(sendPacket(0, 'Unable to find user'));
+    }
+    if (likeStatus === 1) {
+      if (url in user['dislikes']) delete user['dislikes'][url];
+      user['likes'][url]=true;
+    }
+
+    else if (likeStatus === -1) {
+      if (url in user['likes']) delete user['likes'][url];
+      user['dislikes'][url]=true;
+    }
+
+    else {
+      if (url in user['likes']) delete user['likes'][url];
+      if (url in user['dislikes']) delete user['dislikes'][url];
+    }
+
+    user.save(err => {
+      if(err) {
+        return res.json(sendPacket(0, 'Unable to save like status updates'));
+      }
+      return res.json(sendPacket(1, 'Document like status successfully changed', {newLikeStatus: likeStatus, user: user}));
+    })
+  })
 })
 
 app.get('/test', (req, res) => {
