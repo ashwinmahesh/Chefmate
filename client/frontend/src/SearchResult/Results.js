@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
       cursor: 'pointer',
       textDecoration: 'underline',
     },
+    border: 'none',
   },
   hidden: {
     visibility: 'hidden',
@@ -71,7 +72,6 @@ function Results(props: Props) {
   const styles = useStyles();
   const pagesPerScreen = 10;
   const pages = Math.ceil(props.documents.length / pagesPerScreen);
-  // const pages = 4;
   const [currentPage, changeCurrentPage] = useState(1);
 
   function renderTestSites() {
@@ -100,7 +100,6 @@ function Results(props: Props) {
       i++
     ) {
       const document = JSON.parse(props.documents[i]);
-      console.log(document);
       output.push(
         <SingleResult
           url={document['_id']}
@@ -129,9 +128,13 @@ function Results(props: Props) {
     const output = [];
     for (var i = 1; i < pages + 1; i++) {
       output.push(
-        <a className={styles.pageNum} href="i">
+        <button
+          value={i}
+          className={styles.pageNum}
+          onClick={(event) => changeCurrentPage(event.target.value)}
+        >
           {i}
-        </a>
+        </button>
       );
     }
     return output;
