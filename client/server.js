@@ -78,9 +78,19 @@ app.post('/fetchDocuments', async (req, res) => {
   const docUrls = req.body['docUrls'].slice(0, 60)
   const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {docUrls: docUrls})
   const documents = data['content']['documents']
-
   log('fetch', `Received documents from ranker. Execution time ${(Date.now() - startTime) / 1000} seconds.`)
-  return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents}))
+  
+  if(req.user != undefined) {
+    User.findById(req.user._id, (err, user) => {
+      if(err) log('error', 'Unable to find user')
+      else {
+        console.log("User:", user)
+
+        return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents, likes: user['likes'], dislikes: user['dislikes']}))
+      }
+    })
+  }
+  else return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents, likes: {}, dislikes: {}}))
 })
 
 app.get('/updateHistory', async (req, res) => {
@@ -107,26 +117,32 @@ app.post('/changeLikeStatus', (req, res) => {
       log('error', 'Error finding user. Could not change like status');
       return res.json(sendPacket(0, 'Unable to find user'));
     }
+
+    if(!('likes' in user)) user['likes']= {};
+    if(!('dislikes' in user)) user['dislikes']= {};
+
+    const dotReplacedUrl = url.replace(/\./g, '%114')
+
     if (likeStatus === 1) {
-      if (url in user['dislikes']) delete user['dislikes'][url];
-      user['likes'][url]=true;
+      if (dotReplacedUrl in user['dislikes']) delete user['dislikes'][dotReplacedUrl];
+      user['likes'][dotReplacedUrl]=true;
     }
 
     else if (likeStatus === -1) {
-      if (url in user['likes']) delete user['likes'][url];
-      user['dislikes'][url]=true;
+      if (dotReplacedUrl in user['likes']) delete user['likes'][dotReplacedUrl];
+      user['dislikes'][dotReplacedUrl]=true;
     }
 
     else {
-      if (url in user['likes']) delete user['likes'][url];
-      if (url in user['dislikes']) delete user['dislikes'][url];
+      if (dotReplacedUrl in user['likes']) delete user['likes'][dotReplacedUrl];
+      if (dotReplacedUrl in user['dislikes']) delete user['dislikes'][dotReplacedUrl];
     }
 
-    user.save(err => {
+    user.save( (err, newUser) => {
       if(err) {
         return res.json(sendPacket(0, 'Unable to save like status updates'));
       }
-      return res.json(sendPacket(1, 'Document like status successfully changed', {newLikeStatus: likeStatus, user: user}));
+      return res.json(sendPacket(1, 'Document like status successfully changed', {newLikeStatus: likeStatus, user: newUser}));
     })
   })
 })
