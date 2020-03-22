@@ -65,23 +65,19 @@ export default function SingleResult(props: Props) {
   const [currentLikeStatus, changeLikeStatus] = useState(props.likeStatus);
 
   async function likePressed() {
-    console.log(`Like button pressed for doc #${props.url}`);
-    const data = await axios.post('/changeLikeStatus', {
+    const { data } = await axios.post('/changeLikeStatus', {
       likeStatus: currentLikeStatus === 1 ? 0 : 1,
       url: props.url,
     });
-    changeLikeStatus(data['content']['newLikeStatus']);
-    console.log(data);
+    data['success'] === 1 && changeLikeStatus(data['content']['newLikeStatus']);
   }
 
   async function dislikePressed() {
-    console.log(`Dislike button pressed for #${props.url}`);
-    const data = await axios.post('/changeLikeStatus', {
+    const { data } = await axios.post('/changeLikeStatus', {
       likeStatus: currentLikeStatus === -1 ? 0 : -1,
       url: props.url,
     });
-    changeLikeStatus(data['content']['newLikeStatus']);
-    console.log(data);
+    data['success'] === 1 && changeLikeStatus(data['content']['newLikeStatus']);
   }
 
   function changeUrl() {
@@ -106,7 +102,7 @@ export default function SingleResult(props: Props) {
           <FaThumbsUp
             className={[
               styles.thumbsUp,
-              props.likeStatus === 1 ? styles.green : styles.neutral,
+              currentLikeStatus === 1 ? styles.green : styles.neutral,
             ].join(' ')}
           />
         </IconButton>
@@ -114,7 +110,7 @@ export default function SingleResult(props: Props) {
           <FaThumbsDown
             className={[
               styles.thumbsDown,
-              props.likeStatus === -1 ? styles.red : styles.neutral,
+              currentLikeStatus === -1 ? styles.red : styles.neutral,
             ].join(' ')}
           />
         </IconButton>

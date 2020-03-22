@@ -50,10 +50,10 @@ app.get('/search/:query', async (request, response) => {
   log('query', query);
   const data = await makeRequest('ranker', `query/${query}`);
 
-  // const queryDBObject = new Query({query: query, userid: request.user ? request.user._id : null });
-  // queryDBObject.save((err) => {
-  //   if(err) log('error', 'Could not successfully save query');
-  // })
+  const queryDBObject = new Query({query: query, userid: request.user ? request.user._id : null });
+  queryDBObject.save((err) => {
+    if(err) log('error', 'Could not successfully save query');
+  })
 
   log('ranker', data.message);
   return response.json(
@@ -101,8 +101,7 @@ app.get('/updateHistory', async (req, res) => {
 
 app.post('/changeLikeStatus', (req, res) => {
   const { likeStatus, url } = req.body;
-  console.log("likeStatus:", likeStatus);
-  console.log("Url:", url);
+  if(req.user === undefined) return res.json(sendPacket(0, 'Unable to save because User not logged in.'))
   return res.json(sendPacket(1, 'Document like status successfully changed', {newLikeStatus: likeStatus}));
 })
 
