@@ -13,7 +13,7 @@ require('./passport-config');
 const bcrypt = require('bcrypt');
 
 // const { mongoose } = require('./mongoConfig');
-const { mongoose, User, InvertedIndex, Crawler} = require('./mongoConfig');
+const { mongoose, User, InvertedIndex, Crawler, Query } = require('./mongoConfig');
 
 const log = require('./logger');
 const makeRequest = require('./makeRequest');
@@ -49,6 +49,11 @@ app.get('/search/:query', async (request, response) => {
   const query = request.params['query'];
   log('query', query);
   const data = await makeRequest('ranker', `query/${query}`);
+
+  const queryDBObject = new Query({query: query, userid: request.user ? request.user._id : null });
+  queryDBObject.save((err) => {
+    if(err) log('error', 'Could not successfully save query');
+  })
   log('ranker', data.message);
   return response.json(
     sendPacket(data.success, `Successfully received response from ranker: ${query}`, data.content)
@@ -68,9 +73,11 @@ app.get('/checkAuthenticated', (req, res) => {
 app.post('/fetchDocuments', async (req, res) => {
   const startTime = Date.now()
   log('fetch', 'Fetching documents from ranker')
+
   const docUrls = req.body['docUrls'].slice(0, 60)
   const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {docUrls: docUrls})
   const documents = data['content']['documents']
+
   log('fetch', `Received documents from ranker. Execution time ${(Date.now() - startTime) / 1000} seconds.`)
   return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents}))
 })
@@ -92,17 +99,25 @@ app.get('/updateHistory', async (req, res) => {
 })
 
 app.get('/test', (req, res) => {
-  User.find({}, (err, users) => {
-    if(err) {
-      console.log("Error:", err)
-      return res.json({message: 'No!'})
-    }
-    else {
-      console.log("Found users")
-      console.log(users)
-      return res.json({message: 'Yes!'})
-    }
+  Query.find((err, docs) => {
+    if(err) return res.json({error: err})
+    else return res.json({query: docs})
   })
+  // Query.findOne({query: 'chicken sauce'}, (err, query) => {
+  //   if(err) return res.json({error: err})
+  //   else return res.json({query: query})
+  // })
+  // User.find({}, (err, users) => {
+  //   if(err) {
+  //     console.log("Error:", err)
+  //     return res.json({message: 'No!'})
+  //   }
+  //   else {
+  //     console.log("Found users")
+  //     console.log(users)
+  //     return res.json({message: 'Yes!'})
+  //   }
+  // })
 })
 
 app.get('*', (request, response) => {
