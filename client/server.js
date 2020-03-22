@@ -50,10 +50,11 @@ app.get('/search/:query', async (request, response) => {
   log('query', query);
   const data = await makeRequest('ranker', `query/${query}`);
 
-  const queryDBObject = new Query({query: query, userid: request.user ? request.user._id : null });
-  queryDBObject.save((err) => {
-    if(err) log('error', 'Could not successfully save query');
-  })
+  // const queryDBObject = new Query({query: query, userid: request.user ? request.user._id : null });
+  // queryDBObject.save((err) => {
+  //   if(err) log('error', 'Could not successfully save query');
+  // })
+
   log('ranker', data.message);
   return response.json(
     sendPacket(data.success, `Successfully received response from ranker: ${query}`, data.content)
@@ -96,6 +97,13 @@ app.get('/updateHistory', async (req, res) => {
 
   if (user!==null) log("redirect", `Sending user ${user.userid} to ${redirectUrl}`)
   return res.redirect(redirectUrl)
+})
+
+app.post('/changeLikeStatus', (req, res) => {
+  const { likeStatus, url } = req.body;
+  console.log("likeStatus:", likeStatus);
+  console.log("Url:", url);
+  return res.json(sendPacket(1, 'Document like status successfully changed', {newLikeStatus: likeStatus}));
 })
 
 app.get('/test', (req, res) => {

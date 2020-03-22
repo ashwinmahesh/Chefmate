@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton } from '@material-ui/core';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   siteUrl: {
@@ -32,11 +34,18 @@ const useStyles = makeStyles((theme) => ({
   },
   thumbsUp: {
     fontSize: '14pt',
-    color: 'green',
   },
   thumbsDown: {
     fontSize: '14pt',
+  },
+  green: {
+    color: 'green',
+  },
+  red: {
     color: 'rgb(210, 0, 0)',
+  },
+  neutral: {
+    color: 'rgb(200,200,200)',
   },
 }));
 
@@ -45,7 +54,7 @@ type Props = {
   title: string,
   sampleText: string,
   likes: number,
-  likeStatus: 0 | 1 | 2,
+  likeStatus: -1 | 0 | 1,
 };
 
 export default function SingleResult(props: Props) {
@@ -53,13 +62,26 @@ export default function SingleResult(props: Props) {
   const url = changeUrl();
   const redirectUrl = '/updateHistory?redirect=' + props.url;
   const maxLength = 170;
+  const [currentLikeStatus, changeLikeStatus] = useState(props.likeStatus);
 
-  function likePressed() {
+  async function likePressed() {
     console.log(`Like button pressed for doc #${props.url}`);
+    const data = await axios.post('/changeLikeStatus', {
+      likeStatus: currentLikeStatus === 1 ? 0 : 1,
+      url: props.url,
+    });
+    changeLikeStatus(data['content']['newLikeStatus']);
+    console.log(data);
   }
 
-  function dislikePressed() {
+  async function dislikePressed() {
     console.log(`Dislike button pressed for #${props.url}`);
+    const data = await axios.post('/changeLikeStatus', {
+      likeStatus: currentLikeStatus === -1 ? 0 : -1,
+      url: props.url,
+    });
+    changeLikeStatus(data['content']['newLikeStatus']);
+    console.log(data);
   }
 
   function changeUrl() {
@@ -81,10 +103,20 @@ export default function SingleResult(props: Props) {
       <p className={styles.sampleText}>{props.sampleText.substr(0, maxLength)}</p>
       <div>
         <IconButton aria-label="Like" onClick={likePressed}>
-          <FaThumbsUp className={styles.thumbsUp} />
+          <FaThumbsUp
+            className={[
+              styles.thumbsUp,
+              props.likeStatus === 1 ? styles.green : styles.neutral,
+            ].join(' ')}
+          />
         </IconButton>
         <IconButton aria-label="Dislike" onClick={dislikePressed}>
-          <FaThumbsDown className={styles.thumbsDown} />
+          <FaThumbsDown
+            className={[
+              styles.thumbsDown,
+              props.likeStatus === -1 ? styles.red : styles.neutral,
+            ].join(' ')}
+          />
         </IconButton>
         <p className={styles.likeCount}>{props.likes} users liked this page.</p>
       </div>
