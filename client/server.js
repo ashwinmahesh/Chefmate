@@ -148,6 +148,14 @@ app.post('/changeLikeStatus', (req, res) => {
   })
 })
 
+app.get('/user', (req, res) => {
+  if(req.user === undefined) return res.json(sendPacket(0, 'Unable to save because User not logged in.'));
+  User.findById(req.user._id, (err, user) => {
+    if(err) return res.json(sendPacket(0, 'Unable to find user'))
+    return res.json(sendPacket(1, 'Successfully found user', { history: user['history'], likes: user['likes'], dislikes: user['dislikes'] }));
+  })
+})
+
 app.get('/test', (req, res) => {
   Query.find((err, docs) => {
     if(err) return res.json({error: err})
