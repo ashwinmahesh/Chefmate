@@ -66,7 +66,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type Props = { documents: [{}], numSearched: Number, searchTime: Number };
+type Props = {
+  documents: [{}],
+  numSearched: Number,
+  searchTime: Number,
+  likesDislikes: [{}],
+};
 
 function Results(props: Props) {
   const styles = useStyles();
@@ -76,6 +81,8 @@ function Results(props: Props) {
       ? Math.ceil(props.documents.length / pagesPerScreen)
       : 1;
   const [currentPage, changeCurrentPage] = useState(1);
+  const likes = props.likesDislikes[0];
+  const dislikes = props.likesDislikes[1];
 
   function renderTestSites() {
     const output = [];
@@ -103,11 +110,17 @@ function Results(props: Props) {
       i++
     ) {
       const document = JSON.parse(props.documents[i]);
+
+      var likeStatus = 0;
+      const dotReplacedUrl = document['_id'].replace(/\./g, '%114');
+      if (dotReplacedUrl in likes) likeStatus = 1;
+      else if (dotReplacedUrl in dislikes) likeStatus = -1;
+
       output.push(
         <SingleResult
           url={document['_id']}
           title={document['title']}
-          likeStatus={0}
+          likeStatus={likeStatus}
           likes={0}
           key={document['_id']}
           sampleText={document['description']}
