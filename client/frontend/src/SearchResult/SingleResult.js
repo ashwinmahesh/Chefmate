@@ -69,7 +69,6 @@ export default function SingleResult(props: Props) {
       likeStatus: currentLikeStatus === 1 ? 0 : 1,
       url: props.url,
     });
-    console.log(data['content']);
     data['success'] === 1 && changeLikeStatus(data['content']['newLikeStatus']);
   }
 
@@ -78,7 +77,6 @@ export default function SingleResult(props: Props) {
       likeStatus: currentLikeStatus === -1 ? 0 : -1,
       url: props.url,
     });
-    console.log(data['content']);
     data['success'] === 1 && changeLikeStatus(data['content']['newLikeStatus']);
   }
 
