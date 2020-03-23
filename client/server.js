@@ -84,8 +84,6 @@ app.post('/fetchDocuments', async (req, res) => {
     User.findById(req.user._id, (err, user) => {
       if(err) log('error', 'Unable to find user')
       else {
-        console.log("User:", user)
-
         return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents, likes: user['likes'], dislikes: user['dislikes']}))
       }
     })
@@ -137,6 +135,9 @@ app.post('/changeLikeStatus', (req, res) => {
       if (dotReplacedUrl in user['likes']) delete user['likes'][dotReplacedUrl];
       if (dotReplacedUrl in user['dislikes']) delete user['dislikes'][dotReplacedUrl];
     }
+
+    user.markModified('likes');
+    user.markModified('dislikes');
 
     user.save( (err, newUser) => {
       if(err) {
