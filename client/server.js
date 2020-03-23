@@ -54,6 +54,7 @@ app.get('/search/:query', async (request, response) => {
   queryDBObject.save((err) => {
     if(err) log('error', 'Could not successfully save query');
   })
+
   log('ranker', data.message);
   return response.json(
     sendPacket(data.success, `Successfully received response from ranker: ${query}`, data.content)
@@ -77,9 +78,17 @@ app.post('/fetchDocuments', async (req, res) => {
   const docUrls = req.body['docUrls'].slice(0, 60)
   const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {docUrls: docUrls})
   const documents = data['content']['documents']
-
   log('fetch', `Received documents from ranker. Execution time ${(Date.now() - startTime) / 1000} seconds.`)
-  return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents}))
+  
+  if(req.user != undefined) {
+    User.findById(req.user._id, (err, user) => {
+      if(err) log('error', 'Unable to find user')
+      else {
+        return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents, likes: user['likes'], dislikes: user['dislikes']}))
+      }
+    })
+  }
+  else return res.json(sendPacket(1, 'Successfully fetched documents', {documents: documents, likes: {}, dislikes: {}}))
 })
 
 app.get('/updateHistory', async (req, res) => {
@@ -96,6 +105,47 @@ app.get('/updateHistory', async (req, res) => {
 
   if (user!==null) log("redirect", `Sending user ${user.userid} to ${redirectUrl}`)
   return res.redirect(redirectUrl)
+})
+
+app.post('/changeLikeStatus', (req, res) => {
+  const { likeStatus, url } = req.body;
+  if(req.user === undefined) return res.json(sendPacket(0, 'Unable to save because User not logged in.'));
+  User.findById(req.user._id, (err, user) => {
+    if(err){
+      log('error', 'Error finding user. Could not change like status');
+      return res.json(sendPacket(0, 'Unable to find user'));
+    }
+
+    if(!('likes' in user)) user['likes']= {};
+    if(!('dislikes' in user)) user['dislikes']= {};
+
+    const dotReplacedUrl = url.replace(/\./g, '%114')
+
+    if (likeStatus === 1) {
+      if (dotReplacedUrl in user['dislikes']) delete user['dislikes'][dotReplacedUrl];
+      user['likes'][dotReplacedUrl]=true;
+    }
+
+    else if (likeStatus === -1) {
+      if (dotReplacedUrl in user['likes']) delete user['likes'][dotReplacedUrl];
+      user['dislikes'][dotReplacedUrl]=true;
+    }
+
+    else {
+      if (dotReplacedUrl in user['likes']) delete user['likes'][dotReplacedUrl];
+      if (dotReplacedUrl in user['dislikes']) delete user['dislikes'][dotReplacedUrl];
+    }
+
+    user.markModified('likes');
+    user.markModified('dislikes');
+
+    user.save( (err, newUser) => {
+      if(err) {
+        return res.json(sendPacket(0, 'Unable to save like status updates'));
+      }
+      return res.json(sendPacket(1, 'Document like status successfully changed', {newLikeStatus: likeStatus, user: newUser}));
+    })
+  })
 })
 
 app.get('/test', (req, res) => {

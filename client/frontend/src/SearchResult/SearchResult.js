@@ -43,6 +43,7 @@ function SearchResult(props) {
   const [isLoading, changeLoading] = useState(true);
   const [numSearched, updateNumSearched] = useState(0);
   const [searchTime, changeSearchTime] = useState(1.12);
+  const [userLikesDislikes, changeUserLikesDislikes] = useState([]);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -71,6 +72,7 @@ function SearchResult(props) {
   async function fetchDocuments(docUrls) {
     const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
     changeDocuments(data['content']['documents']);
+    changeUserLikesDislikes([data['content']['likes'], data['content']['dislikes']]);
   }
 
   return (
@@ -84,6 +86,7 @@ function SearchResult(props) {
           documents={documents}
           numSearched={numSearched}
           searchTime={searchTime}
+          likesDislikes={userLikesDislikes}
         />
       ) : (
         <NoResults />
