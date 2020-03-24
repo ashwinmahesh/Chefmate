@@ -68,6 +68,8 @@ Vishva Pandya
 <p>Congratulations you are in the Chefmate DB</p>
 <h4>Running the Crawler in the Background of the AWS Server</h4>
 <p>nohup ./buildIndex > output.txt &</p>
+<h4>Running the Ranker as a Service in AWS</h4>
+<p>export FLASK_ENV="production"; python3 ranker.py</p>
 
 <h2>Running the Crawler</h2>
 <p>Set the desired number of iterations in main.py</p>
