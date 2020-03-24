@@ -11,25 +11,6 @@ const useStyles = makeStyles((theme) => ({
   container: {
     width: '100vw',
   },
-  searchField: {
-    width: '50vw',
-    maxWidth: '700px',
-    marginTop: '20px',
-    float: 'left',
-    marginLeft: '50px',
-  },
-  logo: {
-    width: '100px',
-    height: '25px',
-    marginTop: '30px',
-    float: 'left',
-    marginLeft: '15px',
-  },
-  buttonStyle: {
-    width: '50px',
-    height: '55px',
-  },
-  contents: {},
   loading: {
     marginTop: '80px',
   },

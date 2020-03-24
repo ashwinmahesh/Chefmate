@@ -140,7 +140,7 @@ function Results(props: Props) {
     changeCurrentPage(newPage);
   }
 
-  function renderPages() {
+  function renderPageNumbers() {
     const output = [];
     for (var i = 1; i < pages + 1; i++) {
       output.push(
@@ -156,14 +156,9 @@ function Results(props: Props) {
     return output;
   }
 
-  return (
-    <div className={styles.container}>
-      <p className={styles.resultCount}>
-        Found {props.numSearched} results ({props.searchTime} seconds)
-      </p>
-      <div className={styles.resultContainer}>
-        {/* {renderTestSites()} */}
-        {renderSites()}
+  function renderPages() {
+    return (
+      <>
         <div className={styles.logoAndNext}>
           <a
             onClick={prevPressed}
@@ -181,7 +176,20 @@ function Results(props: Props) {
             <FaChevronRight className={styles.rightArrow} />
           </a>
         </div>
-        <div className={styles.pages}>{renderPages()}</div>
+        <div className={styles.pages}>{renderPageNumbers()}</div>
+      </>
+    );
+  }
+
+  return (
+    <div className={styles.container}>
+      <p className={styles.resultCount}>
+        Found {props.numSearched} results ({props.searchTime} seconds)
+      </p>
+      <div className={styles.resultContainer}>
+        {/* {renderTestSites()} */}
+        {renderSites()}
+        {renderPages()}
       </div>
     </div>
   );

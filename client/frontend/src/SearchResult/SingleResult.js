@@ -83,9 +83,8 @@ export default function SingleResult(props: Props) {
   function changeUrl() {
     var output = '';
     let i = props.url.substr(0, 8) == 'https://' ? 8 : 0;
-    for (i; i < props.url.length; i++) {
+    for (i; i < props.url.length; i++)
       props.url[i] == '/' ? (output += '>') : (output += props.url[i]);
-    }
     return output;
   }
 
