@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton } from '@material-ui/core';
-import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
-
-import axios from 'axios';
+import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
 
 const useStyles = makeStyles((theme) => ({
   siteUrl: {
@@ -32,21 +29,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'inline-block',
     marginLeft: '20px',
   },
-  thumbsUp: {
-    fontSize: '14pt',
-  },
-  thumbsDown: {
-    fontSize: '14pt',
-  },
-  green: {
-    color: 'green',
-  },
-  red: {
-    color: 'rgb(210, 0, 0)',
-  },
-  neutral: {
-    color: 'rgb(200,200,200)',
-  },
 }));
 
 type Props = {
@@ -62,23 +44,6 @@ export default function SingleResult(props: Props) {
   const url = changeUrl();
   const redirectUrl = '/updateHistory?redirect=' + props.url;
   const maxLength = 170;
-  const [currentLikeStatus, changeLikeStatus] = useState(props.likeStatus);
-
-  async function likePressed() {
-    const { data } = await axios.post('/changeLikeStatus', {
-      likeStatus: currentLikeStatus === 1 ? 0 : 1,
-      url: props.url,
-    });
-    data['success'] === 1 && changeLikeStatus(data['content']['newLikeStatus']);
-  }
-
-  async function dislikePressed() {
-    const { data } = await axios.post('/changeLikeStatus', {
-      likeStatus: currentLikeStatus === -1 ? 0 : -1,
-      url: props.url,
-    });
-    data['success'] === 1 && changeLikeStatus(data['content']['newLikeStatus']);
-  }
 
   function changeUrl() {
     var output = '';
@@ -96,22 +61,7 @@ export default function SingleResult(props: Props) {
       </a>
       <p className={styles.sampleText}>{props.sampleText.substr(0, maxLength)}</p>
       <div>
-        <IconButton aria-label="Like" onClick={likePressed}>
-          <FaThumbsUp
-            className={[
-              styles.thumbsUp,
-              currentLikeStatus === 1 ? styles.green : styles.neutral,
-            ].join(' ')}
-          />
-        </IconButton>
-        <IconButton aria-label="Dislike" onClick={dislikePressed}>
-          <FaThumbsDown
-            className={[
-              styles.thumbsDown,
-              currentLikeStatus === -1 ? styles.red : styles.neutral,
-            ].join(' ')}
-          />
-        </IconButton>
+        <LikeDislikeButtons url={props.url} likeStatus={props.likeStatus} />
         <p className={styles.likeCount}>{props.likes} users liked this page.</p>
       </div>
     </div>
