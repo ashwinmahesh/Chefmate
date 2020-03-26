@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: '12px',
     paddingLeft: '15px',
     paddingRight: '5px',
-    minWidth: '700px',
+    minWidth: '900px',
   },
   barsStyle: {
     color: 'white',
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '15px',
     paddingRight: '15px',
     marginLeft: '15px',
-    width: '350px',
+    width: '550px',
   },
   buttonStyle: {
     marginLeft: '5px',
