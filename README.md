@@ -16,9 +16,6 @@ Vishva Pandya
 <h3>Client</h3>
 <p>Update later</p>
 
-<h2>Contributing</h2>
-<p>Create a new branch, and submit a merge request. Another developer will look through and either approve the MR, or provide feedback on what needs to be changed before it can be merged. Delete the branch when it is complete</p>
-
 <h2>Running the Project</h2>
 <h4>On initial download: "chmod +x start"</h4>
 <h4>./start {mode: dev | prod} {install}</h4>
