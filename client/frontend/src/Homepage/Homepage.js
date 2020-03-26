@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, IconButton } from '@material-ui/core';
+import { FaSearch } from 'react-icons/fa';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
@@ -21,13 +22,13 @@ const useStyles = makeStyles((theme) => ({
     height: '125px',
     marginBottom: '50px',
   },
-  buttonStyle: {
-    marginLeft: '20px',
-    width: '50px',
-    height: '55px',
-  },
   contents: {
     marginTop: '100px',
+  },
+  searchButton: {
+    fontSize: '22pt',
+    marginLeft: '6px',
+    color: 'rgb(230, 95, 85)',
   },
 }));
 
@@ -35,7 +36,6 @@ function Homepage() {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
-  const [queryRedirect, changeQueryRedirect] = useState(false);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -53,15 +53,10 @@ function Homepage() {
     changeQuery(event.target.value);
   }
 
-  function searchPressed() {
-    changeQueryRedirect(true);
-  }
-
   return (
     <div className={styles.container}>
       <HeaderSimple />
       {loginRedirect && <Redirect to="/login" />}
-      {queryRedirect && <Redirect to={`/result/${query}`} />}
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
         <br />
@@ -75,13 +70,16 @@ function Homepage() {
           onChange={handleQueryChange}
         />
 
-        <Button
-          variant="contained"
-          className={styles.buttonStyle}
-          onClick={searchPressed}
-        >
-          GO
-        </Button>
+        <a href={query.length !== 0 ? `/result/${query}` : undefined}>
+          <IconButton
+            edge="start"
+            className={styles.searchButton}
+            color="inherit"
+            aria-label="menu"
+          >
+            <FaSearch />
+          </IconButton>
+        </a>
       </div>
     </div>
   );

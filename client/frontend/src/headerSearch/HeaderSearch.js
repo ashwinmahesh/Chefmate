@@ -88,7 +88,7 @@ export default function HeaderSearch(props: Props) {
           value={query}
           onChange={handleQueryChange}
         />
-        <a href={`/result/${query}`}>
+        <a href={query.length !== 0 ? `/result/${query}` : undefined}>
           <IconButton
             edge="start"
             className={styles.searchButton}
