@@ -5,14 +5,19 @@ import HeaderSearch from '../headerSearch/HeaderSearch';
 import { Redirect } from 'react-router-dom';
 import Results from './Results';
 import NoResults from './NoResults';
-import loading from '../images/loading.gif';
+// import loading from '../images/loading.gif';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '100vw',
   },
+  // loading: {
+  //   marginTop: '80px',
+  // },
   loading: {
-    marginTop: '80px',
+    color: 'rgb(230, 95, 85)',
+    marginTop: '150px',
   },
 }));
 
@@ -61,7 +66,8 @@ function SearchResult(props) {
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch={oldQuery} />
       {isLoading ? (
-        <img className={styles.loading} src={loading} alt="loading..." />
+        // <img className={styles.loading} src={loading} alt="loading..." />
+        <CircularProgress className={styles.loading} size={100} />
       ) : documents.length > 0 ? (
         <Results
           documents={documents}
