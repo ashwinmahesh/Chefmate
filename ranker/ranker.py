@@ -19,7 +19,7 @@ app = Flask(__name__)
 port = 8002 if app.config['ENV']=='development' else 80
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 
-inMemoryTFIDF, crawlerReverseMap, termReverseMap = loadInvertedIndexToMemory()
+inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, authority = loadInvertedIndexToMemory()
 
 @app.route('/', methods=["GET"])
 def index():
@@ -29,7 +29,7 @@ def index():
 def rankQuery(query):
   log('Ranker', 'Received query: '+query)
   queryTerms = stemQuery(query)
-  sortedDocUrls=calculateAllCosineSimilarity(queryTerms, inMemoryTFIDF, crawlerReverseMap, termReverseMap)
+  sortedDocUrls=calculateRankings(queryTerms, inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, authority)
   return helpers.sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls})
 
 @app.route('/fetchDocuments', methods=['POST'])
