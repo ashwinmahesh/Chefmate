@@ -1,9 +1,7 @@
 const passport = require("passport");
+const sendPacket = require('../sendPacket');
 
 module.exports = app => {
-  app.get("/auth/test", (req, res) => {
-    res.send("Auth Working properly");
-  });
   app.get(
     "/auth/google",
     passport.authenticate("google", {
@@ -23,4 +21,19 @@ module.exports = app => {
       res.redirect("/");
     }
   );
+
+  app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect("/login");
+  })
+
+
+  app.get('/checkAuthenticated', (req, res) => {
+    if(checkAuthentication(req)) return res.json(sendPacket(1, 'User is authenticated'));
+    else return res.json(sendPacket(0, 'User not authenticated'));
+  })
 };
+
+function checkAuthentication(request) {
+  return request.isAuthenticated() && request.user; // == some stored value
+}
