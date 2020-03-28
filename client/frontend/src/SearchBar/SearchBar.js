@@ -1,19 +1,8 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Paper,
-  InputBase,
-  Divider,
-  IconButton,
-  DialogTitle,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  Button,
-} from '@material-ui/core';
+import { Paper, InputBase, Divider, IconButton } from '@material-ui/core';
 import { FaSearch, FaMicrophone } from 'react-icons/fa';
-
-import DialogActions from '@material-ui/core/DialogActions';
+import NotImplemented from '../Alerts/NotImplemented';
 
 const useStyles = makeStyles((theme) => ({
   barWrapper: {
@@ -70,22 +59,6 @@ export default function SearchBar(props: Props) {
     changeAlertOpen(true);
   }
 
-  function renderAlert() {
-    return (
-      <Dialog open={alertOpen}>
-        <DialogTitle>Feature Not Yet Implemented</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            This feature is not yet implemented, however it will be available soon!
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleAlertClose}>Acknowledge</Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-
   return (
     <Paper className={styles.barWrapper}>
       <div className={styles.flex}>
@@ -106,7 +79,9 @@ export default function SearchBar(props: Props) {
         >
           <FaMicrophone />
         </IconButton>
-        {renderAlert()}
+
+        <NotImplemented open={alertOpen} handleClose={handleAlertClose} />
+
         <Divider className={styles.divider} orientation="vertical" />
 
         <a href={query.length !== 0 ? `/result/${query}` : undefined}>
