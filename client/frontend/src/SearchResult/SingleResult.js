@@ -48,8 +48,12 @@ export default function SingleResult(props: Props) {
   function changeUrl() {
     var output = '';
     let i = props.url.substr(0, 8) == 'https://' ? 8 : 0;
-    for (i; i < props.url.length; i++)
-      props.url[i] == '/' ? (output += '>') : (output += props.url[i]);
+    if (props.url.substr(i, 4) === 'www.') i += 4;
+    for (i; i < props.url.length; i++) {
+      if (props.url[i] == '/') {
+        if (i !== props.url.length - 1) output += ' > ';
+      } else output += props.url[i];
+    }
     return output;
   }
 
