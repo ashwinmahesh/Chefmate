@@ -84,6 +84,16 @@ function Results(props: Props) {
   const likes = props.likesDislikes[0];
   const dislikes = props.likesDislikes[1];
 
+  function nextPressed() {
+    const newPage = currentPage + 1;
+    changeCurrentPage(newPage);
+  }
+
+  function prevPressed() {
+    const newPage = currentPage - 1;
+    changeCurrentPage(newPage);
+  }
+
   function renderTestSites() {
     const output = [];
     for (var i = 0; i < pagesPerScreen; i++) {
@@ -121,23 +131,13 @@ function Results(props: Props) {
           url={document['_id']}
           title={document['title']}
           likeStatus={likeStatus}
-          likes={0}
+          likes={Math.floor(Math.random() * 100000 + 5000)}
           key={document['_id']}
           sampleText={document['description']}
         />
       );
     }
     return output;
-  }
-
-  function nextPressed() {
-    const newPage = currentPage + 1;
-    changeCurrentPage(newPage);
-  }
-
-  function prevPressed() {
-    const newPage = currentPage - 1;
-    changeCurrentPage(newPage);
   }
 
   function renderPageNumbers() {
