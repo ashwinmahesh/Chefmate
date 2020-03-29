@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Card } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import googleLogo from '../images/google.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +14,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: 'rgb(230,230,230)',
     },
   },
-  googleText: { display: 'inline-block', flex: 1, fontFamily: 'Arial' },
+  googleText: {
+    display: 'inline-block',
+    flex: 1,
+    fontFamily: 'Arial',
+    color: 'black',
+  },
   googleLink: {
     display: 'flex',
     textDecoration: 'none',
@@ -31,7 +36,7 @@ export default function GoogleButton() {
   const styles = useStyles();
   return (
     <Paper className={styles.googlePaper} elevation={3}>
-      <a href="#" className={styles.googleLink}>
+      <a href="/auth/google" className={styles.googleLink}>
         <img src={googleLogo} />
         <p className={styles.googleText}>Sign In With Google</p>
       </a>
