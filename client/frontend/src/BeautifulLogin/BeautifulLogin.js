@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    marginTop: -12 + 145,
+    marginTop: -12 + 108,
     marginLeft: -12,
   },
   button: {
@@ -72,6 +72,12 @@ const useStyles = makeStyles((theme) => ({
       textDecoration: 'underline',
     },
     marginBottom: '15px',
+  },
+  googleButtonDiv: {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+    marginTop: '25px',
   },
 }));
 
@@ -161,7 +167,10 @@ export default function BeautifulLogin() {
           {loading && (
             <CircularProgress size={24} className={styles.buttonProgress} />
           )}
-          <GoogleButton />
+          <div className={styles.googleButtonDiv}>
+            <GoogleButton />
+          </div>
+
           <a className={styles.signup} href="/#">
             Create an account
           </a>
