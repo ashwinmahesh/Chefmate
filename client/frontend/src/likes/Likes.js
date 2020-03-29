@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
+import HeaderSearch from '../headerSearch/HeaderSearch';
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -32,6 +33,8 @@ export default function Likes() {
   return (
     <div>
       {loginRedirect && <Redirect to="/" />}
+      <HeaderSearch initialSearch="" />
+
       <p>I am the likes page</p>
     </div>
   );
