@@ -13,6 +13,8 @@ import { green, red } from '@material-ui/core/colors';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 
+import GoogleButton from './GoogleButton';
+
 const useStyles = makeStyles((theme) => ({
   wrapper: {
     display: 'flex',
@@ -159,6 +161,7 @@ export default function BeautifulLogin() {
           {loading && (
             <CircularProgress size={24} className={styles.buttonProgress} />
           )}
+          <GoogleButton />
           <a className={styles.signup} href="/#">
             Create an account
           </a>
