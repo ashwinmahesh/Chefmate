@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '30px',
   },
   passwordField: {
-    marginTop: '40px',
+    marginTop: '20px',
     width: '375px',
   },
   buttonSuccess: {
@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    marginTop: -12 + 145,
+    marginTop: -12 + 155,
     marginLeft: -12,
   },
   button: {
@@ -75,6 +75,11 @@ export default function BeautifulLogin() {
   const styles = useStyles();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = React.useState(false);
+  const [username, changeUsername] = useState('');
+  const [password, changePassword] = useState('');
+  const [usernameErr, changeUsernameErr] = useState(false);
+  const [passwordErr, changePasswordErr] = useState(false);
+
   const timer = React.useRef();
 
   const buttonClassname = clsx({
@@ -96,7 +101,17 @@ export default function BeautifulLogin() {
         setLoading(false);
       }, 2000);
     }
+    changeUsernameErr(true);
+    changePasswordErr(true);
   };
+
+  function handleUsernameChange(event) {
+    changeUsername(event.target.value);
+  }
+
+  function handlePasswordChange(event) {
+    changePassword(event.target.value);
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -105,15 +120,21 @@ export default function BeautifulLogin() {
           <img src={logo} alt="Chefmate Logo" className={styles.logo} />
           <p className={styles.header}>Sign in to Continue</p>
           <TextField
+            error={usernameErr}
             label="Email"
             variant="outlined"
             className={styles.emailField}
+            onChange={handleUsernameChange}
+            helperText={usernameErr ? 'Email not found' : ' '}
           />
           <TextField
+            error={passwordErr}
             label="Password"
             variant="outlined"
             className={styles.passwordField}
             type="password"
+            onChange={handlePasswordChange}
+            helperText={passwordErr ? 'Password is invalid' : ' '}
           />
 
           <Button
