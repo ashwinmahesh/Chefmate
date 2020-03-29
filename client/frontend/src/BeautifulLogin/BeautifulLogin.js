@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
@@ -10,6 +10,8 @@ import {
 import logo from '../images/logo.png';
 import clsx from 'clsx';
 import { green, red } from '@material-ui/core/colors';
+import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -79,31 +81,38 @@ export default function BeautifulLogin() {
   const [password, changePassword] = useState('');
   const [usernameErr, changeUsernameErr] = useState(false);
   const [passwordErr, changePasswordErr] = useState(false);
+  const [loginRedirect, changeRedirect] = useState(false);
 
-  const timer = React.useRef();
+  const timer = useRef();
 
   const buttonClassname = clsx({
     [styles.buttonSuccess]: success,
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
       clearTimeout(timer.current);
     };
   }, []);
 
-  const handleLoginClick = () => {
-    if (!loading) {
-      setSuccess(false);
-      setLoading(true);
+  async function handleLoginClick() {
+    setLoading(true);
+    setSuccess(false);
+    const { data } = await axios.post('/processLogin', {
+      username: username,
+      password: password,
+      status: 0,
+    });
+    if (data['success'] === 1) changeRedirect(true);
+    else {
       timer.current = setTimeout(() => {
         setSuccess(true);
         setLoading(false);
-      }, 2000);
+        changeUsernameErr(true);
+        changePasswordErr(true);
+      }, 1000);
     }
-    changeUsernameErr(true);
-    changePasswordErr(true);
-  };
+  }
 
   function handleUsernameChange(event) {
     changeUsername(event.target.value);
@@ -115,6 +124,7 @@ export default function BeautifulLogin() {
 
   return (
     <div className={styles.wrapper}>
+      {loginRedirect && <Redirect to="/" />}
       <Card raised className={styles.card}>
         <CardContent>
           <img src={logo} alt="Chefmate Logo" className={styles.logo} />
