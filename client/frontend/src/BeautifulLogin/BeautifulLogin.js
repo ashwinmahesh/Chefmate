@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import logo from '../images/logo.png';
 import clsx from 'clsx';
-import { green } from '@material-ui/core/colors';
+import { green, red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -39,9 +39,9 @@ const useStyles = makeStyles((theme) => ({
     width: '375px',
   },
   buttonSuccess: {
-    backgroundColor: green[500],
+    backgroundColor: red[500],
     '&:hover': {
-      backgroundColor: green[700],
+      backgroundColor: red[700],
     },
   },
   buttonProgress: {
@@ -49,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    marginTop: -12 + 155,
+    marginTop: -12 + 145,
     marginLeft: -12,
   },
   button: {
-    marginTop: '40px',
+    marginTop: '15px',
     width: '275px',
     fontSize: '12pt',
     height: '50px',
