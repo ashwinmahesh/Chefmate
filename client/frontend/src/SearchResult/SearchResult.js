@@ -5,6 +5,7 @@ import HeaderSearch from '../headerSearch/HeaderSearch';
 import { Redirect } from 'react-router-dom';
 import Results from './Results';
 import NoResults from './NoResults';
+import Timeout from './Timeout';
 // import loading from '../images/loading.gif';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
