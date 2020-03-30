@@ -4,6 +4,8 @@ import { IconButton, FormControlLabel, Switch, Drawer } from '@material-ui/core'
 import { FaBars, FaThumbsUp, FaThumbsDown, FaHistory } from 'react-icons/fa';
 import { green, red } from '@material-ui/core/colors';
 import NotImplemented from '../Alerts/NotImplemented';
+import logo from '../images/logo.png';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -56,6 +58,26 @@ const useStyles = makeStyles((theme) => ({
   drawerPaper: {
     background: 'rgb(230, 95, 85)',
   },
+  logo: {
+    width: '125px',
+    height: '28px',
+    marginLeft: '20px',
+  },
+  logoDiv: {
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    paddingLeft: '15px',
+  },
+  divider: {
+    flex: 1,
+    background: 'rgb(190, 190,190)',
+  },
+  dividierDiv: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
 }));
 
 type Props = {
@@ -99,6 +121,24 @@ export default function MenuIcon(props: Props) {
         onClose={handleClose}
         classes={{ paper: styles.drawerPaper }}
       >
+        <div className={styles.logoDiv}>
+          <IconButton
+            edge="start"
+            className={styles.menuButton}
+            aria-label="menu"
+            onClick={handleClose}
+          >
+            <FaBars />
+          </IconButton>
+          <a href="/">
+            <img src={logo} className={styles.logo} alt="Chefmate logo" />
+          </a>
+        </div>
+
+        <div className={styles.dividierDiv}>
+          <Divider classes={{ root: styles.divider }} light={true} />
+        </div>
+
         <div className={styles.divStyle}>
           <a href="/likes" className={styles.menuTextStyle}>
             <IconButton>
