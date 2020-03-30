@@ -53,6 +53,12 @@ function Homepage() {
     changeQuery(event.target.value);
   }
 
+  function handleKeyDown(event) {
+    if (event.key === 'Enter' && query.length !== 0) {
+      window.location.href = `/result/${query}`;
+    }
+  }
+
   return (
     <div className={styles.container}>
       <HeaderSimple />
@@ -68,6 +74,7 @@ function Homepage() {
           className={styles.searchField}
           value={query}
           onChange={handleQueryChange}
+          onKeyDown={handleKeyDown}
         />
 
         <a href={query.length !== 0 ? `/result/${query}` : undefined}>
