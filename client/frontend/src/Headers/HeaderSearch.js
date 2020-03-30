@@ -1,10 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, Button } from '@material-ui/core';
-import { FaBars } from 'react-icons/fa';
+import { Button } from '@material-ui/core';
 
 import logo from '../images/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
+import MenuIcon from './MenuIcon';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -19,17 +19,6 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '15px',
     paddingRight: '5px',
     minWidth: '900px',
-  },
-  barsStyle: {
-    color: 'white',
-  },
-  menuButton: {
-    marginLeft: '5px',
-  },
-  buttonStyle: {
-    marginLeft: '5px',
-    width: '35px',
-    height: '41px',
   },
   logoutButton: {
     textDecoration: 'none',
@@ -64,14 +53,7 @@ export default function HeaderSearch(props: Props) {
         <a className={styles.logoutButton} href="/logout">
           <Button color="inherit">Logout</Button>
         </a>
-        <IconButton
-          edge="start"
-          className={styles.menuButton}
-          color="inherit"
-          aria-label="menu"
-        >
-          <FaBars className={styles.barsStyle} />
-        </IconButton>
+        <MenuIcon />
       </div>
     </div>
   );
