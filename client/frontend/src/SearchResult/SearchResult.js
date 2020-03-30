@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import HeaderSearch from '../headerSearch/HeaderSearch';
+import HeaderSearch from '../Headers/HeaderSearch';
 import { Redirect } from 'react-router-dom';
 import Results from './Results';
 import NoResults from './NoResults';

@@ -26,7 +26,7 @@ export default function HeaderSimple() {
     <div className={classes.root}>
       <AppBar position="static" className={classes.barcolor}>
         <Toolbar>
-          <MenuIcon />
+          <MenuIcon side="left" />
           <Typography variant="h5" className={classes.title}>
             CHEFMATE
           </Typography>

@@ -53,7 +53,7 @@ export default function HeaderSearch(props: Props) {
         <a className={styles.logoutButton} href="/logout">
           <Button color="inherit">Logout</Button>
         </a>
-        <MenuIcon />
+        <MenuIcon side="right" />
       </div>
     </div>
   );
