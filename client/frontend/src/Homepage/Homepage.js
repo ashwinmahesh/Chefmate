@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
 
-import HeaderSimple from '../headerSimple/HeaderSimple';
+import HeaderSimple from '../Headers/HeaderSimple';
 
 const useStyles = makeStyles((theme) => ({
   container: {
