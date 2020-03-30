@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import HeaderSearch from '../headerSearch/HeaderSearch';
+import HeaderSearch from '../Headers/HeaderSearch';
 
 const useStyles = makeStyles((theme) => ({}));
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import HeaderSearch from '../headerSearch/HeaderSearch';
+import HeaderSearch from '../Headers/HeaderSearch';
 
 const useStyles = makeStyles((theme) => ({}));
 
