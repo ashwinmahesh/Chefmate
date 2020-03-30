@@ -28,6 +28,13 @@ const useStyles = makeStyles((theme) => ({
   thumbsDown: {
     color: red[200],
   },
+  menuTextStyle: {
+    color: 'black',
+    textDecoration: 'none',
+    '&:visited': {
+      color: 'inherit',
+    },
+  },
 }));
 
 export default function MenuIcon() {
@@ -61,20 +68,29 @@ export default function MenuIcon() {
         open={Boolean(anchorElement)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose} className={styles.menu}>
-          <FaThumbsUp className={[styles.iconStyle, styles.thumbsUp].join(' ')} />
-          Likes
+        <MenuItem className={styles.menu}>
+          <a href="/likes" className={styles.menuTextStyle}>
+            <FaThumbsUp className={[styles.iconStyle, styles.thumbsUp].join(' ')} />
+            Likes
+          </a>
         </MenuItem>
-        <MenuItem onClick={handleClose} className={styles.menu}>
-          <FaHistory className={[styles.iconStyle].join(' ')} />
-          History
+
+        <MenuItem className={styles.menu}>
+          <a href="/history" className={styles.menuTextStyle}>
+            <FaHistory className={[styles.iconStyle].join(' ')} />
+            History
+          </a>
         </MenuItem>
-        <MenuItem onClick={handleClose} className={styles.menu}>
-          <FaThumbsDown
-            className={[styles.iconStyle, styles.thumbsDown].join(' ')}
-          />
-          Dislikes
+
+        <MenuItem className={styles.menu}>
+          <a href="/dislikes" className={styles.menuTextStyle}>
+            <FaThumbsDown
+              className={[styles.iconStyle, styles.thumbsDown].join(' ')}
+            />
+            Dislikes
+          </a>
         </MenuItem>
+
         <MenuItem>
           <FormControlLabel
             control={
