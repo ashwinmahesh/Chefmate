@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  IconButton,
-  Menu,
-  MenuItem,
-  FormControlLabel,
-  Switch,
-} from '@material-ui/core';
+import { IconButton, FormControlLabel, Switch, Drawer } from '@material-ui/core';
 import { FaBars, FaThumbsUp, FaThumbsDown, FaHistory } from 'react-icons/fa';
 import { green, red } from '@material-ui/core/colors';
 
@@ -29,15 +23,44 @@ const useStyles = makeStyles((theme) => ({
     color: red[200],
   },
   menuTextStyle: {
-    color: 'black',
+    fontFamily: 'Arial',
+    fontSize: '14pt',
+    color: 'white',
     textDecoration: 'none',
     '&:visited': {
-      color: 'inherit',
+      color: 'white',
     },
+    flex: 1,
+  },
+  divStyle: {
+    width: '250px',
+    '&:hover': {
+      background: 'rgb(209, 83, 73)',
+    },
+    display: 'flex',
+    paddingTop: '10px',
+    paddingBottom: '10px',
+    paddingLeft: '15px',
+  },
+  darkLabel: {
+    fontFamily: 'Arial',
+    fontSize: '14pt',
+    marginLeft: '20px',
+    width: '100%',
+    color: 'white',
+  },
+  switchDiv: {
+    paddingLeft: '25px',
+  },
+  drawerPaper: {
+    background: 'rgb(230, 95, 85)',
   },
 }));
 
-export default function MenuIcon() {
+type Props = {
+  side: 'left' | 'right',
+};
+export default function MenuIcon(props: Props) {
   const styles = useStyles();
   const [anchorElement, setAnchorElement] = useState(null);
   const [darkMode, changeDarkMode] = useState(false);
@@ -51,6 +74,7 @@ export default function MenuIcon() {
   function handleDarkModeChange(event) {
     changeDarkMode(event.target.checked);
   }
+
   return (
     <>
       <IconButton
@@ -61,49 +85,57 @@ export default function MenuIcon() {
       >
         <FaBars />
       </IconButton>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorElement}
-        keepMounted
+      <Drawer
+        anchor={props.side}
         open={Boolean(anchorElement)}
         onClose={handleClose}
+        classes={{ paper: styles.drawerPaper }}
       >
-        <MenuItem className={styles.menu}>
+        <div className={styles.divStyle}>
           <a href="/likes" className={styles.menuTextStyle}>
-            <FaThumbsUp className={[styles.iconStyle, styles.thumbsUp].join(' ')} />
+            <IconButton>
+              <FaThumbsUp
+                className={[styles.iconStyle, styles.thumbsUp].join(' ')}
+              />
+            </IconButton>
             Likes
           </a>
-        </MenuItem>
+        </div>
 
-        <MenuItem className={styles.menu}>
+        <div className={styles.divStyle}>
           <a href="/history" className={styles.menuTextStyle}>
-            <FaHistory className={[styles.iconStyle].join(' ')} />
+            <IconButton>
+              <FaHistory className={[styles.iconStyle].join(' ')} />
+            </IconButton>
             History
           </a>
-        </MenuItem>
+        </div>
 
-        <MenuItem className={styles.menu}>
+        <div className={styles.divStyle}>
           <a href="/dislikes" className={styles.menuTextStyle}>
-            <FaThumbsDown
-              className={[styles.iconStyle, styles.thumbsDown].join(' ')}
-            />
+            <IconButton>
+              <FaThumbsDown
+                className={[styles.iconStyle, styles.thumbsDown].join(' ')}
+              />
+            </IconButton>
             Dislikes
           </a>
-        </MenuItem>
+        </div>
 
-        <MenuItem>
+        <div className={[styles.divStyle, styles.switchDiv].join(' ')}>
           <FormControlLabel
             control={
               <Switch
                 checked={darkMode}
                 onChange={handleDarkModeChange}
                 color="primary"
+                size="large"
               />
             }
-            label="Dark"
+            label={<p className={styles.darkLabel}>Dark Mode</p>}
           />
-        </MenuItem>
-      </Menu>
+        </div>
+      </Drawer>
     </>
   );
 }
