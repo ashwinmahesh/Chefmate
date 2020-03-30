@@ -18,7 +18,8 @@ Vishva Pandya
 
 <h2>Running the Project</h2>
 <h4>On initial download: "chmod +x start"</h4>
-<h4>./start {mode: dev | prod} {install}</h4>
+<h4>First run: ./start dev install</h4>
+<h4>Afterwards: ./start</h4>
 <p>To run the static build (with full, ie User login and storage, functionality), do "npm run build in client/frontend", then use localhost:8000</p>
 
 <h2>Visual Studio Add-Ons</h2>
