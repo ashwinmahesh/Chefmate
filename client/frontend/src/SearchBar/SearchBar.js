@@ -59,6 +59,12 @@ export default function SearchBar(props: Props) {
     changeAlertOpen(true);
   }
 
+  function handleKeyDown(event) {
+    if (event.key === 'Enter' && query.length !== 0) {
+      window.location.href = `/result/${query}`;
+    }
+  }
+
   return (
     <Paper className={styles.barWrapper}>
       <div className={styles.flex}>
@@ -67,6 +73,7 @@ export default function SearchBar(props: Props) {
           inputProps={{ 'aria-label': 'Search Chefmate' }}
           className={styles.textField}
           onChange={handleQueryChange}
+          onKeyDown={handleKeyDown}
           value={query}
         />
 
