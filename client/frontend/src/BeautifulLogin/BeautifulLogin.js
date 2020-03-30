@@ -97,10 +97,16 @@ export default function BeautifulLogin() {
     [styles.buttonSuccess]: success,
   });
 
+  async function checkAuthentication() {
+    const { data } = await axios.get('/checkAuthenticated');
+    if (data.success === 1) {
+      changeRedirect(true);
+    }
+  }
+
   useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
+    checkAuthentication();
+    clearTimeout(timer.current);
   }, []);
 
   async function handleLoginClick() {
