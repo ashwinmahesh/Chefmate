@@ -6,6 +6,7 @@ import {
   TextField,
   Button,
   CircularProgress,
+  LinearProgress,
 } from '@material-ui/core';
 import logo from '../images/logo.png';
 import clsx from 'clsx';
@@ -24,6 +25,8 @@ const useStyles = makeStyles((theme) => ({
   },
   card: {
     width: '450px',
+  },
+  cardContent: {
     paddingTop: '30px',
   },
   logo: {
@@ -78,6 +81,15 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     justifyContent: 'center',
     marginTop: '25px',
+  },
+  linearProgress: {
+    backgroundColor: 'rgb(230, 95, 85)',
+  },
+  linearProgressBg: {
+    backgroundColor: 'rgb(232, 180, 176)',
+  },
+  linearProgressRoot: {
+    height: 5,
   },
 }));
 
@@ -140,7 +152,16 @@ export default function BeautifulLogin() {
     <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <Card raised className={styles.card}>
-        <CardContent>
+        <LinearProgress
+          classes={{
+            root: styles.linearProgressRoot,
+            barColorPrimary: styles.linearProgress,
+            colorPrimary: styles.linearProgressBg,
+          }}
+          variant={loading ? 'indeterminate' : 'determinate'}
+          value={100}
+        />
+        <CardContent className={styles.cardContent}>
           <img src={logo} alt="Chefmate Logo" className={styles.logo} />
           <p className={styles.header}>Sign in to Continue</p>
           <TextField
