@@ -8,6 +8,7 @@ import Likes from './likes/Likes';
 import Dislikes from './likes/Dislikes';
 import History from './history/History';
 import PageNotFound from './PageNotFound/PageNotFound';
+import BeautifulLogin from './BeautifulLogin/BeautifulLogin';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
         <div className="wrapper">
           <Switch>
             <Route exact path="/" component={Homepage} />
-            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/intro" component={LoginPage} />
+            <Route exact path="/login" component={BeautifulLogin} />
             <Route path="/result/:query" component={SearchResult} />
             <Route exact path="/history" component={History} />
             <Route exact path="/likes" component={Likes} />

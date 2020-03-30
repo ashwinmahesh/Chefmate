@@ -71,4 +71,12 @@ module.exports = app => {
     })
   })
 
+  app.post('/processLogin', (req, res) => {
+    const { username, password, status } = req.body;
+    if (status===1) {
+      return res.json({success: 1})
+    }
+    return res.json({success: -1})
+  })
+
 }
