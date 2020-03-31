@@ -14,7 +14,6 @@ class Crawler:
   def __init__(self, siteName, baseURL):
     self.siteName = siteName
     self.baseURL = baseURL
-    self.domainName = Crawler.getDomainName(baseURL)
     FileIO.createSiteFileSetup(self.siteName, self.baseURL)
     self.queueFile = 'domains/' + siteName + '/' + siteName + '_queue.txt'
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
@@ -27,6 +26,7 @@ class Crawler:
     self.outlinkGraphFile = 'domains/' + siteName + '/' + siteName + '_outlinks.json'
     self.sitemapURL = self.findXMLSitemap()
   
+  ###### NEW CRAWLER CODE - Finds every single link on a site registry using sitemap. Only need old crawler to calculate pageRank and Hits #######
   def findXMLSitemap(self):
     headers = {'User-Agent':"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36"}
     robots = requests.get(self.baseURL+'robots.txt', headers=headers)
@@ -60,6 +60,24 @@ class Crawler:
     FileIO.deleteFileContents(self.queueFile)
     FileIO.setToFile(htmlQueue, self.queueFile)
     log('time', 'Finished crawling XML sitemap for '+self.siteName+' in '+str(time.time() - startTime)+' seconds')
+  
+  def findNewLinksXML(self, page):
+    soup = BeautifulSoup(page.content, 'xml')
+    output = set()
+
+    for link in soup.find_all('loc'):
+      href = link.text
+      if href is None or len(href) == 0:
+        continue
+      if href[:len(self.baseURL)] == self.baseURL or href[:len(self.baseURL)-4] == self.baseURL.replace('www.','',1):
+        output.add(href)
+
+    return output
+
+  ######## END OF NEW CRAWLER CODE #########
+
+
+  ######## OLD CRAWLER CODE ###############
 
   def findNewLinks(self, parseLink):
     try:
@@ -87,19 +105,6 @@ class Crawler:
       return self.findNewLinksXML(parseLink, page)
 
     return self.findNewLinksHTML(parseLink, page)
-
-  def findNewLinksXML(self, page):
-    soup = BeautifulSoup(page.content, 'xml')
-    output = set()
-
-    for link in soup.find_all('loc'):
-      href = link.text
-      if href is None or len(href) == 0:
-        continue
-      if href[:len(self.baseURL)] == self.baseURL or href[:len(self.baseURL)-4] == self.baseURL.replace('www.','',1):
-        output.add(href)
-
-    return output
 
   def findNewLinksHTML(self, parseLink, page):
     soup = BeautifulSoup(page.content, 'lxml')
@@ -158,26 +163,12 @@ class Crawler:
         newLinks.add(link)
     return newLinks
 
-  @staticmethod
-  def getDomainName(url):
-    try:
-      results = getSubdomainName(url).split('.')
-      return results[-2] + '.' + results[-1]
-    except BaseException:
-      return ''
-
-  @staticmethod
-  def getSubdomainName(url):
-    try:
-      return parse.urlparse(url).netloc
-    except BaseException:
-      return ''
-
+######### END OF OLD CRAWLER CODE ##########
 
 if __name__ == "__main__":
-  # crawler = Crawler('simpleRecipes', 'https://www.simplyrecipes.com/')
+  crawler = Crawler('simpleRecipes', 'https://www.simplyrecipes.com/')
   # crawler = Crawler('simpleRecipes', 'https://www.epicurious.com/')
-  crawler = Crawler('simpleRecipes', 'https://www.tasty.co/')
+  # crawler = Crawler('simpleRecipes', 'https://www.tasty.co/')
   crawler.runSitemapCrawler()
   # crawler.runSpider(3)
   
