@@ -41,7 +41,9 @@ export default function LikeDislikeButtons(props: Props) {
     });
     if (data['success'] === 1) {
       changeLikeStatus(data['content']['newLikeStatus']);
-      setSnackbarMode('like');
+      setSnackbarMode(
+        data['content']['newLikeStatus'] === 1 ? 'like' : 'likeNeutral'
+      );
       setTransition(() => slideRight);
     }
   }
@@ -53,7 +55,9 @@ export default function LikeDislikeButtons(props: Props) {
     });
     if (data['success'] === 1) {
       changeLikeStatus(data['content']['newLikeStatus']);
-      setSnackbarMode('dislike');
+      setSnackbarMode(
+        data['content']['newLikeStatus'] === -1 ? 'dislike' : 'dislikeNeutral'
+      );
       setTransition(() => slideRight);
     }
   }

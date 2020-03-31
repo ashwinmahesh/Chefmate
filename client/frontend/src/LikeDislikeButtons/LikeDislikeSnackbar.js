@@ -31,21 +31,27 @@ type Props = {
   handleClose: () => void,
   transition: any,
 };
+
 export default function LikeDislikeSnackbar(props: Props) {
   const snackbarMode = props.mode;
   const styles = useStyles();
+  const rootStyle = () => {
+    switch (snackbarMode) {
+      case 'like':
+        return styles.likeSnackBar;
+      case 'dislike':
+        return styles.dislikeSnackbar;
+      default:
+        return null;
+    }
+  };
 
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       ContentProps={{
         classes: {
-          root:
-            snackbarMode === 'like'
-              ? styles.likeSnackBar
-              : snackbarMode === 'dislike'
-              ? styles.dislikeSnackbar
-              : null,
+          root: rootStyle(),
         },
       }}
       open={Boolean(snackbarMode)}
@@ -54,11 +60,17 @@ export default function LikeDislikeSnackbar(props: Props) {
       onClose={props.handleClose}
       message={
         <div className={styles.snackBarMessageDiv}>
-          {snackbarMode === 'like' && <FaThumbsUp size={24} />}
-          {snackbarMode === 'dislike' && <FaThumbsDown size={24} />}
+          {(snackbarMode === 'like' || snackbarMode === 'likeNeutral') && (
+            <FaThumbsUp size={24} />
+          )}
+          {(snackbarMode === 'dislike' || snackbarMode === 'dislikeNeutral') && (
+            <FaThumbsDown size={24} />
+          )}
           <p className={styles.snackbarText}>
             {snackbarMode === 'like' && 'Successfully liked a site'}
             {snackbarMode === 'dislike' && 'Successfully disliked a site'}
+            {snackbarMode === 'likeNeutral' && 'Successfully un-liked a site'}
+            {snackbarMode === 'dislikeNeutral' && 'Successfully un-disliked a site'}
           </p>
         </div>
       }
