@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { IconButton, Snackbar } from '@material-ui/core';
+import { IconButton, Snackbar, Slide } from '@material-ui/core';
 import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import CloseIcon from '@material-ui/icons/Close';
 import axios from 'axios';
@@ -51,9 +51,11 @@ export default function LikeDislikeButtons(props: Props) {
   const styles = useStyles();
   const [currentLikeStatus, changeLikeStatus] = useState(props.likeStatus);
   const [snackbarMode, setSnackbarMode] = useState(null);
+  const [transition, setTransition] = useState(undefined);
 
   async function likePressed() {
     setSnackbarMode('like');
+    setTransition(() => slideRight);
     const { data } = await axios.post('/changeLikeStatus', {
       likeStatus: currentLikeStatus === 1 ? 0 : 1,
       url: props.url,
@@ -64,6 +66,7 @@ export default function LikeDislikeButtons(props: Props) {
 
   async function dislikePressed() {
     setSnackbarMode('dislike');
+    setTransition(() => slideRight);
     const { data } = await axios.post('/changeLikeStatus', {
       likeStatus: currentLikeStatus === -1 ? 0 : -1,
       url: props.url,
@@ -73,6 +76,10 @@ export default function LikeDislikeButtons(props: Props) {
 
   function handleSnackbarClose(event, reason) {
     setSnackbarMode(null);
+  }
+
+  function slideRight(props) {
+    return <Slide {...props} direction="right" />;
   }
 
   function renderSnackbar() {
@@ -91,6 +98,7 @@ export default function LikeDislikeButtons(props: Props) {
         }}
         open={Boolean(snackbarMode)}
         autoHideDuration={6000}
+        TransitionComponent={transition}
         onClose={handleSnackbarClose}
         message={
           <div className={styles.snackBarMessageDiv}>
