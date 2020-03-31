@@ -7,6 +7,7 @@ import logo from '../images/logo.png';
 import axios from 'axios';
 
 import HeaderSimple from '../Headers/HeaderSimple';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -49,8 +50,8 @@ function Homepage() {
     checkAuthentication();
   }, []);
 
-  function handleQueryChange(event) {
-    changeQuery(event.target.value);
+  function handleQueryChange(_, newValue) {
+    changeQuery(newValue);
   }
 
   function handleKeyDown(event) {
@@ -59,6 +60,8 @@ function Homepage() {
     }
   }
 
+  const entries = ['one', 'on2', 'on3'];
+
   return (
     <div className={styles.container}>
       <HeaderSimple />
@@ -66,27 +69,35 @@ function Homepage() {
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
         <br />
-        <TextField
-          id="outlined-search"
-          label="Search"
-          type="search"
-          variant="outlined"
-          className={styles.searchField}
-          value={query}
+        <Autocomplete
+          freeSolo
+          disableClearable
+          options={entries.map((option) => option)}
           onChange={handleQueryChange}
           onKeyDown={handleKeyDown}
+          renderInput={(params) => (
+            <>
+              <TextField
+                {...params}
+                label="Search"
+                type="search"
+                variant="outlined"
+                className={styles.searchField}
+                value={query}
+              />
+              <a href={query.length !== 0 ? `/result/${query}` : undefined}>
+                <IconButton
+                  edge="start"
+                  className={styles.searchButton}
+                  color="inherit"
+                  aria-label="menu"
+                >
+                  <FaSearch />
+                </IconButton>
+              </a>
+            </>
+          )}
         />
-
-        <a href={query.length !== 0 ? `/result/${query}` : undefined}>
-          <IconButton
-            edge="start"
-            className={styles.searchButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <FaSearch />
-          </IconButton>
-        </a>
       </div>
     </div>
   );
