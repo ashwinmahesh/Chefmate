@@ -25,6 +25,18 @@ class Crawler:
     self.inlinkGraph = Graph()
     self.inlinkGraphFile = 'domains/' + siteName + '/' + siteName + '_inlinks.json'
     self.outlinkGraphFile = 'domains/' + siteName + '/' + siteName + '_outlinks.json'
+  
+  def findXMLSitemap(self):
+    headers = {'User-Agent':"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36"}
+    robots = requests.get(self.baseURL+'robots.txt', headers=headers)
+    soup = BeautifulSoup(robots.content, 'lxml')
+    rawText = soup.find_all('p')[0].text
+    siteMapLink = ''
+    for line in rawText.split('\n'):
+      if line[:len("Sitemap:")] == "Sitemap:" and line[-4:]=='.xml':
+        siteMapLink=line.split(' ')[1]
+        break
+    print(siteMapLink)
 
   def findNewLinks(self, parseLink):
     try:
@@ -45,7 +57,8 @@ class Crawler:
       log('error', 'Request exception')
       return set()
 
-    page = requests.get(parseLink)
+    headers = {'User-Agent':"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36"}
+    page = requests.get(parseLink, headers=headers)
     contentType = 'content-type' if 'content-type' in head.headers else 'Content-type'
     if head.headers[contentType] == 'text/xml':
       return self.findNewLinksXML(parseLink, page)
@@ -152,8 +165,12 @@ class Crawler:
 
 if __name__ == "__main__":
   crawler = Crawler('simpleRecipes', 'https://www.simplyrecipes.com/')
+  crawler.findXMLSitemap()
+
+  crawler = Crawler('simpleRecipes', 'https://www.epicurious.com/')
+  crawler.findXMLSitemap()
+
+  crawler = Crawler('simpleRecipes', 'https://www.tasty.co/')
+  crawler.findXMLSitemap()
   # crawler.runSpider(3)
-  print(crawler.findNewLinks('https://www.simplyrecipes.com/recipes/cowboy_beans/%5d'))
-  # print(crawler.findNewLinks('https://www.simplyrecipes.com/recipes/type/grill/low_carb/'))
-  # print(crawler.findNewLinks('https://www.simplyrecipes.com/'))
   
