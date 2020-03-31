@@ -15,7 +15,6 @@ class Crawler:
     self.siteName = siteName
     self.baseURL = baseURL
     self.domainName = Crawler.getDomainName(baseURL)
-    ##TODO Will need to move this down below
     FileIO.createSiteFileSetup(self.siteName, self.baseURL)
     self.queueFile = 'domains/' + siteName + '/' + siteName + '_queue.txt'
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
@@ -52,7 +51,7 @@ class Crawler:
       nextParse = requests.get(xmlQueue.pop(), headers=headers)
       newXMLLinks = self.findNewLinksXML(nextParse)
       for link in newXMLLinks:
-        if link[-4:]=='.xml':
+        if '.xml' in link:
           if 'archive' not in link:
             xmlQueue.add(link)
         else:
@@ -95,15 +94,10 @@ class Crawler:
 
     for link in soup.find_all('loc'):
       href = link.text
-
       if href is None or len(href) == 0:
         continue
-
-      if href[0] == '/':
-        output.add(self.baseURL + href)
-
-      elif href[:len(self.baseURL)] == self.baseURL:
-        output.add(href)
+      # if href[:len(self.baseURL)] == self.baseURL:
+      output.add(href)
 
     return output
 
