@@ -95,12 +95,16 @@ const InvertedIndex = mongoose.model("InvertedIndex");
 
 const QuerySchema = new mongoose.Schema(
   {
-    query: {
+    _id: {
       type: String,
-      required: [true, "Query is required for Query object."]
+      required: [true, "Query is required for Query object."],
     },
-    userid: {
-      type: String
+    count: {
+      type: Number,
+      required: [
+        true, "Count is required for query term. Default is 1"
+      ],
+      default: 1
     }
   }, 
   { timestamps: true }

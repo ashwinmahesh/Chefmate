@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 type Props = {
-  mode: String,
+  mode: 'like' | 'dislike' | 'likeNeutral' | 'dislikeNeutral',
   handleClose: () => void,
-  transition: any,
+  transition: () => JSX.Element,
 };
 
 export default function LikeDislikeSnackbar(props: Props) {
@@ -44,6 +44,15 @@ export default function LikeDislikeSnackbar(props: Props) {
       default:
         return null;
     }
+  };
+
+  const snackbarMessage = () => {
+    if (snackbarMode === 'like') return 'Successfully liked a site';
+    else if (snackbarMode === 'dislike') return 'Successfully disliked a site';
+    else if (snackbarMode === 'likeNeutral') return 'Successfully un-liked a site';
+    else if (snackbarMode === 'dislikeNeutral')
+      return 'Successfully un-disliked a site';
+    else return 'Invalid Snackbar mode used.';
   };
 
   return (
@@ -66,12 +75,7 @@ export default function LikeDislikeSnackbar(props: Props) {
           {(snackbarMode === 'dislike' || snackbarMode === 'dislikeNeutral') && (
             <FaThumbsDown size={24} />
           )}
-          <p className={styles.snackbarText}>
-            {snackbarMode === 'like' && 'Successfully liked a site'}
-            {snackbarMode === 'dislike' && 'Successfully disliked a site'}
-            {snackbarMode === 'likeNeutral' && 'Successfully un-liked a site'}
-            {snackbarMode === 'dislikeNeutral' && 'Successfully un-disliked a site'}
-          </p>
+          <p className={styles.snackbarText}>{snackbarMessage()}</p>
         </div>
       }
       action={

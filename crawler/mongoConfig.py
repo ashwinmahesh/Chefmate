@@ -29,8 +29,8 @@ class User(Document):
   updated_at = DateTimeField(default=datetime.datetime.now())
 
 class Query(Document):
-  query = StringField(required=True)
-  userid = StringField()
+  query = StringField(required=True, primary_key=True)
+  count = IntField(required=True, default=1)
 
 databaseName = 'ChefmateDB'
 # databaseName = 'ChefmateDB_Alt'
