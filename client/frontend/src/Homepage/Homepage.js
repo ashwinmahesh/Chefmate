@@ -7,6 +7,7 @@ import logo from '../images/logo.png';
 import axios from 'axios';
 
 import HeaderSimple from '../Headers/HeaderSimple';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -36,6 +37,7 @@ function Homepage() {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
+  const [autocompleteData, changeAutocompleteData] = useState([]);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -49,8 +51,36 @@ function Homepage() {
     checkAuthentication();
   }, []);
 
-  function handleQueryChange(event) {
+  async function handleAutocompleteChange(_, newValue) {
+    changeQuery(newValue);
+
+    if (newValue.length >= 3) {
+      const { data } = await axios.get(`/autocomplete/${newValue}`);
+      if (data['success'] === 1) {
+        const { queries } = data['content'];
+        const queryTermList = [];
+        for (var i = 0; i < queries.length; i++) {
+          queryTermList.push(queries[i]['_id']);
+        }
+        changeAutocompleteData(queryTermList);
+      }
+    }
+  }
+  async function handleQueryChange(event) {
     changeQuery(event.target.value);
+
+    if (event.target.value.length >= 3) {
+      const { data } = await axios.get(`/autocomplete/${event.target.value}`);
+      console.log(data);
+      if (data['success'] === 1) {
+        const { queries } = data['content'];
+        const queryTermList = [];
+        for (var i = 0; i < queries.length; i++) {
+          queryTermList.push(queries[i]['_id']);
+        }
+        changeAutocompleteData(queryTermList);
+      }
+    }
   }
 
   function handleKeyDown(event) {
@@ -66,27 +96,36 @@ function Homepage() {
       <div className={styles.contents}>
         <img src={logo} className={styles.logo} alt="Chefmate logo" />
         <br />
-        <TextField
-          id="outlined-search"
-          label="Search"
-          type="search"
-          variant="outlined"
-          className={styles.searchField}
-          value={query}
-          onChange={handleQueryChange}
+        <Autocomplete
+          freeSolo
+          disableClearable
+          options={autocompleteData.map((option) => option)}
+          onChange={handleAutocompleteChange}
           onKeyDown={handleKeyDown}
+          renderInput={(params) => (
+            <>
+              <TextField
+                {...params}
+                label="Search"
+                type="search"
+                variant="outlined"
+                onChange={handleQueryChange}
+                className={styles.searchField}
+                value={query}
+              />
+              <a href={query.length !== 0 ? `/result/${query}` : undefined}>
+                <IconButton
+                  edge="start"
+                  className={styles.searchButton}
+                  color="inherit"
+                  aria-label="menu"
+                >
+                  <FaSearch />
+                </IconButton>
+              </a>
+            </>
+          )}
         />
-
-        <a href={query.length !== 0 ? `/result/${query}` : undefined}>
-          <IconButton
-            edge="start"
-            className={styles.searchButton}
-            color="inherit"
-            aria-label="menu"
-          >
-            <FaSearch />
-          </IconButton>
-        </a>
       </div>
     </div>
   );
