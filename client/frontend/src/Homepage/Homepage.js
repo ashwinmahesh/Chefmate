@@ -37,6 +37,7 @@ function Homepage() {
   const styles = useStyles();
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
+  const [autocompleteData, changeAutocompleteData] = useState([]);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -50,8 +51,36 @@ function Homepage() {
     checkAuthentication();
   }, []);
 
-  function handleQueryChange(_, newValue) {
+  async function handleAutocompleteChange(_, newValue) {
     changeQuery(newValue);
+
+    if (newValue.length >= 3) {
+      const { data } = await axios.get(`/autocomplete/${newValue}`);
+      if (data['success'] === 1) {
+        const { queries } = data['content'];
+        const queryTermList = [];
+        for (var i = 0; i < queries.length; i++) {
+          queryTermList.push(queries[i]['_id']);
+        }
+        changeAutocompleteData(queryTermList);
+      }
+    }
+  }
+  async function handleQueryChange(event) {
+    changeQuery(event.target.value);
+
+    if (event.target.value.length >= 3) {
+      const { data } = await axios.get(`/autocomplete/${event.target.value}`);
+      console.log(data);
+      if (data['success'] === 1) {
+        const { queries } = data['content'];
+        const queryTermList = [];
+        for (var i = 0; i < queries.length; i++) {
+          queryTermList.push(queries[i]['_id']);
+        }
+        changeAutocompleteData(queryTermList);
+      }
+    }
   }
 
   function handleKeyDown(event) {
@@ -59,8 +88,6 @@ function Homepage() {
       window.location.href = `/result/${query}`;
     }
   }
-
-  const entries = ['one', 'on2', 'on3'];
 
   return (
     <div className={styles.container}>
@@ -72,8 +99,8 @@ function Homepage() {
         <Autocomplete
           freeSolo
           disableClearable
-          options={entries.map((option) => option)}
-          onChange={handleQueryChange}
+          options={autocompleteData.map((option) => option)}
+          onChange={handleAutocompleteChange}
           onKeyDown={handleKeyDown}
           renderInput={(params) => (
             <>
@@ -82,6 +109,7 @@ function Homepage() {
                 label="Search"
                 type="search"
                 variant="outlined"
+                onChange={handleQueryChange}
                 className={styles.searchField}
                 value={query}
               />
