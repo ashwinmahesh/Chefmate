@@ -82,7 +82,7 @@ class Crawler:
   def findNewLinks(self, parseLink):
     try:
       head=requests.head(parseLink)
-      if ('content-type' not in head.headers and 'Content-type' not in head.headers) or ("text/html" not in head.headers['content-type'] and "text/xml" not in head.headers['Content-type']):
+      if ('content-type' not in head.headers and 'Content-type' not in head.headers) or ("text/html" not in head.headers['content-type'] and "text/html" not in head.headers['Content-type']):
         log("error", 'Invalid page type')
         return set()
     except requests.exceptions.HTTPError as errh:
@@ -100,10 +100,7 @@ class Crawler:
 
     headers = {'User-Agent':"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36"}
     page = requests.get(parseLink, headers=headers)
-    contentType = 'content-type' if 'content-type' in head.headers else 'Content-type'
-    if head.headers[contentType] == 'text/xml':
-      return self.findNewLinksXML(parseLink, page)
-
+    
     return self.findNewLinksHTML(parseLink, page)
 
   def findNewLinksHTML(self, parseLink, page):
