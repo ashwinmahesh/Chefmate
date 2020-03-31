@@ -74,8 +74,9 @@ module.exports = (app) => {
   app.get('/autocomplete/:query', async (req, res) => {
     const query = req.params['query'];
     const regexp = new RegExp('^' + query);
-    const queries = await Query.find({ _id: regexp });
-    console.log('queries:', queries);
+    const queries = await Query.find({ _id: regexp })
+      .sort('-count')
+      .limit(8);
     return res.json(
       sendPacket(1, 'Successfully retrieved queries', { queries: queries })
     );
