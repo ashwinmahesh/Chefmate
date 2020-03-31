@@ -16,7 +16,16 @@ from stemQuery import stemQuery
 import rankerDBConfig
 from loadInvertedIndexToMemory import loadInvertedIndexToMemory
 
+import ssl
 import nltk
+
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+
 nltk.download('stopwords', quiet=True)
 nltk.download('punkt', quiet=True)
 
