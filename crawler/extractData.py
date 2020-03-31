@@ -7,7 +7,6 @@ import sys
 sys.path.append('..')
 from helpers import log
 
-#TODO need to do something else if XML
 def extractData(baseURL):
   log('parse', baseURL)
   startTime = time.time()
@@ -29,4 +28,5 @@ def extractData(baseURL):
   return output
         
 if __name__ == "__main__":
-    extractData("https://www.simplyrecipes.com/recipes/cuisine/indian/")
+    data = extractData("https://www.epicurious.com/type/salad")
+    print(data['description'])
