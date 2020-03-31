@@ -47,21 +47,15 @@ def buildIndex(iterations, reset=True, resetFiles=True, passwordLock=True, dev=F
   for domain in domains:
     domainStartTime = time.time()
 
-    if options['crawl']:
-      crawler = Crawler(domain['name'], domain['root'])
-      crawler.runSpider(iterations)
+    options['crawl'] and Crawler(domain['name'], domain['root']).runSpider(iterations)
 
     inlinkGraphFile = 'domains/'+domain['name']+'/'+domain['name']+'_inlinks.json'
     outlinkGraphFile = 'domains/'+domain['name']+'/'+domain['name']+'_outlinks.json'
     options['pageRank'] and calculatePageRank(domain['name'], inlinkGraphFile, outlinkGraphFile, 3)
 
-    if options['parse']:
-      dataParser = DataParser(domain['name'])
-      dataParser.runParser()
+    options['parse'] and DataParser(domain['name']).runParser()
 
-    if options['database']:
-      databaseBuilder = DatabaseBuilder(domain['name'], mode='DEV' if dev else 'PROD')
-      databaseBuilder.build()
+    options['database'] and DatabaseBuilder(domain['name'], mode='DEV' if dev else 'PROD').build()
 
     log("time", domain['name']+" finished running in "+str(time.time()-domainStartTime)+" seconds.")
   
