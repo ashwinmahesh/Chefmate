@@ -8,13 +8,21 @@ const { User, Query } = require('../mongoConfig');
 module.exports = app => {
   app.get('/search/:query', async (request, response) => {
     const query = request.params['query'];
-    log('query', query);
+    log('query', `Received query from client: ${query}`);
     const data = await makeRequest('ranker', `query/${query}`);
   
-    const queryDBObject = new Query({query: query, userid: request.user ? request.user._id : null });
-    queryDBObject.save((err) => {
-      if(err) log('error', 'Could not successfully save query');
-    })
+    const oldQueryObj = await Query.findById(query);
+    if(oldQueryObj === null) {
+      const newQueryObj = new Query({_id: query, count: 1});
+      newQueryObj.save(err => {
+        if(err) log('error', `Unable to save query: ${query}`)
+      })
+    } else {
+      oldQueryObj['count'] += 1;
+      oldQueryObj.save(err => {
+        if(err) log('error', `Unable to update query: ${query}`)
+      })
+    }
   
     log('ranker', data.message);
     return response.json(
