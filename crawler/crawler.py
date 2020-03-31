@@ -46,11 +46,10 @@ class Crawler:
     xmlQueue = set()
     xmlQueue.add(self.sitemapURL)
     htmlQueue = set()
-    log('sitemap', 'Crawling XML Sitemap for '+self.domainName)
+    log('sitemap', 'Crawling XML Sitemap for '+self.siteName)
 
     while(len(xmlQueue) != 0):
       nextParse = requests.get(xmlQueue.pop(), headers=headers)
-      xmlCrawled.add(nextParse)
       newXMLLinks = self.findNewLinksXML(nextParse)
       for link in newXMLLinks:
         if link[-4:]=='.xml':
@@ -61,7 +60,7 @@ class Crawler:
 
     FileIO.deleteFileContents(self.queueFile)
     FileIO.setToFile(htmlQueue, self.queueFile)
-    log('time', 'Finished crawling XML sitemap for '+self.domainName+' in '+str(time.time() - startTime)+' seconds')
+    log('time', 'Finished crawling XML sitemap for '+self.siteName+' in '+str(time.time() - startTime)+' seconds')
 
   def findNewLinks(self, parseLink):
     try:
@@ -102,13 +101,9 @@ class Crawler:
 
       if href[0] == '/':
         output.add(self.baseURL + href)
-        # self.outlinkGraph.addLink(parseLink, self.baseURL + href)
-        # self.inlinkGraph.addLink(self.baseURL + href, parseLink)
 
       elif href[:len(self.baseURL)] == self.baseURL:
         output.add(href)
-        # self.outlinkGraph.addLink(parseLink, href)
-        # self.inlinkGraph.addLink(href, parseLink)
 
     return output
 
@@ -186,11 +181,9 @@ class Crawler:
 
 
 if __name__ == "__main__":
-  crawler = Crawler('simpleRecipes', 'https://www.simplyrecipes.com/')
-  crawler.runSitemapCrawler()
+  # crawler = Crawler('simpleRecipes', 'https://www.simplyrecipes.com/')
   # crawler = Crawler('simpleRecipes', 'https://www.epicurious.com/')
-  # crawler.runSitemapCrawler()
-  # crawler = Crawler('simpleRecipes', 'https://www.tasty.co/')
-  # crawler.runSitemapCrawler()
+  crawler = Crawler('simpleRecipes', 'https://www.tasty.co/')
+  crawler.runSitemapCrawler()
   # crawler.runSpider(3)
   
