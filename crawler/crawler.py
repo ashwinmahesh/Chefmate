@@ -15,6 +15,7 @@ class Crawler:
     self.siteName = siteName
     self.baseURL = baseURL
     self.domainName = Crawler.getDomainName(baseURL)
+    ##TODO Will need to move this down below
     FileIO.createSiteFileSetup(self.siteName, self.baseURL)
     self.queueFile = 'domains/' + siteName + '/' + siteName + '_queue.txt'
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
@@ -25,18 +26,42 @@ class Crawler:
     self.inlinkGraph = Graph()
     self.inlinkGraphFile = 'domains/' + siteName + '/' + siteName + '_inlinks.json'
     self.outlinkGraphFile = 'domains/' + siteName + '/' + siteName + '_outlinks.json'
+    self.sitemapURL = self.findXMLSitemap()
   
   def findXMLSitemap(self):
     headers = {'User-Agent':"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36"}
     robots = requests.get(self.baseURL+'robots.txt', headers=headers)
     soup = BeautifulSoup(robots.content, 'lxml')
     rawText = soup.find_all('p')[0].text
-    siteMapLink = ''
+    siteMapURL = ''
     for line in rawText.split('\n'):
       if line[:len("Sitemap:")] == "Sitemap:" and line[-4:]=='.xml':
-        siteMapLink=line.split(' ')[1]
+        siteMapURL=line.split(' ')[1]
         break
-    print(siteMapLink)
+    return siteMapURL
+  
+  def runSitemapCrawler(self):
+    startTime = time.time()
+    headers = {'User-Agent':"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36"}
+    xmlQueue = set()
+    xmlQueue.add(self.sitemapURL)
+    htmlQueue = set()
+    log('sitemap', 'Crawling XML Sitemap for '+self.domainName)
+
+    while(len(xmlQueue) != 0):
+      nextParse = requests.get(xmlQueue.pop(), headers=headers)
+      xmlCrawled.add(nextParse)
+      newXMLLinks = self.findNewLinksXML(nextParse)
+      for link in newXMLLinks:
+        if link[-4:]=='.xml':
+          if 'archive' not in link:
+            xmlQueue.add(link)
+        else:
+          htmlQueue.add(link)
+
+    FileIO.deleteFileContents(self.queueFile)
+    FileIO.setToFile(htmlQueue, self.queueFile)
+    log('time', 'Finished crawling XML sitemap for '+self.domainName+' in '+str(time.time() - startTime)+' seconds')
 
   def findNewLinks(self, parseLink):
     try:
@@ -65,28 +90,25 @@ class Crawler:
 
     return self.findNewLinksHTML(parseLink, page)
 
-  def findNewLinksXML(self, parseLink, page):
+  def findNewLinksXML(self, page):
     soup = BeautifulSoup(page.content, 'xml')
     output = set()
 
-    ##ISSUE - Need to update that base URL file
     for link in soup.find_all('loc'):
       href = link.text
-      print(href)
-      print(self.baseURL)
 
       if href is None or len(href) == 0:
         continue
 
       if href[0] == '/':
         output.add(self.baseURL + href)
-        self.outlinkGraph.addLink(parseLink, self.baseURL + href)
-        self.inlinkGraph.addLink(self.baseURL + href, parseLink)
+        # self.outlinkGraph.addLink(parseLink, self.baseURL + href)
+        # self.inlinkGraph.addLink(self.baseURL + href, parseLink)
 
       elif href[:len(self.baseURL)] == self.baseURL:
         output.add(href)
-        self.outlinkGraph.addLink(parseLink, href)
-        self.inlinkGraph.addLink(href, parseLink)
+        # self.outlinkGraph.addLink(parseLink, href)
+        # self.inlinkGraph.addLink(href, parseLink)
 
     return output
 
@@ -165,12 +187,10 @@ class Crawler:
 
 if __name__ == "__main__":
   crawler = Crawler('simpleRecipes', 'https://www.simplyrecipes.com/')
-  crawler.findXMLSitemap()
-
-  crawler = Crawler('simpleRecipes', 'https://www.epicurious.com/')
-  crawler.findXMLSitemap()
-
-  crawler = Crawler('simpleRecipes', 'https://www.tasty.co/')
-  crawler.findXMLSitemap()
+  crawler.runSitemapCrawler()
+  # crawler = Crawler('simpleRecipes', 'https://www.epicurious.com/')
+  # crawler.runSitemapCrawler()
+  # crawler = Crawler('simpleRecipes', 'https://www.tasty.co/')
+  # crawler.runSitemapCrawler()
   # crawler.runSpider(3)
   
