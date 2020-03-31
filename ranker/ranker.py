@@ -16,6 +16,10 @@ from stemQuery import stemQuery
 import rankerDBConfig
 from loadInvertedIndexToMemory import loadInvertedIndexToMemory
 
+import nltk
+nltk.download('stopwords', quiet=True)
+nltk.download('punkt', quiet=True)
+
 app = Flask(__name__)
 
 port = 8002 if app.config['ENV']=='development' else 80
