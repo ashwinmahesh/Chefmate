@@ -96,8 +96,8 @@ class Crawler:
       href = link.text
       if href is None or len(href) == 0:
         continue
-      # if href[:len(self.baseURL)] == self.baseURL:
-      output.add(href)
+      if href[:len(self.baseURL)] == self.baseURL or href[:len(self.baseURL)-4] == self.baseURL.replace('www.','',1):
+        output.add(href)
 
     return output
 
