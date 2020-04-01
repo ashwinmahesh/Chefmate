@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, FormControlLabel, Switch, Drawer } from '@material-ui/core';
 import { FaBars, FaThumbsUp, FaThumbsDown, FaHistory } from 'react-icons/fa';
 import { green, red } from '@material-ui/core/colors';
-import NotImplemented from '../Alerts/NotImplemented';
 import logo from '../images/logo.png';
 import Divider from '@material-ui/core/Divider';
 
@@ -90,7 +89,6 @@ export default function MenuIcon(props: Props) {
   const [darkMode, changeDarkMode] = useState(
     localStorage.getItem('darkMode') === 'true' ? true : false
   );
-  const [alertOpen, changeAlertOpen] = useState(false);
 
   function handleClick(event) {
     setAnchorElement(event.currentTarget);
@@ -101,12 +99,6 @@ export default function MenuIcon(props: Props) {
   function handleDarkModeChange(event) {
     changeDarkMode(event.target.checked);
     localStorage.setItem('darkMode', String(event.target.checked));
-    // changeAlertOpen(true);
-  }
-
-  function handleAlertClose() {
-    changeAlertOpen(false);
-    changeDarkMode(false);
   }
 
   return (
@@ -186,8 +178,6 @@ export default function MenuIcon(props: Props) {
             }
             label={<p className={styles.darkLabel}>Dark Mode</p>}
           />
-
-          <NotImplemented open={alertOpen} handleClose={handleAlertClose} />
         </div>
       </Drawer>
     </>
