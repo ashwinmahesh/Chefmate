@@ -46,6 +46,7 @@ export default function SingleResult(props: Props) {
   const redirectUrl = '/updateHistory?redirect=' + props.url;
   const maxLength = 170;
   const searchTerm = getSearchTermFromURL()
+  const searchTerms = getSearchTermsFromURL()
 
   function getSearchTermFromURL() {
     var url = new URL(document.location.href)
@@ -54,6 +55,15 @@ export default function SingleResult(props: Props) {
     var searchTerm = decodeURIComponent(pathName.substring(lastSlashIndex+1))
     
     return searchTerm
+  }
+
+  function getSearchTermsFromURL() {
+    var url = new URL(document.location.href)
+    var pathName = url.pathname
+    var lastSlashIndex = pathName.lastIndexOf("/")
+    var searchTerm = decodeURIComponent(pathName.substring(lastSlashIndex+1))
+    
+    return searchTerm.toLowerCase().split(" ")
   }
 
   function changeUrl() {
@@ -69,7 +79,43 @@ export default function SingleResult(props: Props) {
   }
 
   function getBoldedDesc() {
-    const surroundingText = props.sampleText.split(searchTerm)
+    var descTerms = props.sampleText.split(" ")
+    var output = []
+
+    for(var i=0; i < descTerms.length; i++) {
+      var term = descTerms[i]
+      var searched = false
+
+      searchTerms.forEach(searchTerm => {
+        if(term.toLowerCase().includes(searchTerm)) {
+          searched = true
+        }
+      })
+
+      if(searched) {
+        output.push(
+          <>
+          <b>{term}</b>
+          </>
+        )
+      } else {
+        output.push(
+          <>
+          {term}
+          </>
+        )
+      }
+
+      if(i < descTerms.length) {
+        output.push(
+          <> </>
+        )
+      }
+    }
+
+    return output
+
+    /*const surroundingText = props.sampleText.split(searchTerm)
     var output = []
 
     for(var i=0; i < surroundingText.length; i++) {
@@ -90,7 +136,7 @@ export default function SingleResult(props: Props) {
       }
     }
 
-    return output
+    return output*/
   }
 
   return (
