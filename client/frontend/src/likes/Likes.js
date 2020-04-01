@@ -22,7 +22,6 @@ export default function Likes() {
   const styles = useStyles();
   const [likes, changeLikes] = useState({});
   const [loginRedirect, changeLoginRedirect] = useState(false);
-  const [documents, changeDocuments] = useState([]);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -39,7 +38,6 @@ export default function Likes() {
       const likedUrls = data['content']['likes'];
       const updatedUrls = [];
       for (var url in likedUrls) updatedUrls.push(url.replace(/%114/g, '.'));
-      console.log('Updated URLs:', updatedUrls);
       fetchDocuments(updatedUrls);
     }
   }
@@ -85,8 +83,7 @@ export default function Likes() {
   function renderLikes() {
     const output = [];
     for (var i = 0; i < likes.length; i++) {
-      const doc = likes[i];
-      console.log(likes[i]);
+      const doc = JSON.parse(likes[i]);
       output.push(
         <LikesExpansionPanel
           title={doc['title']}
@@ -103,10 +100,7 @@ export default function Likes() {
     <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch="" />
-      <div className={styles.panelsWrapper}>
-        {/* {renderTestLikes()} */}
-        {renderLikes()}
-      </div>
+      <div className={styles.panelsWrapper}>{renderLikes()}</div>
     </div>
   );
 }
