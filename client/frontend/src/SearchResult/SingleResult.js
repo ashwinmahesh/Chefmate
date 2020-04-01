@@ -69,6 +69,8 @@ export default function SingleResult(props: Props) {
       var searched = false
 
       if(length + term.length > maxLength) {
+        output.pop() //remove last space before ellipsis
+
         output.push(
           <>
             ...
@@ -98,10 +100,14 @@ export default function SingleResult(props: Props) {
         )
       }
 
+      length += term.length
+
       if(i < descTerms.length) {
-        output.push(
+        output.push( //adds whitespace between terms
           <> </>
         )
+
+        length++
       }
     }
 
