@@ -68,6 +68,7 @@ type Props = {
   url: String,
   likedOn: String,
   body: String,
+  mode: 'like' | 'dislike',
 };
 
 export default function LikesExpansionPanel(props: Props) {
@@ -80,7 +81,7 @@ export default function LikesExpansionPanel(props: Props) {
         expandIcon={<ExpandMoreIcon color="white" />}
         classes={{ expandIcon: styles.expandIcon }}
       >
-        <FaStar size={24} color="gold" />
+        <FaStar size={24} color={props.mode === 'like' ? 'gold' : 'grey'} />
         <Typography className={styles.titleText}>{props.title}</Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
@@ -89,14 +90,17 @@ export default function LikesExpansionPanel(props: Props) {
             <Typography className={styles.urlTypography}>{props.url}</Typography>
           </a>
           <Typography className={styles.likedOnText}>
-            Liked on: {props.likedOn}
+            {props.mode === 'like' ? 'Liked' : 'Disliked'} on: {props.likedOn}
           </Typography>
           <Typography className={styles.bodyText}>
             {props.body.substr(0, maxBodyLength)}
           </Typography>
           <div className={styles.flexRight}>
             <div className={styles.likeButtonDiv}>
-              <LikeDislikeButtons likeStatus={1} url={props.url} />
+              <LikeDislikeButtons
+                likeStatus={props.mode === 'like' ? 1 : -1}
+                url={props.url}
+              />
             </div>
           </div>
         </div>

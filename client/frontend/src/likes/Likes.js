@@ -70,6 +70,7 @@ export default function Likes() {
           url={doc['_id']}
           body={doc['body']}
           likedOn={'March 22, 2020'}
+          mode="like"
         />
       );
     }
