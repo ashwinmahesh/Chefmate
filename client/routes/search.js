@@ -43,6 +43,9 @@ module.exports = (app) => {
     const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {
       docUrls: docUrls,
     });
+    if(data['success'] !== 1) {
+      return res.json(sendPacket(-1, 'Error connecting to ranker'));
+    }
     const documents = data['content']['documents'];
     log(
       'fetch',

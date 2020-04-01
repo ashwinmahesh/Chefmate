@@ -31,7 +31,7 @@ nltk.download('punkt', quiet=True)
 
 app = Flask(__name__)
 
-port = 8002 if app.config['ENV']=='development' else 80
+port = 80 if app.config['ENV']=='production' else 8002
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 
 inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, authority = loadInvertedIndexToMemory()
@@ -54,7 +54,11 @@ def fetchDocuments():
   log('ranker', 'Fetching documents')
   documents=[]
   for url in docUrls:
-    documents.append(Crawler.objects.get(url=url).to_json())
+    try:
+      document = Crawler.objects.get(url=url).to_json()
+      documents.append(document)
+    except DoesNotExist:
+      log("error", 'Undefined document url present')
 
   log('ranker', 'Finished fetching documents in '+str(time.time() - startTime) + ' seconds')
   return sendPacket(1, 'Successfully retrieved documents', {'documents':documents})

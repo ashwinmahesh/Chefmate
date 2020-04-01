@@ -3,13 +3,50 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
+import LikesExpansionPanel from './LikesExpansionPanel';
+import { CircularProgress, Typography } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  wrapper: {
+    background: 'rgb(40,40,40)',
+    minHeight: '100vh',
+  },
+  panelsWrapper: {
+    paddingLeft: '15px',
+    paddingRight: '15px',
+    paddingTop: '20px',
+    paddingBottom: '20px',
+  },
+  loading: {
+    color: 'rgb(230, 95, 85)',
+    marginTop: '150px',
+  },
+  title: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '20pt',
+    textAlign: 'left',
+    padding: '0',
+    margin: '0',
+    marginTop: '20px',
+    marginLeft: '20px',
+  },
+  pageDescription: {
+    textAlign: 'left',
+    padding: '0',
+    margin: '0',
+    marginTop: '5px',
+    marginLeft: '20px',
+    fontStyle: 'italic',
+    color: 'rgb(192,192,192)',
+  },
+}));
 
 export default function Likes() {
   const styles = useStyles();
-  const [likes, changeLikes] = useState([]);
+  const [likes, changeLikes] = useState({});
   const [loginRedirect, changeLoginRedirect] = useState(false);
+  const [isLoading, changeLoading] = useState(true);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -21,8 +58,20 @@ export default function Likes() {
 
   async function fetchUserInfo() {
     const { data } = await axios.get('/user');
-    if (data['success'] === 1) changeLikes(data['content']['likes']);
-    else console.log(data['message']);
+    if (data['success'] !== 1) console.log(data['message']);
+    else {
+      const likedUrls = data['content']['likes'];
+      const updatedUrls = [];
+      for (var url in likedUrls) updatedUrls.push(url.replace(/%114/g, '.'));
+      fetchDocuments(updatedUrls).then(() => {
+        changeLoading(false);
+      });
+    }
+  }
+
+  async function fetchDocuments(docUrls) {
+    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
+    if (data['success'] === 1) changeLikes(data['content']['documents']);
   }
 
   useEffect(() => {
@@ -30,12 +79,38 @@ export default function Likes() {
     fetchUserInfo();
   }, []);
 
+  function renderLikes() {
+    const output = [];
+    for (var i = 0; i < likes.length; i++) {
+      const doc = JSON.parse(likes[i]);
+      output.push(
+        <LikesExpansionPanel
+          title={doc['title']}
+          url={doc['_id']}
+          body={doc['body']}
+          likedOn={'March 22, 2020'}
+          mode="like"
+        />
+      );
+    }
+    return output;
+  }
+
   return (
-    <div>
+    <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch="" />
-
-      <p>I am the likes page</p>
+      <Typography className={styles.title}>Your Likes</Typography>
+      <Typography className={styles.pageDescription}>
+        Liked pages will be ranked higher on all subsequent searches.
+      </Typography>
+      <div className={styles.panelsWrapper}>
+        {isLoading ? (
+          <CircularProgress className={styles.loading} size={100} />
+        ) : (
+          renderLikes()
+        )}
+      </div>
     </div>
   );
 }
