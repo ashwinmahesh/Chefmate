@@ -45,7 +45,7 @@ export default function SingleResult(props: Props) {
   const url = changeUrl();
   const redirectUrl = '/updateHistory?redirect=' + props.url;
   const maxLength = 170;
-  const searchTerms = props.query.toLowerCase().split(" ")
+  const searchTerms = props.query.toLowerCase().trim().split(" ")
 
   function changeUrl() {
     var output = '';
