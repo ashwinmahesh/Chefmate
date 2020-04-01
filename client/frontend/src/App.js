@@ -9,6 +9,7 @@ import Dislikes from './likes/Dislikes';
 import History from './history/History';
 import PageNotFound from './PageNotFound/PageNotFound';
 import BeautifulLogin from './BeautifulLogin/BeautifulLogin';
+import Voice from './voice/Voice';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route exact path="/history" component={History} />
             <Route exact path="/likes" component={Likes} />
             <Route exact path="/dislikes" component={Dislikes} />
+            <Route exact path="/voice" component={Voice} />
             <Route exact path="*" component={PageNotFound} />
           </Switch>
         </div>
