@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
 import LikesExpansionPanel from './LikesExpansionPanel';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -30,6 +30,15 @@ const useStyles = makeStyles((theme) => ({
     margin: '0',
     marginTop: '20px',
     marginLeft: '20px',
+  },
+  pageDescription: {
+    textAlign: 'left',
+    padding: '0',
+    margin: '0',
+    marginTop: '5px',
+    marginLeft: '20px',
+    fontStyle: 'italic',
+    color: 'rgb(192,192,192)',
   },
 }));
 
@@ -91,7 +100,11 @@ export default function Dislikes() {
     <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch="" />
-      <p className={styles.title}>Your Dislikes</p>
+      <Typography className={styles.title}>Your Dislikes</Typography>
+      <Typography className={styles.pageDescription}>
+        Disliked pages will be ranked lower, and will not reappear in subsequent
+        searches.
+      </Typography>
       <div className={styles.panelsWrapper}>
         {isLoading ? (
           <CircularProgress className={styles.loading} size={100} />

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
 import LikesExpansionPanel from './LikesExpansionPanel';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -30,6 +30,15 @@ const useStyles = makeStyles((theme) => ({
     margin: '0',
     marginTop: '20px',
     marginLeft: '20px',
+  },
+  pageDescription: {
+    textAlign: 'left',
+    padding: '0',
+    margin: '0',
+    marginTop: '5px',
+    marginLeft: '20px',
+    fontStyle: 'italic',
+    color: 'rgb(192,192,192)',
   },
 }));
 
@@ -91,7 +100,10 @@ export default function Likes() {
     <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch="" />
-      <p className={styles.title}>Your Likes</p>
+      <Typography className={styles.title}>Your Likes</Typography>
+      <Typography className={styles.pageDescription}>
+        Liked pages will be ranked higher on all subsequent searches.
+      </Typography>
       <div className={styles.panelsWrapper}>
         {isLoading ? (
           <CircularProgress className={styles.loading} size={100} />
