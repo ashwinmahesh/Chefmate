@@ -2,7 +2,7 @@ const log = require('../logger');
 const makeRequest = require('../makeRequest');
 const sendPacket = require('../sendPacket');
 
-const { User, Query, Crawler } = require('../mongoConfig');
+const { User, Query } = require('../mongoConfig');
 
 module.exports = (app) => {
   app.get('/search/:query', async (request, response) => {
