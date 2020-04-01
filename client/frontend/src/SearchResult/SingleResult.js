@@ -62,10 +62,21 @@ export default function SingleResult(props: Props) {
   function getBoldedDesc() {
     var descTerms = props.sampleText.split(" ")
     var output = []
+    var length = 0
 
     for(var i=0; i < descTerms.length; i++) {
       var term = descTerms[i]
       var searched = false
+
+      if(length + term.length > maxLength) {
+        output.push(
+          <>
+            ...
+          </>
+        )
+
+        break
+      }
 
       searchTerms.forEach(searchTerm => {
         if(term.toLowerCase().includes(searchTerm)) {

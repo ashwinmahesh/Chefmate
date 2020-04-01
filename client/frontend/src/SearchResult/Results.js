@@ -129,14 +129,6 @@ function Results(props: Props) {
       if (dotReplacedUrl in likes) likeStatus = 1;
       else if (dotReplacedUrl in dislikes) likeStatus = -1;
 
-      /*var searchTerm = getSearchTermFromURL()
-
-      var descWithBold = document['description']
-
-      descWithBold = descWithBold.split(searchTerm).join("<b>" + searchTerm + "</b>")
-
-      console.log(descWithBold)*/
-
       output.push(
         <SingleResult
           url={document['_id']}
@@ -144,8 +136,7 @@ function Results(props: Props) {
           likeStatus={likeStatus}
           likes={Math.floor(Math.random() * 100000 + 5000)}
           key={document['_id']}
-          //sampleText={descWithBold}
-          sampleText={document['description']}
+          sampleText={document['body']}
           query={query}
         />
       );
