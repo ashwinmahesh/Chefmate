@@ -9,18 +9,19 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FaStar } from 'react-icons/fa';
 import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
+import { colors } from './colors';
 
 const useStyles = makeStyles((theme) => ({
   expansionPanel: {
-    background: 'rgb(72,72,72)',
+    background: colors.secondaryBackground,
   },
   titleText: {
-    color: 'white',
+    color: colors.primaryText,
     fontSize: '13pt',
     marginLeft: '20px',
   },
   expandIcon: {
-    color: 'white',
+    color: colors.primaryText,
     size: 16,
   },
   expansionDetailsDiv: {
@@ -28,17 +29,17 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   likedOnText: {
-    color: 'rgb(192,192,192)',
+    color: colors.secondaryText,
     marginBottom: '15px',
   },
   bodyText: {
-    color: 'white',
+    color: colors.primaryText,
   },
   url: {
-    color: 'white',
+    color: colors.primaryText,
     textDecoration: 'none',
     '&:visited': {
-      color: 'white',
+      color: colors.primaryText,
     },
   },
   urlTypography: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   likeButtonDiv: {
-    background: 'rgb(48,48,48)',
+    background: colors.tertiaryBackground,
     width: 'fit-content',
     paddingTop: '5px',
     paddingBottom: '5px',

@@ -83,10 +83,13 @@ const useStyles = makeStyles((theme) => ({
 type Props = {
   side: 'left' | 'right',
 };
+
 export default function MenuIcon(props: Props) {
   const styles = useStyles();
   const [anchorElement, setAnchorElement] = useState(null);
-  const [darkMode, changeDarkMode] = useState(false);
+  const [darkMode, changeDarkMode] = useState(
+    Boolean(localStorage.getItem('darkMode')) || false
+  );
   const [alertOpen, changeAlertOpen] = useState(false);
 
   function handleClick(event) {
@@ -97,7 +100,8 @@ export default function MenuIcon(props: Props) {
   }
   function handleDarkModeChange(event) {
     changeDarkMode(event.target.checked);
-    changeAlertOpen(true);
+    localStorage.setItem('darkMode', String(event.target.checked));
+    // changeAlertOpen(true);
   }
 
   function handleAlertClose() {
