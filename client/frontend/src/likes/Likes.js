@@ -21,6 +21,16 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgb(230, 95, 85)',
     marginTop: '150px',
   },
+  title: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '20pt',
+    textAlign: 'left',
+    padding: '0',
+    margin: '0',
+    marginTop: '20px',
+    marginLeft: '20px',
+  },
 }));
 
 export default function Likes() {
@@ -81,6 +91,7 @@ export default function Likes() {
     <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch="" />
+      <p className={styles.title}>Your Likes</p>
       <div className={styles.panelsWrapper}>
         {isLoading ? (
           <CircularProgress className={styles.loading} size={100} />
