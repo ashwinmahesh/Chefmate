@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
-import SearchTerm from './SearchTerm'
 
 const useStyles = makeStyles((theme) => ({
   siteUrl: {
@@ -38,6 +37,7 @@ type Props = {
   sampleText: string,
   likes: number,
   likeStatus: -1 | 0 | 1,
+  query: String
 };
 
 export default function SingleResult(props: Props) {
@@ -45,26 +45,7 @@ export default function SingleResult(props: Props) {
   const url = changeUrl();
   const redirectUrl = '/updateHistory?redirect=' + props.url;
   const maxLength = 170;
-  const searchTerm = getSearchTermFromURL()
-  const searchTerms = getSearchTermsFromURL()
-
-  function getSearchTermFromURL() {
-    var url = new URL(document.location.href)
-    var pathName = url.pathname
-    var lastSlashIndex = pathName.lastIndexOf("/")
-    var searchTerm = decodeURIComponent(pathName.substring(lastSlashIndex+1))
-    
-    return searchTerm
-  }
-
-  function getSearchTermsFromURL() {
-    var url = new URL(document.location.href)
-    var pathName = url.pathname
-    var lastSlashIndex = pathName.lastIndexOf("/")
-    var searchTerm = decodeURIComponent(pathName.substring(lastSlashIndex+1))
-    
-    return searchTerm.toLowerCase().split(" ")
-  }
+  const searchTerms = props.query.toLowerCase().split(" ")
 
   function changeUrl() {
     var output = '';
@@ -114,29 +95,6 @@ export default function SingleResult(props: Props) {
     }
 
     return output
-
-    /*const surroundingText = props.sampleText.split(searchTerm)
-    var output = []
-
-    for(var i=0; i < surroundingText.length; i++) {
-      const text = surroundingText[i]
-
-      output.push(
-        <>
-        {text}
-        </>
-      )
-
-      if(i < surroundingText.length-1) {
-        output.push(
-          <>
-          <b>{searchTerm}</b>
-          </>
-        )
-      }
-    }
-
-    return output*/
   }
 
   return (

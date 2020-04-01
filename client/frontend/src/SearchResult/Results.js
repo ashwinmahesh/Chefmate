@@ -71,6 +71,7 @@ type Props = {
   numSearched: Number,
   searchTime: Number,
   likesDislikes: [{}],
+  query: String
 };
 
 function Results(props: Props) {
@@ -83,6 +84,7 @@ function Results(props: Props) {
   const [currentPage, changeCurrentPage] = useState(1);
   const likes = props.likesDislikes[0];
   const dislikes = props.likesDislikes[1];
+  const query = props.query
 
   function nextPressed() {
     const newPage = currentPage + 1;
@@ -144,6 +146,7 @@ function Results(props: Props) {
           key={document['_id']}
           //sampleText={descWithBold}
           sampleText={document['description']}
+          query={query}
         />
       );
     }
