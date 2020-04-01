@@ -88,7 +88,7 @@ export default function MenuIcon(props: Props) {
   const styles = useStyles();
   const [anchorElement, setAnchorElement] = useState(null);
   const [darkMode, changeDarkMode] = useState(
-    Boolean(localStorage.getItem('darkMode')) || false
+    localStorage.getItem('darkMode') === 'true' ? true : false
   );
   const [alertOpen, changeAlertOpen] = useState(false);
 

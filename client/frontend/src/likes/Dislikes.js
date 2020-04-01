@@ -5,10 +5,11 @@ import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
 import LikesExpansionPanel from './LikesExpansionPanel';
 import { CircularProgress, Typography } from '@material-ui/core';
+import { colors } from './colors';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    background: 'rgb(40,40,40)',
+    background: colors.background,
     minHeight: '100vh',
   },
   panelsWrapper: {
@@ -22,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '150px',
   },
   title: {
-    color: 'white',
+    color: colors.primaryText,
     fontWeight: 'bold',
     fontSize: '20pt',
     textAlign: 'left',
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '5px',
     marginLeft: '20px',
     fontStyle: 'italic',
-    color: 'rgb(192,192,192)',
+    color: colors.secondaryText,
   },
 }));
 
