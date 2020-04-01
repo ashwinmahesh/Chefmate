@@ -119,12 +119,25 @@ function Results(props: Props) {
       i < props.documents.length && i < currentPage * pagesPerScreen;
       i++
     ) {
+      if(i == (currentPage - 1) * pagesPerScreen) {
+        console.log("doc:" + props.documents[i])
+        getSearchTermFromURL()
+      }
+
       const document = JSON.parse(props.documents[i]);
 
       var likeStatus = 0;
       const dotReplacedUrl = document['_id'].replace(/\./g, '%114');
       if (dotReplacedUrl in likes) likeStatus = 1;
       else if (dotReplacedUrl in dislikes) likeStatus = -1;
+
+      var searchTerm = getSearchTermFromURL()
+
+      var descWithBold = document['description']
+
+      descWithBold = descWithBold.split(searchTerm).join("<b>" + searchTerm + "</b>")
+
+      console.log(descWithBold)
 
       output.push(
         <SingleResult
@@ -133,11 +146,21 @@ function Results(props: Props) {
           likeStatus={likeStatus}
           likes={Math.floor(Math.random() * 100000 + 5000)}
           key={document['_id']}
-          sampleText={document['description']}
+          sampleText={descWithBold}
+          //sampleText={document['description']}
         />
       );
     }
     return output;
+  }
+
+  function getSearchTermFromURL() {
+    var url = new URL(document.location.href)
+    var pathName = url.pathname
+    var lastSlashIndex = pathName.lastIndexOf("/")
+    var searchTerm = decodeURIComponent(pathName.substring(lastSlashIndex+1))
+    
+    return searchTerm
   }
 
   function renderPageNumbers() {
