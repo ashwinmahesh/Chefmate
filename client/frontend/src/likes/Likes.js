@@ -47,34 +47,6 @@ export default function Likes() {
     fetchUserInfo();
   }, []);
 
-  function renderTestLikes() {
-    const output = [];
-    for (var i = 0; i < 10; i++) {
-      output.push(
-        <LikesExpansionPanel
-          title={'Google Images'}
-          likedOn={'March 22, 2020'}
-          url={'https://www.google.com/'}
-          body={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-      velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-      occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-      mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur
-      adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-      laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-      reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-      qui officia deserunt mollit anim id est laborum. Hello World. Testing one
-      two three four five six`}
-        />
-      );
-    }
-    return output;
-  }
-
   async function fetchDocuments(docUrls) {
     const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
     if (data['success'] === 1) changeLikes(data['content']['documents']);

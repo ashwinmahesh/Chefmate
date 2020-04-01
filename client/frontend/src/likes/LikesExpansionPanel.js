@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   expansionDetailsDiv: {
     textAlign: 'left',
+    width: '100%',
   },
   likedOnText: {
     color: 'rgb(192,192,192)',
@@ -71,6 +72,8 @@ type Props = {
 
 export default function LikesExpansionPanel(props: Props) {
   const styles = useStyles();
+  const maxBodyLength = 2000;
+
   return (
     <ExpansionPanel className={styles.expansionPanel}>
       <ExpansionPanelSummary
@@ -88,7 +91,9 @@ export default function LikesExpansionPanel(props: Props) {
           <Typography className={styles.likedOnText}>
             Liked on: {props.likedOn}
           </Typography>
-          <Typography className={styles.bodyText}>{props.body}</Typography>
+          <Typography className={styles.bodyText}>
+            {props.body.substr(0, maxBodyLength)}
+          </Typography>
           <div className={styles.flexRight}>
             <div className={styles.likeButtonDiv}>
               <LikeDislikeButtons likeStatus={1} url={'www.google.com'} />
