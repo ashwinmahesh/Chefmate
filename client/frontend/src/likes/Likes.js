@@ -50,15 +50,15 @@ export default function Likes() {
     }
   }
 
-  useEffect(() => {
-    checkAuthentication();
-    fetchUserInfo();
-  }, []);
-
   async function fetchDocuments(docUrls) {
     const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
     if (data['success'] === 1) changeLikes(data['content']['documents']);
   }
+
+  useEffect(() => {
+    checkAuthentication();
+    fetchUserInfo();
+  }, []);
 
   function renderLikes() {
     const output = [];
