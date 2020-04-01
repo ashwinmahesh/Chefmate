@@ -4,12 +4,15 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
 import {
+  Typography,
   ExpansionPanel,
   ExpansionPanelSummary,
-  Typography,
+  ExpansionPanelDetails,
+  Paper,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FaStar } from 'react-icons/fa';
+import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -32,6 +35,19 @@ const useStyles = makeStyles((theme) => ({
   expandIcon: {
     color: 'white',
     size: 16,
+  },
+  expansionDetailsDiv: {
+    textAlign: 'left',
+  },
+  likedOnText: {
+    color: 'rgb(192,192,192)',
+    marginBottom: '15px',
+  },
+  bodyText: {
+    color: 'white',
+  },
+  likeButtonDiv: {
+    background: {},
   },
 }));
 
@@ -71,6 +87,32 @@ export default function Likes() {
             <FaStar size={24} color="gold" />
             <Typography className={styles.titleText}>Google Images</Typography>
           </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <div className={styles.expansionDetailsDiv}>
+              <Typography className={styles.likedOnText}>
+                Liked on: March 22, 2020
+              </Typography>
+              <Typography className={styles.bodyText}>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                aliquip ex ea commodo consequat. Duis aute irure dolor in
+                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum
+                dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                commodo consequat. Duis aute irure dolor in reprehenderit in
+                voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                officia deserunt mollit anim id est laborum.
+              </Typography>
+              <Paper>
+                <LikeDislikeButtons likeStatus={1} url={'www.google.com'} />
+              </Paper>
+            </div>
+          </ExpansionPanelDetails>
         </ExpansionPanel>
       );
     }
