@@ -54,7 +54,11 @@ def fetchDocuments():
   log('ranker', 'Fetching documents')
   documents=[]
   for url in docUrls:
-    documents.append(Crawler.objects.get(url=url).to_json())
+    try:
+      document = Crawler.objects.get(url=url).to_json()
+      documents.append(document)
+    except DoesNotExist:
+      log("error", 'Undefined document url present')
 
   log('ranker', 'Finished fetching documents in '+str(time.time() - startTime) + ' seconds')
   return sendPacket(1, 'Successfully retrieved documents', {'documents':documents})

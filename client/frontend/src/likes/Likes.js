@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
 import LikesExpansionPanel from './LikesExpansionPanel';
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
@@ -16,12 +17,17 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '20px',
     paddingBottom: '20px',
   },
+  loading: {
+    color: 'rgb(230, 95, 85)',
+    marginTop: '150px',
+  },
 }));
 
 export default function Likes() {
   const styles = useStyles();
   const [likes, changeLikes] = useState({});
   const [loginRedirect, changeLoginRedirect] = useState(false);
+  const [isLoading, changeLoading] = useState(true);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -38,7 +44,9 @@ export default function Likes() {
       const likedUrls = data['content']['likes'];
       const updatedUrls = [];
       for (var url in likedUrls) updatedUrls.push(url.replace(/%114/g, '.'));
-      fetchDocuments(updatedUrls);
+      fetchDocuments(updatedUrls).then(() => {
+        changeLoading(false);
+      });
     }
   }
 
@@ -72,7 +80,13 @@ export default function Likes() {
     <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch="" />
-      <div className={styles.panelsWrapper}>{renderLikes()}</div>
+      <div className={styles.panelsWrapper}>
+        {isLoading ? (
+          <CircularProgress className={styles.loading} size={100} />
+        ) : (
+          renderLikes()
+        )}
+      </div>
     </div>
   );
 }

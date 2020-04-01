@@ -96,7 +96,7 @@ export default function LikesExpansionPanel(props: Props) {
           </Typography>
           <div className={styles.flexRight}>
             <div className={styles.likeButtonDiv}>
-              <LikeDislikeButtons likeStatus={1} url={'www.google.com'} />
+              <LikeDislikeButtons likeStatus={1} url={props.url} />
             </div>
           </div>
         </div>
