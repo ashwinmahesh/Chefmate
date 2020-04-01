@@ -1,6 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
+import SearchTerm from './SearchTerm'
 
 const useStyles = makeStyles((theme) => ({
   siteUrl: {
@@ -44,6 +45,16 @@ export default function SingleResult(props: Props) {
   const url = changeUrl();
   const redirectUrl = '/updateHistory?redirect=' + props.url;
   const maxLength = 170;
+  const searchTerm = getSearchTermFromURL()
+
+  function getSearchTermFromURL() {
+    var url = new URL(document.location.href)
+    var pathName = url.pathname
+    var lastSlashIndex = pathName.lastIndexOf("/")
+    var searchTerm = decodeURIComponent(pathName.substring(lastSlashIndex+1))
+    
+    return searchTerm
+  }
 
   function changeUrl() {
     var output = '';
@@ -57,13 +68,39 @@ export default function SingleResult(props: Props) {
     return output;
   }
 
+  function getBoldedDesc() {
+    const surroundingText = props.sampleText.split(searchTerm)
+    var output = []
+
+    for(var i=0; i < surroundingText.length; i++) {
+      const text = surroundingText[i]
+
+      output.push(
+        <>
+        {text}
+        </>
+      )
+
+      if(i < surroundingText.length-1) {
+        output.push(
+          <>
+          <b>{searchTerm}</b>
+          </>
+        )
+      }
+    }
+
+    return output
+  }
+
   return (
     <div className={styles.singleSiteContainer}>
       <p className={styles.siteUrl}>{url}</p>
       <a className={styles.link} href={redirectUrl}>
         {props.title}
       </a>
-      <p className={styles.sampleText}>{props.sampleText.substr(0, maxLength)}</p>
+
+      <p className={styles.sampleText}>{getBoldedDesc()}</p>
       <div>
         <LikeDislikeButtons url={props.url} likeStatus={props.likeStatus} />
         <p className={styles.likeCount}>{props.likes} users liked this page.</p>
