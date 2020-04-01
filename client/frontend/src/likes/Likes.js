@@ -22,6 +22,7 @@ export default function Likes() {
   const styles = useStyles();
   const [likes, changeLikes] = useState({});
   const [loginRedirect, changeLoginRedirect] = useState(false);
+  const [documents, changeDocuments] = useState([]);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -33,12 +34,14 @@ export default function Likes() {
 
   async function fetchUserInfo() {
     const { data } = await axios.get('/user');
-    if (data['success'] === 1) changeLikes(data['content']['likes']);
-    else console.log(data['message']);
-
-    console.log('Data:', data);
-    console.log('Likes:', likes);
-    console.log('Data likes:', data['content']['likes']);
+    if (data['success'] !== 1) console.log(data['message']);
+    else {
+      const likedUrls = data['content']['likes'];
+      const updatedUrls = [];
+      for (var url in likedUrls) updatedUrls.push(url.replace(/%114/g, '.'));
+      console.log('Updated URLs:', updatedUrls);
+      fetchDocuments(updatedUrls);
+    }
   }
 
   useEffect(() => {
@@ -74,11 +77,36 @@ export default function Likes() {
     return output;
   }
 
+  async function fetchDocuments(docUrls) {
+    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
+    if (data['success'] === 1) changeLikes(data['content']['documents']);
+  }
+
+  function renderLikes() {
+    const output = [];
+    for (var i = 0; i < likes.length; i++) {
+      const doc = likes[i];
+      console.log(likes[i]);
+      output.push(
+        <LikesExpansionPanel
+          title={doc['title']}
+          url={doc['_id']}
+          body={doc['body']}
+          likedOn={'March 22, 2020'}
+        />
+      );
+    }
+    return output;
+  }
+
   return (
     <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch="" />
-      <div className={styles.panelsWrapper}>{renderTestLikes()}</div>
+      <div className={styles.panelsWrapper}>
+        {/* {renderTestLikes()} */}
+        {renderLikes()}
+      </div>
     </div>
   );
 }

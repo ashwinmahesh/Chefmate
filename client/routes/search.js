@@ -2,7 +2,7 @@ const log = require('../logger');
 const makeRequest = require('../makeRequest');
 const sendPacket = require('../sendPacket');
 
-const { User, Query } = require('../mongoConfig');
+const { User, Query, Crawler } = require('../mongoConfig');
 
 module.exports = (app) => {
   app.get('/search/:query', async (request, response) => {
@@ -43,6 +43,9 @@ module.exports = (app) => {
     const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {
       docUrls: docUrls,
     });
+    if(data['success'] !== 1) {
+      return res.json(sendPacket(-1, 'Error connecting to ranker'));
+    }
     const documents = data['content']['documents'];
     log(
       'fetch',
