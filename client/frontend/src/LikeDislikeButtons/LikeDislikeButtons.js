@@ -26,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
 type Props = {
   url: String,
   likeStatus: -1 | 0 | 1,
+  size?: Number,
 };
 
 export default function LikeDislikeButtons(props: Props) {
@@ -80,7 +81,7 @@ export default function LikeDislikeButtons(props: Props) {
       <IconButton aria-label="Like" onClick={likePressed}>
         <FaThumbsUp
           className={[
-            styles.thumbsUp,
+            props.size ? null : styles.thumbsDown,
             currentLikeStatus === 1 ? styles.green : styles.neutral,
           ].join(' ')}
         />
@@ -88,7 +89,7 @@ export default function LikeDislikeButtons(props: Props) {
       <IconButton aria-label="Dislike" onClick={dislikePressed}>
         <FaThumbsDown
           className={[
-            styles.thumbsDown,
+            props.size ? null : styles.thumbsDown,
             currentLikeStatus === -1 ? styles.red : styles.neutral,
           ].join(' ')}
         />

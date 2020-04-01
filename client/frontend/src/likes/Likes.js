@@ -46,8 +46,32 @@ const useStyles = makeStyles((theme) => ({
   bodyText: {
     color: 'white',
   },
+  url: {
+    color: 'white',
+    textDecoration: 'none',
+    '&:visited': {
+      color: 'white',
+    },
+  },
+  urlTypography: {
+    display: 'inline-block',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
   likeButtonDiv: {
-    background: {},
+    background: 'rgb(48,48,48)',
+    width: 'fit-content',
+    paddingTop: '5px',
+    paddingBottom: '5px',
+    paddingLeft: '10px',
+    paddingRight: '10px',
+    borderRadius: '10px',
+    marginTop: '15px',
+  },
+  flexRight: {
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
 }));
 
@@ -89,6 +113,11 @@ export default function Likes() {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <div className={styles.expansionDetailsDiv}>
+              <a href="#" className={styles.url}>
+                <Typography className={styles.urlTypography}>
+                  https://www.google.com/
+                </Typography>
+              </a>
               <Typography className={styles.likedOnText}>
                 Liked on: March 22, 2020
               </Typography>
@@ -106,11 +135,14 @@ export default function Likes() {
                 commodo consequat. Duis aute irure dolor in reprehenderit in
                 voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                 Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                officia deserunt mollit anim id est laborum.
+                officia deserunt mollit anim id est laborum. Hello World. Testing one
+                two three four five six
               </Typography>
-              <Paper>
-                <LikeDislikeButtons likeStatus={1} url={'www.google.com'} />
-              </Paper>
+              <div className={styles.flexRight}>
+                <div className={styles.likeButtonDiv}>
+                  <LikeDislikeButtons likeStatus={1} url={'www.google.com'} />
+                </div>
+              </div>
             </div>
           </ExpansionPanelDetails>
         </ExpansionPanel>
