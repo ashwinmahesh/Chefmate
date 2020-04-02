@@ -3,15 +3,52 @@ import React, { Component } from 'react';
 
 //------------------------SPEECH RECOGNITION-----------------------------
 
-//const SpeechRecognition = SpeechRecognition || window.webkitSpeechRecognition;
 const SpeechRecognition = window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 
 recognition.continous = true;
-//recognition.interimResults = true;
+recognition.interimResults = true;
 recognition.lang = 'en-US';
 
 //------------------------COMPONENT-----------------------------
+
+export function getSpeech(listening: Boolean, handleSpeechChange: (String) => void) {
+  if (listening) {
+    recognition.start();
+    recognition.onend = () => {
+      recognition.start();
+    };
+  } else {
+    recognition.stop();
+    recognition.onend = () => {
+      console.log('Stopped listening per click');
+    };
+  }
+
+  recognition.onstart = () => {
+    console.log('Listening!');
+  };
+
+  let finalTranscript = '';
+  recognition.onresult = (event) => {
+    let interimTranscript = '';
+
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += transcript + ' ';
+        handleSpeechChange(finalTranscript);
+      } else {
+        interimTranscript += transcript;
+        console.log('Interim Text:', interimTranscript);
+      }
+    }
+  };
+
+  recognition.onerror = (event) => {
+    console.log('Error occurred in recognition: ' + event.error);
+  };
+}
 
 class Speech extends Component {
   constructor() {
@@ -36,6 +73,7 @@ class Speech extends Component {
   handleListen() {
     console.log('listening?', this.state.listening);
 
+    //Listening setup
     if (this.state.listening) {
       recognition.start();
       recognition.onend = () => {
@@ -53,6 +91,7 @@ class Speech extends Component {
       console.log('Listening!');
     };
 
+    //End of listening setup -> starting decoding here
     let finalTranscript = '';
     recognition.onresult = (event) => {
       let interimTranscript = '';
@@ -97,7 +136,7 @@ class Speech extends Component {
     );
   }*/
 }
-export default Speech;
+// export default Speech;
 //-------------------------CSS------------------------------------
 
 /* const styles = {
