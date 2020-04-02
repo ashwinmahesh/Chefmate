@@ -102,7 +102,6 @@ function MenuIcon(props: Props) {
   }
   function handleDarkModeChange(event) {
     changeDarkMode(event.target.checked);
-    // localStorage.setItem('darkMode', String(event.target.checked));
     const darkModeValue = event.target.checked ? 'dark' : 'light';
     props.onUpdateTheme(darkModeValue);
   }
