@@ -124,6 +124,8 @@ function Results(props: Props) {
 
       const document = JSON.parse(props.documents[i]);
 
+      console.log(document)
+
       var likeStatus = 0;
       const dotReplacedUrl = document['_id'].replace(/\./g, '%114');
       if (dotReplacedUrl in likes) likeStatus = 1;

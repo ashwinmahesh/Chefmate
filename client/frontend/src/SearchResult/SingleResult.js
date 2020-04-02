@@ -59,8 +59,60 @@ export default function SingleResult(props: Props) {
     return output;
   }
 
-  function getBoldedDesc() {
-    var descTerms = props.sampleText.split(" ")
+  /*
+    Using sliding window of length maxLength
+    to find window with the most total occurences of
+    search terms. We use this window as our sample
+    text.
+
+    Current limitations:
+    - Doesn't give any preference to windows with a variety of terms.
+    - Always chooses the first window with the most occurrences of search
+      terms, even if there's a tie.
+  */
+  function getBestSampleText(body) {
+    var maxTermCount = 0
+    var maxTerm_i = 0
+    var maxTerm_j = maxLength
+
+    var i = 0
+    var j = maxLength
+
+    while(j <= body.length) {
+      var window = body.substring(i, j)
+      var termCount = getSearchTermCount(window)
+
+      if(termCount > maxTermCount) {
+        maxTermCount = termCount
+        maxTerm_i = i
+        maxTerm_j = j
+      }
+
+      i++
+      j++
+    }
+
+    return body.substring(maxTerm_i, maxTerm_j)
+  }
+
+  /*
+    Gets the total, non-distinct count of
+    search terms contained in the given string.
+    We use this to find the window with the most
+    search term occurrences.
+  */
+  function getSearchTermCount(str) {
+    var count = 0
+
+    for(var i = 0; i < searchTerms.length; i++) {
+      count += (str.split(searchTerms[i]).length - 1)
+    }
+
+    return count
+  }
+
+  function getBoldedDesc(sampleText) {
+    var descTerms = sampleText.split(" ")
     var output = []
     var length = 0
 
@@ -121,7 +173,7 @@ export default function SingleResult(props: Props) {
         {props.title}
       </a>
 
-      <p className={styles.sampleText}>{getBoldedDesc()}</p>
+      <p className={styles.sampleText}>{getBoldedDesc(getBestSampleText(props.sampleText))}</p>
       <div>
         <LikeDislikeButtons url={props.url} likeStatus={props.likeStatus} />
         <p className={styles.likeCount}>{props.likes} users liked this page.</p>
