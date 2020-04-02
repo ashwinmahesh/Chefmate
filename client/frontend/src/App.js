@@ -35,10 +35,12 @@ function App(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  theme: state.theme,
-  user: state.theme,
-});
+const mapStateToProps = (state) => {
+  return {
+    theme: state.theme,
+    user: state.user,
+  };
+};
 
 const mapActionsToProps = {
   onUpdateUser: updateUser,

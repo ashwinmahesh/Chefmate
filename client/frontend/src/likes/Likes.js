@@ -5,46 +5,53 @@ import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
 import LikesExpansionPanel from './LikesExpansionPanel';
 import { CircularProgress, Typography } from '@material-ui/core';
-import { colors } from './colors';
+import { theme } from './theme';
+import { connect } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    background: colors.background,
-    minHeight: '100vh',
-  },
-  panelsWrapper: {
-    paddingLeft: '15px',
-    paddingRight: '15px',
-    paddingTop: '20px',
-    paddingBottom: '20px',
-  },
-  loading: {
-    color: 'rgb(230, 95, 85)',
-    marginTop: '150px',
-  },
-  title: {
-    color: colors.primaryText,
-    fontWeight: 'bold',
-    fontSize: '20pt',
-    textAlign: 'left',
-    padding: '0',
-    margin: '0',
-    marginTop: '20px',
-    marginLeft: '20px',
-  },
-  pageDescription: {
-    textAlign: 'left',
-    padding: '0',
-    margin: '0',
-    marginTop: '5px',
-    marginLeft: '20px',
-    fontStyle: 'italic',
-    color: colors.secondaryText,
-  },
-}));
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
+    wrapper: {
+      background: colors.background,
+      minHeight: '100vh',
+    },
+    panelsWrapper: {
+      paddingLeft: '15px',
+      paddingRight: '15px',
+      paddingTop: '20px',
+      paddingBottom: '20px',
+    },
+    loading: {
+      color: 'rgb(230, 95, 85)',
+      marginTop: '150px',
+    },
+    title: {
+      color: colors.primaryText,
+      fontWeight: 'bold',
+      fontSize: '20pt',
+      textAlign: 'left',
+      padding: '0',
+      margin: '0',
+      marginTop: '20px',
+      marginLeft: '20px',
+    },
+    pageDescription: {
+      textAlign: 'left',
+      padding: '0',
+      margin: '0',
+      marginTop: '5px',
+      marginLeft: '20px',
+      fontStyle: 'italic',
+      color: colors.secondaryText,
+    },
+  }));
 
-export default function Likes() {
-  const styles = useStyles();
+type Props = {
+  theme: String,
+};
+
+function Likes(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const [likes, changeLikes] = useState({});
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [isLoading, changeLoading] = useState(true);
@@ -115,3 +122,9 @@ export default function Likes() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(Likes);
