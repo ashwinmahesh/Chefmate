@@ -3,9 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, FormControlLabel, Switch, Drawer } from '@material-ui/core';
 import { FaBars, FaThumbsUp, FaThumbsDown, FaHistory } from 'react-icons/fa';
 import { green, red } from '@material-ui/core/colors';
-import NotImplemented from '../Alerts/NotImplemented';
 import logo from '../images/logo.png';
 import Divider from '@material-ui/core/Divider';
+import { connect } from 'react-redux';
+import { updateTheme } from '../redux/actions/theme';
 
 const useStyles = makeStyles((theme) => ({
   menu: {
@@ -82,12 +83,14 @@ const useStyles = makeStyles((theme) => ({
 
 type Props = {
   side: 'left' | 'right',
+  theme: String,
+  onUpdateTheme: () => any,
 };
-export default function MenuIcon(props: Props) {
+
+function MenuIcon(props: Props) {
   const styles = useStyles();
   const [anchorElement, setAnchorElement] = useState(null);
-  const [darkMode, changeDarkMode] = useState(false);
-  const [alertOpen, changeAlertOpen] = useState(false);
+  const [darkMode, changeDarkMode] = useState(props.theme === 'dark' ? true : false);
 
   function handleClick(event) {
     setAnchorElement(event.currentTarget);
@@ -97,12 +100,8 @@ export default function MenuIcon(props: Props) {
   }
   function handleDarkModeChange(event) {
     changeDarkMode(event.target.checked);
-    changeAlertOpen(true);
-  }
-
-  function handleAlertClose() {
-    changeAlertOpen(false);
-    changeDarkMode(false);
+    const darkModeValue = event.target.checked ? 'dark' : 'light';
+    props.onUpdateTheme(darkModeValue);
   }
 
   return (
@@ -182,10 +181,18 @@ export default function MenuIcon(props: Props) {
             }
             label={<p className={styles.darkLabel}>Dark Mode</p>}
           />
-
-          <NotImplemented open={alertOpen} handleClose={handleAlertClose} />
         </div>
       </Drawer>
     </>
   );
 }
+
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+const mapActionsToProps = {
+  onUpdateTheme: updateTheme,
+};
+
+export default connect(mapStateToProps, mapActionsToProps)(MenuIcon);

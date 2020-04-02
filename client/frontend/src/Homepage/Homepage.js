@@ -71,7 +71,6 @@ function Homepage() {
 
     if (event.target.value.length >= 3) {
       const { data } = await axios.get(`/autocomplete/${event.target.value}`);
-      console.log(data);
       if (data['success'] === 1) {
         const { queries } = data['content'];
         const queryTermList = [];

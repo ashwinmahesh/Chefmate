@@ -9,59 +9,62 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FaStar } from 'react-icons/fa';
 import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
+import { theme } from './theme';
+import { connect } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
-  expansionPanel: {
-    background: 'rgb(72,72,72)',
-  },
-  titleText: {
-    color: 'white',
-    fontSize: '13pt',
-    marginLeft: '20px',
-  },
-  expandIcon: {
-    color: 'white',
-    size: 16,
-  },
-  expansionDetailsDiv: {
-    textAlign: 'left',
-    width: '100%',
-  },
-  likedOnText: {
-    color: 'rgb(192,192,192)',
-    marginBottom: '15px',
-  },
-  bodyText: {
-    color: 'white',
-  },
-  url: {
-    color: 'white',
-    textDecoration: 'none',
-    '&:visited': {
-      color: 'white',
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
+    expansionPanel: {
+      background: colors.secondaryBackground,
     },
-  },
-  urlTypography: {
-    display: 'inline-block',
-    '&:hover': {
-      textDecoration: 'underline',
+    titleText: {
+      color: colors.primaryText,
+      fontSize: '13pt',
+      marginLeft: '20px',
     },
-  },
-  likeButtonDiv: {
-    background: 'rgb(48,48,48)',
-    width: 'fit-content',
-    paddingTop: '5px',
-    paddingBottom: '5px',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-    borderRadius: '10px',
-    marginTop: '15px',
-  },
-  flexRight: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-  },
-}));
+    expandIcon: {
+      color: colors.primaryText,
+      size: 16,
+    },
+    expansionDetailsDiv: {
+      textAlign: 'left',
+      width: '100%',
+    },
+    likedOnText: {
+      color: colors.secondaryText,
+      marginBottom: '15px',
+    },
+    bodyText: {
+      color: colors.primaryText,
+    },
+    url: {
+      color: colors.primaryText,
+      textDecoration: 'none',
+      '&:visited': {
+        color: colors.primaryText,
+      },
+    },
+    urlTypography: {
+      display: 'inline-block',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
+    likeButtonDiv: {
+      background: colors.tertiaryBackground,
+      width: 'fit-content',
+      paddingTop: '5px',
+      paddingBottom: '5px',
+      paddingLeft: '10px',
+      paddingRight: '10px',
+      borderRadius: '10px',
+      marginTop: '15px',
+    },
+    flexRight: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+  }));
 
 type Props = {
   title: String,
@@ -69,10 +72,12 @@ type Props = {
   likedOn: String,
   body: String,
   mode: 'like' | 'dislike',
+  theme: String,
 };
 
-export default function LikesExpansionPanel(props: Props) {
-  const styles = useStyles();
+function LikesExpansionPanel(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const maxBodyLength = 2000;
 
   return (
@@ -108,3 +113,9 @@ export default function LikesExpansionPanel(props: Props) {
     </ExpansionPanel>
   );
 }
+
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(LikesExpansionPanel);
