@@ -90,9 +90,7 @@ type Props = {
 function MenuIcon(props: Props) {
   const styles = useStyles();
   const [anchorElement, setAnchorElement] = useState(null);
-  const [darkMode, changeDarkMode] = useState(
-    localStorage.getItem('darkMode') === 'true' ? true : false
-  );
+  const [darkMode, changeDarkMode] = useState(props.theme === 'dark' ? true : false);
 
   function handleClick(event) {
     setAnchorElement(event.currentTarget);
