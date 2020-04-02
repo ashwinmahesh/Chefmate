@@ -9,7 +9,7 @@ import { theme } from './theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
-  makeStyles((theme) => ({
+  makeStyles((_) => ({
     wrapper: {
       background: colors.background,
       minHeight: '100vh',
