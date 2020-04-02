@@ -11,12 +11,10 @@ import History from './history/History';
 import PageNotFound from './PageNotFound/PageNotFound';
 import BeautifulLogin from './BeautifulLogin/BeautifulLogin';
 
-import { UPDATE_USER } from './redux/actions/user';
-import { UPDATE_THEME } from './redux/actions/theme';
+import { updateUser } from './redux/actions/user';
+import { updateTheme } from './redux/actions/theme';
 
 function App(props) {
-  console.log('App props:', props);
-
   return (
     <div className="App">
       <Router>
@@ -43,8 +41,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-  onUpdateUser: UPDATE_USER,
-  onUpdateTheme: UPDATE_THEME,
+  onUpdateUser: updateUser,
+  onUpdateTheme: updateTheme,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(App);

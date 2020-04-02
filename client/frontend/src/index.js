@@ -9,19 +9,6 @@ import { Provider } from 'react-redux';
 import themeReducer from './redux/reducers/themeReducer';
 import userReducer from './redux/reducers/userReducer';
 
-// function productsReducer(state = [], action) {
-//   return state;
-// }
-
-// function userReducer(state = '', { type, payload }) {
-//   switch (type) {
-//     case 'updateUser':
-//       return payload.user;
-//   }
-
-//   return state;
-// }
-
 const allReducers = combineReducers({
   theme: themeReducer,
   user: userReducer,
@@ -34,15 +21,6 @@ const store = createStore(
   },
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
-
-// console.log(store.getState());
-
-// const updateUserAction = {
-//   type: 'updateUser',
-//   payload: { user: 'Not Ashwin' },
-// };
-
-// store.dispatch(updateUserAction);
 
 ReactDOM.render(
   <Provider store={store}>
