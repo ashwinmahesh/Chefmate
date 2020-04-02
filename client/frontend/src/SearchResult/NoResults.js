@@ -1,13 +1,32 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { FaExclamationCircle } from 'react-icons/fa';
 
-const useStyles = makeStyles((theme) => ({}));
+const useStyles = makeStyles((theme) => ({
+  iconStyle: {
+    color: 'rgb(40,40,40)',
+    fontSize: '40px',
+    marginTop: '80px',
+  },
+  font: {
+    fontSize: '30px',
+    fontWeight: 'bold',
+    color: 'rgb(40,40,40)',
+  },
+  subtitle: {
+    fontStyle: 'italic',
+  },
+}));
 
 export default function NoResults() {
   const styles = useStyles();
   return (
     <div>
-      <p>I am the NoResults page</p>
+      <FaExclamationCircle className={styles.iconStyle} />
+      <p className={styles.font}>Bummer, we couldn't find anything</p>
+      <p className={styles.subtitle}>
+        Please use the search bar above to find what you are looking for.{' '}
+      </p>
     </div>
   );
 }
