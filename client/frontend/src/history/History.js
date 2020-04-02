@@ -3,9 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
-import { CircularProgress,Typography } from '@material-ui/core';
-import HistoryResults from './HistoryResults';
-
+import { CircularProgress, Typography } from '@material-ui/core';
+import HistoryExpansionPanel from './HistoryExpansionPanel';
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -62,16 +61,13 @@ export default function History() {
     if (data['success'] !== 1) console.log(data['message']);
     else {
       const histLinks = data['content']['history'];
-      console.log("History from server:", histLinks);
       fetchDocuments(histLinks).then(() => {
         changeLoading(false);
-        console.log("History:", history)
       });
-    } 
+    }
   }
   async function fetchDocuments(docUrls) {
     const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
-    console.log("Resposne:", data);
     if (data['success'] === 1) changeHistory(data['content']['documents']);
   }
 
@@ -85,33 +81,31 @@ export default function History() {
     for (var i = 0; i < history.length; i++) {
       const doc = JSON.parse(history[i]);
       output.push(
-        <HistoryResults
+        <HistoryExpansionPanel
           title={doc['title']}
           url={doc['_id']}
           body={doc['body']}
-          
         />
       );
     }
     return output;
   }
 
-
   return (
-    <div className={styles.wrapper}>  
+    <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch="" />
-  
+
       <Typography className={styles.title}>Your History</Typography>
       <Typography className={styles.pageDescription}>
-        Your recently searched items will be displayed here.
+        Your recently visited pages will be displayed here.
       </Typography>
       <div className={styles.panelsWrapper}>
         {isLoading ? (
           <CircularProgress className={styles.loading} size={100} />
         ) : (
-            showHistoryResults()
-          )}
+          showHistoryResults()
+        )}
       </div>
     </div>
   );
