@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Paper, InputBase, Divider, IconButton } from '@material-ui/core';
 import { FaSearch, FaMicrophone } from 'react-icons/fa';
 import NotImplemented from '../Alerts/NotImplemented';
+import toggleListen from '../voice/Voice';
 
 const useStyles = makeStyles((theme) => ({
   barWrapper: {
@@ -41,6 +42,8 @@ type Props = {
   initialSearch: String,
 };
 
+const { barWrapper, textField, flex, searchButton, microphone, divider } = useStyles;
+
 export default function SearchBar(props: Props) {
   const styles = useStyles();
   const [query, changeQuery] = useState(props.initialSearch);
@@ -63,6 +66,8 @@ export default function SearchBar(props: Props) {
     <Paper className={styles.barWrapper}>
       <div className={styles.flex}>
         <InputBase
+          id="textField"
+          style={textField}
           placeholder="Search Chefmate"
           inputProps={{ 'aria-label': 'Search Chefmate' }}
           className={styles.textField}
@@ -75,7 +80,7 @@ export default function SearchBar(props: Props) {
           className={styles.microphone}
           color="inherit"
           aria-label="menu"
-          onClick={microphoneClicked}
+          onClick={toggleListen}
         >
           <FaMicrophone />
         </IconButton>

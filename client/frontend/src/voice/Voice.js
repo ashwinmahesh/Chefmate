@@ -8,7 +8,7 @@ const SpeechRecognition = window.webkitSpeechRecognition;
 const recognition = new SpeechRecognition();
 
 recognition.continous = true;
-recognition.interimResults = true;
+//recognition.interimResults = true;
 recognition.lang = 'en-US';
 
 //------------------------COMPONENT-----------------------------
@@ -24,6 +24,7 @@ class Speech extends Component {
   }
 
   toggleListen() {
+    console.log('Listening in toggle');
     this.setState(
       {
         listening: !this.state.listening,
@@ -61,8 +62,8 @@ class Speech extends Component {
         if (event.results[i].isFinal) finalTranscript += transcript + ' ';
         else interimTranscript += transcript;
       }
-      document.getElementById('interim').innerHTML = interimTranscript;
-      document.getElementById('final').innerHTML = finalTranscript;
+      //document.getElementById('interim').innerHTML = interimTranscript;
+      document.getElementById('textField').innerHTML = finalTranscript;
 
       //-------------------------COMMANDS------------------------------------
 
@@ -75,7 +76,7 @@ class Speech extends Component {
         recognition.onend = () => {
           console.log('Stopped listening per command');
           const finalText = transcriptArr.slice(0, -3).join(' ');
-          document.getElementById('final').innerHTML = finalText;
+          document.getElementById('textField').innerHTML = finalText;
         };
       }
     };
@@ -87,21 +88,19 @@ class Speech extends Component {
     };
   }
 
-  render() {
+  /*render() {
     return (
       <div style={container}>
         <button id="microphone-btn" style={button} onClick={this.toggleListen} />
-        <div id="interim" style={interim}></div>
         <div id="final" style={final}></div>
       </div>
     );
-  }
+  }*/
 }
-
 export default Speech;
 //-------------------------CSS------------------------------------
 
-const styles = {
+/* const styles = {
   container: {
     display: 'flex',
     flexDirection: 'column',
@@ -115,13 +114,6 @@ const styles = {
     borderRadius: '50%',
     margin: '6em 0 2em 0',
   },
-  interim: {
-    color: 'gray',
-    border: '#ccc 1px solid',
-    padding: '1em',
-    margin: '1em',
-    width: '300px',
-  },
   final: {
     color: 'black',
     border: '#ccc 1px solid',
@@ -129,6 +121,6 @@ const styles = {
     margin: '1em',
     width: '300px',
   },
-};
+}; */
 
-const { container, button, interim, final } = styles;
+//const { container, button, final } = styles;
