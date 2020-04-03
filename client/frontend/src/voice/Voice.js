@@ -20,14 +20,7 @@ export function getSpeech(listening: Boolean, handleSpeechChange: (String) => vo
     };
   } else {
     recognition.stop();
-    recognition.onend = () => {
-      console.log('Stopped listening per click');
-    };
   }
-
-  recognition.onstart = () => {
-    console.log('Listening!');
-  };
 
   let finalTranscript = '';
   recognition.onresult = (event) => {
@@ -40,7 +33,6 @@ export function getSpeech(listening: Boolean, handleSpeechChange: (String) => vo
         handleSpeechChange(finalTranscript);
       } else {
         interimTranscript += transcript;
-        console.log('Interim Text:', interimTranscript);
       }
     }
   };
@@ -61,7 +53,6 @@ class Speech extends Component {
   }
 
   toggleListen() {
-    console.log('Listening in toggle');
     this.setState(
       {
         listening: !this.state.listening,
@@ -71,25 +62,15 @@ class Speech extends Component {
   }
 
   handleListen() {
-    console.log('listening?', this.state.listening);
-
     //Listening setup
     if (this.state.listening) {
       recognition.start();
       recognition.onend = () => {
-        console.log('...continue listening...');
         recognition.start();
       };
     } else {
       recognition.stop();
-      recognition.onend = () => {
-        console.log('Stopped listening per click');
-      };
     }
-
-    recognition.onstart = () => {
-      console.log('Listening!');
-    };
 
     //End of listening setup -> starting decoding here
     let finalTranscript = '';
@@ -101,19 +82,16 @@ class Speech extends Component {
         if (event.results[i].isFinal) finalTranscript += transcript + ' ';
         else interimTranscript += transcript;
       }
-      //document.getElementById('interim').innerHTML = interimTranscript;
       document.getElementById('textField').innerHTML = finalTranscript;
 
       //-------------------------COMMANDS------------------------------------
 
       const transcriptArr = finalTranscript.split(' ');
       const stopCmd = transcriptArr.slice(-3, -1);
-      console.log('stopCmd', stopCmd);
 
       if (stopCmd[0] === 'stop' && stopCmd[1] === 'listening') {
         recognition.stop();
         recognition.onend = () => {
-          console.log('Stopped listening per command');
           const finalText = transcriptArr.slice(0, -3).join(' ');
           document.getElementById('textField').innerHTML = finalText;
         };
@@ -126,40 +104,4 @@ class Speech extends Component {
       console.log('Error occurred in recognition: ' + event.error);
     };
   }
-
-  /*render() {
-    return (
-      <div style={container}>
-        <button id="microphone-btn" style={button} onClick={this.toggleListen} />
-        <div id="final" style={final}></div>
-      </div>
-    );
-  }*/
 }
-// export default Speech;
-//-------------------------CSS------------------------------------
-
-/* const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-  },
-  button: {
-    width: '60px',
-    height: '60px',
-    background: 'lightblue',
-    borderRadius: '50%',
-    margin: '6em 0 2em 0',
-  },
-  final: {
-    color: 'black',
-    border: '#ccc 1px solid',
-    padding: '1em',
-    margin: '1em',
-    width: '300px',
-  },
-}; */
-
-//const { container, button, final } = styles;
