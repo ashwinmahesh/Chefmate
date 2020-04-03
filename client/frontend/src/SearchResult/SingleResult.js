@@ -2,21 +2,28 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
 
-const useStyles = makeStyles((theme) => ({
+import { theme } from './theme';
+import { connect } from 'react-redux';
+
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
   siteUrl: {
     fontSize: '12pt',
     margin: '0px',
     marginBottom: '5px',
+    color: colors.searchText,
   },
   link: {
     fontSize: '17pt',
     margin: '0px',
     textDecoration: 'none',
+    color:colors.linkColor,
     '&:hover': {
       textDecoration: 'underline',
     },
   },
   sampleText: {
+    color: colors.searchText,
     margin: '0px',
     marginTop: '7px',
   },
@@ -24,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '30px',
   },
   likeCount: {
-    color: 'green',
+    color: colors.likeColor,
     margin: '0px',
     display: 'inline-block',
     marginLeft: '20px',
@@ -37,10 +44,13 @@ type Props = {
   sampleText: string,
   likes: number,
   likeStatus: -1 | 0 | 1,
+  theme: String, 
 };
 
-export default function SingleResult(props: Props) {
-  const styles = useStyles();
+function SingleResult(props: Props) {
+  //const styles = useStyles();
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const url = changeUrl();
   const redirectUrl = '/updateHistory?redirect=' + props.url;
   const maxLength = 170;
@@ -71,3 +81,8 @@ export default function SingleResult(props: Props) {
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(SingleResult);

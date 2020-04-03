@@ -7,8 +7,11 @@ import logo from '../images/logo.png';
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { updateTheme } from '../redux/actions/theme';
+import { theme } from './theme';
+//import { connect } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
   menu: {
     fontSize: '12.5pt',
   },
@@ -17,7 +20,9 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
   },
   iconStyle: {
-    color: 'rgb(200,200,200)',
+    //color: 'rgb(200,200,200)',
+    //color: 'rgb(0,0,0)',
+    color: colors.histButtonColor,
     marginRight: '30px',
   },
   thumbsUp: {
@@ -29,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
   menuTextStyle: {
     fontFamily: 'Arial',
     fontSize: '14pt',
-    color: 'white',
+    //color: 'white',
+    color: colors.textColor,
     textDecoration: 'none',
     '&:visited': {
       color: 'white',
@@ -39,17 +45,19 @@ const useStyles = makeStyles((theme) => ({
   divStyle: {
     width: '250px',
     '&:hover': {
-      background: 'rgb(209, 83, 73)',
+      //background: 'rgb(209, 83, 73)',
+        background: colors.hoverTing,
+        //backbround: 'white',
     },
     display: 'flex',
     paddingTop: '10px',
     paddingBottom: '10px',
-    paddingLeft: '15px',
+    paddingLeft: '22px',
   },
   darkLabel: {
     fontFamily: 'Arial',
     fontSize: '14pt',
-    marginLeft: '20px',
+    marginLeft: '35px',
     width: '100%',
     color: 'white',
   },
@@ -57,7 +65,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '25px',
   },
   drawerPaper: {
-    background: 'rgb(230, 95, 85)',
+    //background: 'rgb(230, 95, 85)',
+    background: colors.menuBackground,
   },
   logo: {
     width: '125px',
@@ -73,7 +82,8 @@ const useStyles = makeStyles((theme) => ({
   },
   divider: {
     flex: 1,
-    background: 'rgb(190, 190,190)',
+    //background: 'rgb(190, 190,190)',
+      background: 'white',
   },
   dividierDiv: {
     display: 'flex',
@@ -88,7 +98,8 @@ type Props = {
 };
 
 function MenuIcon(props: Props) {
-  const styles = useStyles();
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const [anchorElement, setAnchorElement] = useState(null);
   const [darkMode, changeDarkMode] = useState(props.theme === 'dark' ? true : false);
 
@@ -163,6 +174,7 @@ function MenuIcon(props: Props) {
             <IconButton>
               <FaThumbsDown
                 className={[styles.iconStyle, styles.thumbsDown].join(' ')}
+                //size="large"
               />
             </IconButton>
             Dislikes

@@ -2,10 +2,15 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import MenuIcon from '../Headers/MenuIcon';
+import { theme } from './theme';
+import { connect } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
   barcolor: {
-    background: 'rgb(230, 95, 85)',
+    //background: 'rgb(230, 95, 85)',
+    //background: 'rgb(0, 0, 0)',
+    background: colors.headerTing,
   },
   root: {
     flexGrow: 1,
@@ -19,8 +24,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function HeaderSimple() {
-  const classes = useStyles();
+type Props = {
+  theme: String,
+};
+function HeaderSimple(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const classes = useStyles(colors)();
+  //const classes = useStyles();
 
   return (
     <div className={classes.root}>
@@ -38,3 +48,10 @@ export default function HeaderSimple() {
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(HeaderSimple);
+
+

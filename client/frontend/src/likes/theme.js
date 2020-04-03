@@ -8,7 +8,7 @@ export const theme = {
   },
 
   darkColors: {
-    background: 'rgb(40,40,40)',
+    background: 'rgb(50,49,49)',
     secondaryBackground: 'rgb(72,72,72)',
     tertiaryBackground: 'rgb(48,48,48)',
     primaryText: 'white',

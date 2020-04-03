@@ -1,12 +1,24 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, StylesProvider } from '@material-ui/core/styles';
 import SingleResult from './SingleResult';
 import { FaChevronRight, FaChevronLeft } from 'react-icons/fa';
 
 import logo from '../images/logo.png';
 
-const useStyles = makeStyles((theme) => ({
+import { theme } from './theme';
+import { connect } from 'react-redux';
+
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
+  wrapper: {
+    backgroundColor: colors.searchBarBackground,
+    //backgroundColor: 'black',
+  },
   container: {
+    
+  },
+  subcontainer: {
+    backgroundColor: colors.searchBarBackground,
     textAlign: 'Left',
     marginLeft: '100px',
     width: '650px',
@@ -16,7 +28,8 @@ const useStyles = makeStyles((theme) => ({
   },
   resultCount: {
     fontSize: '12pt',
-    color: 'rgb(120,120,120)',
+    //color: 'rgb(120,120,120)',
+    color: colors.searchText,
     marginTop: '20px',
   },
   logo: {
@@ -55,6 +68,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '7px',
     fontWeight: 'bold',
     color: 'rgb(230, 95, 85)',
+    //color: 'black',
     '&:hover': {
       cursor: 'pointer',
       textDecoration: 'underline',
@@ -71,10 +85,13 @@ type Props = {
   numSearched: Number,
   searchTime: Number,
   likesDislikes: [{}],
+  theme:String,
 };
 
 function Results(props: Props) {
-  const styles = useStyles();
+  //const styles = useStyles();
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const pagesPerScreen = 10;
   const pages =
     Math.ceil(props.documents.length / pagesPerScreen) > 0
@@ -182,7 +199,8 @@ function Results(props: Props) {
   }
 
   return (
-    <div className={styles.container}>
+
+    <div className={styles.subcontainer}>
       <p className={styles.resultCount}>
         Found {props.numSearched} results ({props.searchTime} seconds)
       </p>
@@ -192,7 +210,13 @@ function Results(props: Props) {
         {renderPages()}
       </div>
     </div>
+
   );
 }
 
-export default Results;
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(Results);
+
