@@ -10,11 +10,22 @@ import Dislikes from './likes/Dislikes';
 import History from './history/History';
 import PageNotFound from './PageNotFound/PageNotFound';
 import BeautifulLogin from './BeautifulLogin/BeautifulLogin';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { updateUser } from './redux/actions/user';
 import { updateTheme } from './redux/actions/theme';
 
+// import ReactPlayer from "react-player";
+// import { FaFileExcel } from 'react-icons/fa';
+
+const useStyles = makeStyles((theme) => ({
+  music: {
+    display: 'flex',
+  },
+}));
+
 function App(props) {
+  const styles = useStyles();
   return (
     <div className="App">
       <Router>

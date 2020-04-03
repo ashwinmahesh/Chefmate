@@ -5,45 +5,52 @@ import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
 import { CircularProgress, Typography } from '@material-ui/core';
 import HistoryExpansionPanel from './HistoryExpansionPanel';
+import { theme } from '../theme/theme';
+import { connect } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
-  title: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: '20pt',
-    textAlign: 'left',
-    padding: '0',
-    margin: '0',
-    marginTop: '20px',
-    marginLeft: '20px',
-  },
-  wrapper: {
-    background: 'rgb(40,40,40)',
-    minHeight: '100vh',
-  },
-  pageDescription: {
-    textAlign: 'left',
-    padding: '0',
-    margin: '0',
-    marginTop: '5px',
-    marginLeft: '20px',
-    fontStyle: 'italic',
-    color: 'rgb(192,192,192)',
-  },
-  panelsWrapper: {
-    paddingLeft: '15px',
-    paddingRight: '15px',
-    paddingTop: '20px',
-    paddingBottom: '20px',
-  },
-  loading: {
-    color: 'rgb(230, 95, 85)',
-    marginTop: '150px',
-  },
-}));
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
+    title: {
+      color: colors.primaryText,
+      fontWeight: 'bold',
+      fontSize: '20pt',
+      textAlign: 'left',
+      padding: '0',
+      margin: '0',
+      marginTop: '20px',
+      marginLeft: '20px',
+    },
+    wrapper: {
+      background: colors.background,
+      minHeight: '100vh',
+    },
+    pageDescription: {
+      textAlign: 'left',
+      padding: '0',
+      margin: '0',
+      marginTop: '5px',
+      marginLeft: '20px',
+      fontStyle: 'italic',
+      color: colors.pageDescriptionPrimary,
+    },
+    panelsWrapper: {
+      paddingLeft: '15px',
+      paddingRight: '15px',
+      paddingTop: '20px',
+      paddingBottom: '20px',
+    },
+    loading: {
+      color: 'rgb(230, 95, 85)',
+      marginTop: '150px',
+    },
+  }));
+type Props = {
+  theme: String,
+};
 
-export default function History() {
-  const styles = useStyles();
+function History(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const [history, changeHistory] = useState([]);
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [isLoading, changeLoading] = useState(true);
@@ -110,3 +117,8 @@ export default function History() {
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(History);

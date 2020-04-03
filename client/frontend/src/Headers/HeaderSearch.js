@@ -6,41 +6,46 @@ import logo from '../images/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
 import MenuIcon from './MenuIcon';
 
-const useStyles = makeStyles((theme) => ({
-  wrapper: {
-    height: '45px',
-    background: 'rgb(230, 95, 85)',
-    padding: '1px',
-    textAlign: 'left',
-    display: 'flex',
-    justifyContent: 'space-between',
-    paddingTop: '12px',
-    paddingBottom: '12px',
-    paddingLeft: '15px',
-    paddingRight: '5px',
-    minWidth: '900px',
-  },
-  logoutButton: {
-    textDecoration: 'none',
-    color: 'white',
-  },
-  rightDiv: {
-    padding: '1px',
-    paddingRight: '15px',
-  },
-  logo: {
-    width: '100px',
-    height: '25px',
-  },
-}));
+import { theme } from '../theme/theme';
+import { connect } from 'react-redux';
+
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
+    wrapper: {
+      height: '45px',
+      background: colors.headerPrimary,
+      padding: '1px',
+      textAlign: 'left',
+      display: 'flex',
+      justifyContent: 'space-between',
+      paddingTop: '12px',
+      paddingBottom: '12px',
+      paddingLeft: '15px',
+      paddingRight: '5px',
+      minWidth: '900px',
+    },
+    logoutButton: {
+      textDecoration: 'none',
+      color: 'white',
+    },
+    rightDiv: {
+      padding: '1px',
+      paddingRight: '15px',
+    },
+    logo: {
+      width: '100px',
+      height: '25px',
+    },
+  }));
 
 type Props = {
   initialSearch: String,
+  theme: String,
 };
 
-export default function HeaderSearch(props: Props) {
-  const styles = useStyles();
-
+function HeaderSearch(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   return (
     <div className={styles.wrapper}>
       <div>
@@ -58,3 +63,8 @@ export default function HeaderSearch(props: Props) {
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(HeaderSearch);

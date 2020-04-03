@@ -9,32 +9,48 @@ import axios from 'axios';
 import HeaderSimple from '../Headers/HeaderSimple';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    width: '100vw',
-  },
-  searchField: {
-    width: '80vw',
-    maxWidth: '700px',
-    marginBottom: '25px',
-  },
-  logo: {
-    width: '500px',
-    height: '125px',
-    marginBottom: '50px',
-  },
-  contents: {
-    marginTop: '100px',
-  },
-  searchButton: {
-    fontSize: '22pt',
-    marginLeft: '6px',
-    color: 'rgb(230, 95, 85)',
-  },
-}));
+import { theme } from '../theme/theme';
+import { connect } from 'react-redux';
 
-function Homepage() {
-  const styles = useStyles();
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
+    container: {
+      width: '100vw',
+      height: '100vh',
+      background: colors.background,
+    },
+    searchField: {
+      width: '80vw',
+      maxWidth: '700px',
+      marginBottom: '25px',
+      background: colors.homepageSecondary,
+    },
+    logo: {
+      width: '500px',
+      height: '125px',
+      marginBottom: '50px',
+    },
+    contents: {
+      marginTop: '100px',
+    },
+    searchButton: {
+      fontSize: '22pt',
+      marginLeft: '6px',
+      color: 'rgb(230, 95, 85)',
+    },
+    music: {
+      backgroundColor: 'red',
+      bottom: '0',
+      height: '100px',
+      position: 'fixed',
+    },
+  }));
+type Props = {
+  theme: String,
+};
+function Homepage(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [autocompleteData, changeAutocompleteData] = useState([]);
@@ -129,5 +145,8 @@ function Homepage() {
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
 
-export default Homepage;
+export default connect(mapStateToProps, {})(Homepage);

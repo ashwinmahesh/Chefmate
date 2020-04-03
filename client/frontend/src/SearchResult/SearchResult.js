@@ -9,21 +9,26 @@ import Timeout from './Timeout';
 // import loading from '../images/loading.gif';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    width: '100vw',
-  },
-  // loading: {
-  //   marginTop: '80px',
-  // },
-  loading: {
-    color: 'rgb(230, 95, 85)',
-    marginTop: '150px',
-  },
-}));
+import { theme } from '../theme/theme';
+import { connect } from 'react-redux';
+
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
+    container: {
+      width: '100vw',
+      minHeight: '100vh',
+      backgroundColor: colors.background,
+    },
+
+    loading: {
+      color: 'rgb(230, 95, 85)',
+      marginTop: '150px',
+    },
+  }));
 
 function SearchResult(props) {
-  const styles = useStyles();
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const oldQuery = props.match.params.query;
   const [documents, changeDocuments] = useState([]);
@@ -84,4 +89,8 @@ function SearchResult(props) {
   );
 }
 
-export default SearchResult;
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(SearchResult);

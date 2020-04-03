@@ -2,34 +2,41 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
 
-const useStyles = makeStyles((theme) => ({
-  siteUrl: {
-    fontSize: '12pt',
-    margin: '0px',
-    marginBottom: '5px',
-  },
-  link: {
-    fontSize: '17pt',
-    margin: '0px',
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
+import { theme } from '../theme/theme';
+import { connect } from 'react-redux';
+
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
+    siteUrl: {
+      fontSize: '12pt',
+      margin: '0px',
+      marginBottom: '5px',
+      color: colors.searchTextPrimary,
     },
-  },
-  sampleText: {
-    margin: '0px',
-    marginTop: '7px',
-  },
-  singleSiteContainer: {
-    marginBottom: '30px',
-  },
-  likeCount: {
-    color: 'green',
-    margin: '0px',
-    display: 'inline-block',
-    marginLeft: '20px',
-  },
-}));
+    link: {
+      fontSize: '17pt',
+      margin: '0px',
+      textDecoration: 'none',
+      color: colors.linkPrimary,
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
+    sampleText: {
+      color: colors.searchTextPrimary,
+      margin: '0px',
+      marginTop: '7px',
+    },
+    singleSiteContainer: {
+      marginBottom: '30px',
+    },
+    likeCount: {
+      color: colors.likedPagesPrimary,
+      margin: '0px',
+      display: 'inline-block',
+      marginLeft: '20px',
+    },
+  }));
 
 type Props = {
   url: string,
@@ -38,11 +45,13 @@ type Props = {
   body: string,
   likes: number,
   likeStatus: -1 | 0 | 1,
+  theme: String,
   query: string,
 };
 
-export default function SingleResult(props: Props) {
-  const styles = useStyles();
+function SingleResult(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const url = changeUrl();
   const redirectUrl = '/updateHistory?redirect=' + props.url;
   const maxLength = 170;
@@ -208,3 +217,8 @@ export default function SingleResult(props: Props) {
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(SingleResult);
