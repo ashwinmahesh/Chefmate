@@ -138,7 +138,8 @@ function Results(props: Props) {
           likeStatus={likeStatus}
           likes={Math.floor(Math.random() * 100000 + 5000)}
           key={document['_id']}
-          sampleText={document['body']}
+          desc={document['description']} 
+          body={document['body']} 
           query={query}
         />
       );
