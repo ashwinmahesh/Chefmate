@@ -1,15 +1,19 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import HeaderSearch from '../Headers/HeaderSearch';
+import rat from '../images/remi.png';
+import HeaderSimple from '../Headers/HeaderSimple';
 
-const useStyles = makeStyles((theme) => ({}));
+const pStyle = {
+  fontSize: '50px',
+  textAlign: 'center',
+  color: 'black',
+};
 
 export default function PageNotFound() {
-  const styles = useStyles();
   return (
     <div>
-      <HeaderSearch initialSearch="" />
-      <p>Page not found</p>
+      <HeaderSimple />
+      <p style={pStyle}>Rats! Page not found</p>
+      <img src={rat}></img>
     </div>
   );
 }

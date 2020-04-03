@@ -14,9 +14,6 @@ recognition.lang = 'en-US';
 export function getSpeech(listening: Boolean, handleSpeechChange: (String) => void) {
   if (listening) {
     recognition.start();
-    recognition.onend = () => {
-      recognition.start();
-    };
   } else {
     recognition.stop();
   }

@@ -1,49 +1,60 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, InputBase, Divider, IconButton } from '@material-ui/core';
+import { Paper, InputBase, Divider, IconButton, Slide } from '@material-ui/core';
 import { FaSearch, FaMicrophone } from 'react-icons/fa';
-import { getSpeech } from '../voice/Voice';
+import { getSpeech } from './getSpeech';
+import RecordingSnackbar from './RecordingSnackbar';
 
-const useStyles = makeStyles((theme) => ({
-  barWrapper: {
-    display: 'inline-block',
-    height: '45px',
-    paddingLeft: '10px',
-    paddingRight: '5px',
-    marginLeft: '15px',
-    width: '550px',
-    backgroundColor: 'white',
-  },
-  textField: {
-    fontSize: '13pt',
-    marginLeft: '10px',
-    flex: 1,
-  },
-  flex: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  searchButton: {
-    fontSize: '15pt',
-    color: 'rgb(230, 95, 85)',
-  },
-  microphone: {
-    fontSize: '15pt',
-  },
-  divider: {
-    height: '25px',
-    marginRight: '11px',
-  },
-}));
+import { theme } from '../theme/theme';
+import { connect } from 'react-redux';
+
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
+    barWrapper: {
+      display: 'inline-block',
+      height: '45px',
+      paddingLeft: '10px',
+      paddingRight: '5px',
+      marginLeft: '15px',
+      width: '550px',
+      backgroundColor: colors.background,
+    },
+    textField: {
+      fontSize: '13pt',
+      marginLeft: '10px',
+      color: colors.searchTextPrimary,
+      flex: 1,
+    },
+    flex: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    searchButton: {
+      fontSize: '15pt',
+      color: colors.headerPrimary,
+    },
+    microphone: {
+      fontSize: '15pt',
+      color: colors.microphonePrimary,
+    },
+    divider: {
+      height: '25px',
+      marginRight: '11px',
+    },
+  }));
 
 type Props = {
   initialSearch: String,
+  theme: String,
 };
 
-export default function SearchBar(props: Props) {
-  const styles = useStyles();
+function SearchBar(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const [query, changeQuery] = useState(props.initialSearch);
   const [listening, setListening] = useState(false);
+  const [snackbarMode, setSnackbarMode] = useState(null);
+  const [transition, setTransition] = useState(undefined);
 
   function handleQueryChange(event) {
     changeQuery(event.target.value);
@@ -57,6 +68,8 @@ export default function SearchBar(props: Props) {
     const newListening = !listening;
     setListening(newListening);
     getSpeech(newListening, handleSpokenQueryChange);
+    setSnackbarMode(newListening ? 'start' : 'end');
+    setTransition(() => slideRight);
   }
 
   function handleKeyDown(event) {
@@ -65,8 +78,21 @@ export default function SearchBar(props: Props) {
     }
   }
 
+  function handleSnackbarClose(event, reason) {
+    setSnackbarMode(null);
+  }
+
+  function slideRight(props) {
+    return <Slide {...props} direction="right" />;
+  }
+
   return (
     <Paper className={styles.barWrapper}>
+      <RecordingSnackbar
+        mode={snackbarMode}
+        handleClose={handleSnackbarClose}
+        transition={transition}
+      />
       <div className={styles.flex}>
         <InputBase
           placeholder="Search Chefmate"
@@ -103,3 +129,8 @@ export default function SearchBar(props: Props) {
     </Paper>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(SearchBar);
