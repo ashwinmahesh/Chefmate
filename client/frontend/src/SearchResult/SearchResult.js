@@ -10,6 +10,8 @@ import Timeout from './Timeout';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { publicDecrypt } from 'crypto';
 
+const GLOBAL_TIMEOUT = 20;
+
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '100vw',
@@ -101,7 +103,7 @@ function clockUpdate(changeTimedOut) {
   if (stillLoading) {
     seconds++;
     console.log('secs: ' + seconds + ' isLoading: ' + stillLoading); 
-    if (seconds > 5 && stillLoading) {
+    if (seconds > GLOBAL_TIMEOUT && stillLoading) {
       changeTimedOut(true);
     }
     
