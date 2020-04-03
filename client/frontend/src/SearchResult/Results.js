@@ -71,7 +71,7 @@ type Props = {
   numSearched: Number,
   searchTime: Number,
   likesDislikes: [{}],
-  query: String
+  query: String,
 };
 
 function Results(props: Props) {
@@ -84,7 +84,6 @@ function Results(props: Props) {
   const [currentPage, changeCurrentPage] = useState(1);
   const likes = props.likesDislikes[0];
   const dislikes = props.likesDislikes[1];
-  const query = props.query
 
   function nextPressed() {
     const newPage = currentPage + 1;
@@ -121,10 +120,7 @@ function Results(props: Props) {
       i < props.documents.length && i < currentPage * pagesPerScreen;
       i++
     ) {
-
       const document = JSON.parse(props.documents[i]);
-
-      console.log(document)
 
       var likeStatus = 0;
       const dotReplacedUrl = document['_id'].replace(/\./g, '%114');
@@ -138,9 +134,9 @@ function Results(props: Props) {
           likeStatus={likeStatus}
           likes={Math.floor(Math.random() * 100000 + 5000)}
           key={document['_id']}
-          desc={document['description']} 
-          body={document['body']} 
-          query={query}
+          desc={document['description']}
+          body={document['body']}
+          query={props.query}
         />
       );
     }

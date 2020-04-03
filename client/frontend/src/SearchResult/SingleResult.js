@@ -38,7 +38,7 @@ type Props = {
   body: string,
   likes: number,
   likeStatus: -1 | 0 | 1,
-  query: string
+  query: string,
 };
 
 export default function SingleResult(props: Props) {
@@ -46,7 +46,10 @@ export default function SingleResult(props: Props) {
   const url = changeUrl();
   const redirectUrl = '/updateHistory?redirect=' + props.url;
   const maxLength = 170;
-  const searchTerms = props.query.toLowerCase().trim().split(" ")
+  const searchTerms = props.query
+    .toLowerCase()
+    .trim()
+    .split(' ');
 
   function changeUrl() {
     var output = '';
@@ -76,37 +79,37 @@ export default function SingleResult(props: Props) {
       terms, even if there's a tie.
   */
   function getBestSampleText() {
-    var body = props.body
+    var body = props.body;
 
-    var maxTermCount = 0
-    var maxTerm_i = 0
-    var maxTerm_j = maxLength
+    var maxTermCount = 0;
+    var maxTerm_i = 0;
+    var maxTerm_j = maxLength;
 
-    var i = 0
-    var j = maxLength
+    var i = 0;
+    var j = maxLength;
 
-    while(j <= body.length) {
-      if(startsSentence(i, body)) {
-        var window = body.substring(i, j)
-        var termCount = getSearchTermCount(window)
+    while (j <= body.length) {
+      if (startsSentence(i, body)) {
+        var window = body.substring(i, j);
+        var termCount = getSearchTermCount(window);
 
-        if(termCount > maxTermCount) {
-          maxTermCount = termCount
-          maxTerm_i = i
-          maxTerm_j = j
+        if (termCount > maxTermCount) {
+          maxTermCount = termCount;
+          maxTerm_i = i;
+          maxTerm_j = j;
         }
       }
 
-      i++
-      j++
+      i++;
+      j++;
     }
 
-    var bestWindow = body.substring(maxTerm_i, maxTerm_j)
-    
-    if(maxTermCount == 0 || bestWindow.split(/[\r\n]/).length > maxLength / 15) {
-      return props.desc
+    var bestWindow = body.substring(maxTerm_i, maxTerm_j);
+
+    if (maxTermCount == 0 || bestWindow.split(/[\r\n]/).length > maxLength / 15) {
+      return props.desc;
     } else {
-      return bestWindow
+      return bestWindow;
     }
   }
 
@@ -118,13 +121,13 @@ export default function SingleResult(props: Props) {
     character.
   */
   function startsSentence(i, str) {
-    var whiteSpaceChars = [' ', '\r', '\n']
+    var whiteSpaceChars = [' ', '\r', '\n'];
 
     return (
       str[i].charCodeAt(0) >= 65 &&
       str[i].charCodeAt(0) <= 90 &&
-      (i == 0 || whiteSpaceChars.includes(str[i-1]))
-    )
+      (i == 0 || whiteSpaceChars.includes(str[i - 1]))
+    );
   }
 
   /*
@@ -134,13 +137,13 @@ export default function SingleResult(props: Props) {
     search term occurrences.
   */
   function getSearchTermCount(str) {
-    var count = 0
+    var count = 0;
 
-    for(var i = 0; i < searchTerms.length; i++) {
-      count += (str.toLowerCase().split(searchTerms[i].toLowerCase()).length - 1)
+    for (var i = 0; i < searchTerms.length; i++) {
+      count += str.toLowerCase().split(searchTerms[i].toLowerCase()).length - 1;
     }
 
-    return count
+    return count;
   }
 
   /*
@@ -148,60 +151,46 @@ export default function SingleResult(props: Props) {
     search terms surrounded by <b> tags.
   */
   function boldSearchTerms(sampleText) {
-    var descTerms = sampleText.split(/[ \r\n]/)
-    var output = []
-    var length = 0
+    var descTerms = sampleText.split(/[ \r\n]/);
+    var output = [];
+    var length = 0;
 
-    for(var i=0; i < descTerms.length; i++) {
-      var term = descTerms[i]
-      var searched = false
+    for (var i = 0; i < descTerms.length; i++) {
+      var term = descTerms[i];
+      var searched = false;
 
-      if(length + term.length >= maxLength) {
-        output.push(
-          <>
-            ...
-          </>
-        )
+      if (length + term.length >= maxLength) {
+        output.push('...');
 
-        break
+        break;
       }
 
-      searchTerms.forEach(searchTerm => {
-        if(term.toLowerCase().includes(searchTerm)) {
-          searched = true
+      searchTerms.forEach((searchTerm) => {
+        if (term.toLowerCase().includes(searchTerm)) {
+          searched = true;
         }
-      })
+      });
 
-      if(searched) {
-        output.push(
-          <>
-          <b>{term}</b>
-          </>
-        )
+      if (searched) {
+        output.push(<b>{term}</b>);
       } else {
-        output.push(
-          <>
-          {term}
-          </>
-        )
+        output.push(term);
       }
 
-      length += term.length
+      length += term.length;
 
-      if(i < descTerms.length) {
-        output.push( //adds whitespace between terms
-          <> </>
-        )
-
-        length++
+      if (i < descTerms.length) {
+        //adds whitespace between terms
+        output.push(' ');
+        length++;
       }
     }
 
-    return output
+    return output;
   }
 
   function getFinalSampleText() {
-    return boldSearchTerms(getBestSampleText())
+    return boldSearchTerms(getBestSampleText());
   }
 
   return (
