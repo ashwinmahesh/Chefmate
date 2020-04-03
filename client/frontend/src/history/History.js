@@ -5,10 +5,13 @@ import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
 import { CircularProgress, Typography } from '@material-ui/core';
 import HistoryExpansionPanel from './HistoryExpansionPanel';
+import { theme } from '../template/theme';
+import { connect } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
   title: {
-    color: 'white',
+    color: colors.primaryText,
     fontWeight: 'bold',
     fontSize: '20pt',
     textAlign: 'left',
@@ -18,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '20px',
   },
   wrapper: {
-    background: 'rgb(40,40,40)',
+    background: colors.background,
     minHeight: '100vh',
   },
   pageDescription: {
@@ -28,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '5px',
     marginLeft: '20px',
     fontStyle: 'italic',
-    color: 'rgb(192,192,192)',
+    color: colors.pageDescriptionPrimary
   },
   panelsWrapper: {
     paddingLeft: '15px',
@@ -41,9 +44,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '150px',
   },
 }));
+type Props = {
+  theme: String,
+};
 
-export default function History() {
-  const styles = useStyles();
+function History(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const [history, changeHistory] = useState([]);
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [isLoading, changeLoading] = useState(true);
@@ -110,3 +117,8 @@ export default function History() {
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(History);

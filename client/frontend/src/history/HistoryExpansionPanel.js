@@ -5,21 +5,26 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
+  colors,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FaHistory } from 'react-icons/fa';
+import { theme } from '../template/theme';
+import { connect } from 'react-redux';
 
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
   expansionPanel: {
-    background: 'rgb(72,72,72)',
+    background: colors.secondaryBackground,
   },
   titleText: {
-    color: 'white',
+    color: colors.primaryText,
     fontSize: '13pt',
     marginLeft: '20px',
   },
   expandIcon: {
-    color: 'white',
+    color: colors.primaryText,
     size: 16,
   },
   expansionDetailsDiv: {
@@ -31,14 +36,14 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '15px',
   },
   bodyText: {
-    color: 'white',
+    color:colors.primaryText,
     marginTop: '15px',
   },
   url: {
-    color: 'white',
+    color: colors.linkPrimary, 
     textDecoration: 'none',
     '&:visited': {
-      color: 'white',
+      color: colors.visitedLinkPrimary,
     },
   },
   urlTypography: {
@@ -53,10 +58,12 @@ type Props = {
   title: String,
   url: String,
   body: String,
+  theme: String,
 };
 
-export default function HistoryExpansionPanel(props: Props) {
-  const styles = useStyles();
+function HistoryExpansionPanel(props: Props) {
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const maxBodyLength = 2000;
 
   return (
@@ -81,3 +88,8 @@ export default function HistoryExpansionPanel(props: Props) {
     </ExpansionPanel>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(HistoryExpansionPanel);

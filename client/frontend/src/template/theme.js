@@ -16,6 +16,8 @@ export const theme = {
       linkPrimary: 'rgb(17,85,204)',
       visitedLinkPrimary:'rgb(102,17,204)',
       homepageSecondary:'white',
+      pageDescriptionPrimary:'black',
+      historySecondary:'rgb(210,107,107)',
   
   
   
@@ -37,7 +39,9 @@ export const theme = {
       likedPagesPrimary:'rgb(151,216,151)', 
       linkPrimary:'rgb(107,144,255)', 
       visitedLinkPrimary:'rgb(164,134,247)',
-      homepageSecondary:'rgb(143,116,116)'
+      homepageSecondary:'rgb(143,116,116)',
+      pageDescriptionPrimary:'rgb(192,192,192)',
+      historySecondary:'rgb(72,72,72)',
   
   
     },
