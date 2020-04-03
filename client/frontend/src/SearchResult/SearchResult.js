@@ -9,24 +9,22 @@ import Timeout from './Timeout';
 // import loading from '../images/loading.gif';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { theme } from '../template/theme';
+import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
-  container: {
-    width: '100vw',
-    display: 'grid',
-    backgroundColor: colors.background,
-  },
-  
-  loading: {
-    color: 'rgb(230, 95, 85)',
-    marginTop: '25%',
-    marginLeft: '45%',
-    
-  },
-}));
+    container: {
+      width: '100vw',
+      minHeight: '100vh',
+      backgroundColor: colors.background,
+    },
+
+    loading: {
+      color: 'rgb(230, 95, 85)',
+      marginTop: '150px',
+    },
+  }));
 
 function SearchResult(props) {
   const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
@@ -95,4 +93,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {})(SearchResult);
-

@@ -4,48 +4,47 @@ import { Paper, InputBase, Divider, IconButton } from '@material-ui/core';
 import { FaSearch, FaMicrophone } from 'react-icons/fa';
 import { getSpeech } from '../voice/Voice';
 
-
-import { theme } from '../template/theme';
+import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
-  barWrapper: {
-    display: 'inline-block',
-    height: '45px',
-    paddingLeft: '10px',
-    paddingRight: '5px',
-    marginLeft: '15px',
-    width: '550px',
-    backgroundColor: colors.background,
-  },
-  textField: {
-    fontSize: '13pt',
-    marginLeft: '10px',
-    color: colors.searchTextPrimary,
-    flex: 1,
-  },
-  flex: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-  searchButton: {
-    fontSize: '15pt',
-    color: colors.headerPrimary,
-  },
-  microphone: {
-    fontSize: '15pt',
-    color: colors.microphonePrimary,
-  },
-  divider: {
-    height: '25px',
-    marginRight: '11px',
-  },
-}));
+    barWrapper: {
+      display: 'inline-block',
+      height: '45px',
+      paddingLeft: '10px',
+      paddingRight: '5px',
+      marginLeft: '15px',
+      width: '550px',
+      backgroundColor: colors.background,
+    },
+    textField: {
+      fontSize: '13pt',
+      marginLeft: '10px',
+      color: colors.searchTextPrimary,
+      flex: 1,
+    },
+    flex: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    searchButton: {
+      fontSize: '15pt',
+      color: colors.headerPrimary,
+    },
+    microphone: {
+      fontSize: '15pt',
+      color: colors.microphonePrimary,
+    },
+    divider: {
+      height: '25px',
+      marginRight: '11px',
+    },
+  }));
 
 type Props = {
   initialSearch: String,
-  theme: String
+  theme: String,
 };
 
 function SearchBar(props: Props) {

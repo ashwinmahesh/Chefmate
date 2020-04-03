@@ -2,41 +2,41 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
 
-import { theme } from '../template/theme';
+import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
-  siteUrl: {
-    fontSize: '12pt',
-    margin: '0px',
-    marginBottom: '5px',
-    color: colors.searchTextPrimary,
-  },
-  link: {
-    fontSize: '17pt',
-    margin: '0px',
-    textDecoration: 'none',
-    color:colors.linkPrimary,
-    '&:hover': {
-      textDecoration: 'underline',
+    siteUrl: {
+      fontSize: '12pt',
+      margin: '0px',
+      marginBottom: '5px',
+      color: colors.searchTextPrimary,
     },
-  },
-  sampleText: {
-    color: colors.searchTextPrimary,
-    margin: '0px',
-    marginTop: '7px',
-  },
-  singleSiteContainer: {
-    marginBottom: '30px',
-  },
-  likeCount: {
-    color: colors.likedPagesPrimary,
-    margin: '0px',
-    display: 'inline-block',
-    marginLeft: '20px',
-  },
-}));
+    link: {
+      fontSize: '17pt',
+      margin: '0px',
+      textDecoration: 'none',
+      color: colors.linkPrimary,
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
+    sampleText: {
+      color: colors.searchTextPrimary,
+      margin: '0px',
+      marginTop: '7px',
+    },
+    singleSiteContainer: {
+      marginBottom: '30px',
+    },
+    likeCount: {
+      color: colors.likedPagesPrimary,
+      margin: '0px',
+      display: 'inline-block',
+      marginLeft: '20px',
+    },
+  }));
 
 type Props = {
   url: string,
@@ -44,7 +44,7 @@ type Props = {
   sampleText: string,
   likes: number,
   likeStatus: -1 | 0 | 1,
-  theme: String, 
+  theme: String,
 };
 
 function SingleResult(props: Props) {

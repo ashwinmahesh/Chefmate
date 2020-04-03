@@ -7,81 +7,81 @@ import logo from '../images/logo.png';
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { updateTheme } from '../redux/actions/theme';
-import { theme } from '../template/theme';
+import { theme } from '../theme/theme';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
-  menu: {
-    fontSize: '12.5pt',
-  },
-  menuButton: {
-    marginLeft: '5px',
-    color: 'white',
-  },
-  iconStyle: {
-    color: colors.historyButtonPrimary,
-    marginRight: '30px',
-  },
-  thumbsUp: {
-    color: green[200],
-  },
-  thumbsDown: {
-    color: red[200],
-  },
-  menuTextStyle: {
-    fontFamily: 'Arial',
-    fontSize: '14pt',
-    color: colors.textSecondary,
-    textDecoration: 'none',
-    '&:visited': {
+    menu: {
+      fontSize: '12.5pt',
+    },
+    menuButton: {
+      marginLeft: '5px',
       color: 'white',
     },
-    flex: 1,
-  },
-  divStyle: {
-    width: '250px',
-    '&:hover': {
-        background: colors.menuHoverPrimary,
+    iconStyle: {
+      color: colors.historyButtonPrimary,
+      marginRight: '30px',
     },
-    display: 'flex',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    paddingLeft: '22px',
-  },
-  darkLabel: {
-    fontFamily: 'Arial',
-    fontSize: '14pt',
-    marginLeft: '35px',
-    width: '100%',
-    color: 'white',
-  },
-  switchDiv: {
-    paddingLeft: '25px',
-  },
-  drawerPaper: {
-    background: colors.menuPrimary,
-  },
-  logo: {
-    width: '125px',
-    height: '28px',
-    marginLeft: '20px',
-  },
-  logoDiv: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingTop: '10px',
-    paddingBottom: '10px',
-    paddingLeft: '15px',
-  },
-  divider: {
-    flex: 1,
+    thumbsUp: {
+      color: green[200],
+    },
+    thumbsDown: {
+      color: red[200],
+    },
+    menuTextStyle: {
+      fontFamily: 'Arial',
+      fontSize: '14pt',
+      color: colors.textSecondary,
+      textDecoration: 'none',
+      '&:visited': {
+        color: 'white',
+      },
+      flex: 1,
+    },
+    divStyle: {
+      width: '250px',
+      '&:hover': {
+        background: colors.menuHoverPrimary,
+      },
+      display: 'flex',
+      paddingTop: '10px',
+      paddingBottom: '10px',
+      paddingLeft: '22px',
+    },
+    darkLabel: {
+      fontFamily: 'Arial',
+      fontSize: '14pt',
+      marginLeft: '35px',
+      width: '100%',
+      color: 'white',
+    },
+    switchDiv: {
+      paddingLeft: '25px',
+    },
+    drawerPaper: {
+      background: colors.menuPrimary,
+    },
+    logo: {
+      width: '125px',
+      height: '28px',
+      marginLeft: '20px',
+    },
+    logoDiv: {
+      display: 'flex',
+      alignItems: 'center',
+      paddingTop: '10px',
+      paddingBottom: '10px',
+      paddingLeft: '15px',
+    },
+    divider: {
+      flex: 1,
       background: 'white',
-  },
-  dividierDiv: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-}));
+    },
+    dividierDiv: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
+  }));
 
 type Props = {
   side: 'left' | 'right',
@@ -166,7 +166,6 @@ function MenuIcon(props: Props) {
             <IconButton>
               <FaThumbsDown
                 className={[styles.iconStyle, styles.thumbsDown].join(' ')}
-                //size="large"
               />
             </IconButton>
             Dislikes

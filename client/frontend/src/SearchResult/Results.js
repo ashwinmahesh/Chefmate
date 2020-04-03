@@ -5,89 +5,84 @@ import { FaChevronRight, FaChevronLeft } from 'react-icons/fa';
 
 import logo from '../images/logo.png';
 
-import { theme } from '../template/theme';
+import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
-  wrapper: {
-    backgroundColor: colors.background,
-  },
-  container: {
-    
-  },
-  subcontainer: {
-    backgroundColor: colors.background,
-    textAlign: 'Left',
-    marginLeft: '100px',
-    width: '650px',
-  },
-  resultContainer: {
-    marginTop: '30px',
-  },
-  resultCount: {
-    fontSize: '12pt',
-    color: colors.searchTextPrimary,
-    marginTop: '20px',
-  },
-  logo: {
-    height: '30px',
-  },
-  rightArrow: {
-    color: 'rgb(230, 95, 85)',
-    fontSize: '13pt',
-    marginLeft: '15px',
-    '&:hover': {
-      cursor: 'pointer',
+    wrapper: {
+      backgroundColor: colors.background,
     },
-  },
-  leftArrow: {
-    color: 'rgb(230, 95, 85)',
-    fontSize: '13pt',
-    marginRight: '15px',
-    '&:hover': {
-      cursor: 'pointer',
+    subcontainer: {
+      backgroundColor: colors.background,
+      textAlign: 'Left',
+      marginLeft: '100px',
+      width: '650px',
     },
-  },
-  logoAndNext: {
-    display: 'block',
-    textAlign: 'center',
-  },
-  pages: {
-    display: 'block',
-    textAlign: 'center',
-    paddingTop: '8px',
-    paddingBottom: '10px',
-  },
-  pageNum: {
-    textDecoration: 'none',
-    fontSize: '13pt',
-    marginLeft: '7px',
-    marginRight: '7px',
-    fontWeight: 'bold',
-    color: 'rgb(230, 95, 85)',
-    //color: 'black',
-    '&:hover': {
-      cursor: 'pointer',
-      textDecoration: 'underline',
+    resultContainer: {
+      marginTop: '30px',
     },
-    border: 'none',
-  },
-  hidden: {
-    visibility: 'hidden',
-  },
-}));
+    resultCount: {
+      fontSize: '12pt',
+      color: colors.tertiaryText,
+      marginTop: '20px',
+    },
+    logo: {
+      height: '30px',
+    },
+    rightArrow: {
+      color: 'rgb(230, 95, 85)',
+      fontSize: '13pt',
+      marginLeft: '15px',
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+    leftArrow: {
+      color: 'rgb(230, 95, 85)',
+      fontSize: '13pt',
+      marginRight: '15px',
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+    logoAndNext: {
+      display: 'block',
+      textAlign: 'center',
+    },
+    pages: {
+      display: 'block',
+      textAlign: 'center',
+      paddingTop: '8px',
+      paddingBottom: '10px',
+    },
+    pageNum: {
+      textDecoration: 'none',
+      fontSize: '13pt',
+      marginLeft: '7px',
+      marginRight: '7px',
+      fontWeight: 'bold',
+      color: 'rgb(230, 95, 85)',
+      '&:hover': {
+        cursor: 'pointer',
+        textDecoration: 'underline',
+      },
+      border: 'none',
+    },
+    hidden: {
+      visibility: 'hidden',
+    },
+  }));
 
 type Props = {
   documents: [{}],
   numSearched: Number,
   searchTime: Number,
   likesDislikes: [{}],
-  theme:String,
+  theme: String,
 };
 
 function Results(props: Props) {
-  //const styles = useStyles();
   const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
   const styles = useStyles(colors)();
   const pagesPerScreen = 10;
@@ -197,7 +192,6 @@ function Results(props: Props) {
   }
 
   return (
-
     <div className={styles.subcontainer}>
       <p className={styles.resultCount}>
         Found {props.numSearched} results ({props.searchTime} seconds)
@@ -208,7 +202,6 @@ function Results(props: Props) {
         {renderPages()}
       </div>
     </div>
-
   );
 }
 
@@ -217,4 +210,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {})(Results);
-

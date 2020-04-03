@@ -6,41 +6,41 @@ import logo from '../images/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
 import MenuIcon from './MenuIcon';
 
-import { theme } from '../template/theme';
+import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
-  wrapper: {
-    height: '45px',
-    background: colors.headerPrimary,
-    padding: '1px',
-    textAlign: 'left',
-    display: 'flex',
-    justifyContent: 'space-between',
-    paddingTop: '12px',
-    paddingBottom: '12px',
-    paddingLeft: '15px',
-    paddingRight: '5px',
-    minWidth: '900px',
-  },
-  logoutButton: {
-    textDecoration: 'none',
-    color: 'white',
-  },
-  rightDiv: {
-    padding: '1px',
-    paddingRight: '15px',
-  },
-  logo: {
-    width: '100px',
-    height: '25px',
-  },
-}));
+    wrapper: {
+      height: '45px',
+      background: colors.headerPrimary,
+      padding: '1px',
+      textAlign: 'left',
+      display: 'flex',
+      justifyContent: 'space-between',
+      paddingTop: '12px',
+      paddingBottom: '12px',
+      paddingLeft: '15px',
+      paddingRight: '5px',
+      minWidth: '900px',
+    },
+    logoutButton: {
+      textDecoration: 'none',
+      color: 'white',
+    },
+    rightDiv: {
+      padding: '1px',
+      paddingRight: '15px',
+    },
+    logo: {
+      width: '100px',
+      height: '25px',
+    },
+  }));
 
 type Props = {
   initialSearch: String,
-  theme: String, 
+  theme: String,
 };
 
 function HeaderSearch(props: Props) {

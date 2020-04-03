@@ -15,13 +15,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import { updateUser } from './redux/actions/user';
 import { updateTheme } from './redux/actions/theme';
 
-import ReactPlayer from "react-player";
-import { FaFileExcel } from 'react-icons/fa';
+// import ReactPlayer from "react-player";
+// import { FaFileExcel } from 'react-icons/fa';
 
 const useStyles = makeStyles((theme) => ({
- music: {
-   display: 'flex'
- }
+  music: {
+    display: 'flex',
+  },
 }));
 
 function App(props) {
@@ -42,7 +42,6 @@ function App(props) {
           </Switch>
         </div>
       </Router>
-
     </div>
   );
 }

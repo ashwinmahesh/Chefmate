@@ -9,50 +9,49 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FaHistory } from 'react-icons/fa';
-import { theme } from '../template/theme';
+import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
-
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
-  expansionPanel: {
-    background: colors.secondaryBackground,
-  },
-  titleText: {
-    color: colors.primaryText,
-    fontSize: '13pt',
-    marginLeft: '20px',
-  },
-  expandIcon: {
-    color: colors.primaryText,
-    size: 16,
-  },
-  expansionDetailsDiv: {
-    textAlign: 'left',
-    width: '100%',
-  },
-  likedOnText: {
-    color: 'rgb(192,192,192)',
-    marginBottom: '15px',
-  },
-  bodyText: {
-    color:colors.primaryText,
-    marginTop: '15px',
-  },
-  url: {
-    color: colors.linkPrimary, 
-    textDecoration: 'none',
-    '&:visited': {
-      color: colors.visitedLinkPrimary,
+    expansionPanel: {
+      background: colors.secondaryBackground,
     },
-  },
-  urlTypography: {
-    display: 'inline-block',
-    '&:hover': {
-      textDecoration: 'underline',
+    titleText: {
+      color: colors.primaryText,
+      fontSize: '13pt',
+      marginLeft: '20px',
     },
-  },
-}));
+    expandIcon: {
+      color: colors.primaryText,
+      size: 16,
+    },
+    expansionDetailsDiv: {
+      textAlign: 'left',
+      width: '100%',
+    },
+    likedOnText: {
+      color: 'rgb(192,192,192)',
+      marginBottom: '15px',
+    },
+    bodyText: {
+      color: colors.primaryText,
+      marginTop: '15px',
+    },
+    url: {
+      color: colors.linkPrimary,
+      textDecoration: 'none',
+      '&:visited': {
+        color: colors.visitedLinkPrimary,
+      },
+    },
+    urlTypography: {
+      display: 'inline-block',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    },
+  }));
 
 type Props = {
   title: String,
