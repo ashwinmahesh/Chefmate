@@ -4,7 +4,12 @@ import { Paper, InputBase, Divider, IconButton } from '@material-ui/core';
 import { FaSearch, FaMicrophone } from 'react-icons/fa';
 import NotImplemented from '../Alerts/NotImplemented';
 
-const useStyles = makeStyles((theme) => ({
+
+import { theme } from './theme';
+import { connect } from 'react-redux';
+
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
   barWrapper: {
     display: 'inline-block',
     height: '45px',
@@ -12,11 +17,12 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '5px',
     marginLeft: '15px',
     width: '550px',
-    backgroundColor: 'white',
+    backgroundColor: colors.searchBarBackground,
   },
   textField: {
     fontSize: '13pt',
     marginLeft: '10px',
+    color: colors.searchText,
     flex: 1,
   },
   flex: {
@@ -25,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
   searchButton: {
     fontSize: '15pt',
-    color: 'rgb(230, 95, 85)',
+    color: colors.headerTing,
   },
   microphone: {
     fontSize: '15pt',
-    color: 'rgb(180,180,180)',
+    color: colors.microphone,
   },
   divider: {
     height: '25px',
@@ -39,10 +45,13 @@ const useStyles = makeStyles((theme) => ({
 
 type Props = {
   initialSearch: String,
+  theme: String
 };
 
-export default function SearchBar(props: Props) {
-  const styles = useStyles();
+function SearchBar(props: Props) {
+  //const styles = useStyles();
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   const [query, changeQuery] = useState(props.initialSearch);
   const [alertOpen, changeAlertOpen] = useState(false);
 
@@ -105,3 +114,8 @@ export default function SearchBar(props: Props) {
     </Paper>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(SearchBar);

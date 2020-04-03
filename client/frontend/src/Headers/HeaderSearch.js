@@ -6,10 +6,15 @@ import logo from '../images/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
 import MenuIcon from './MenuIcon';
 
-const useStyles = makeStyles((theme) => ({
+import { theme } from './theme';
+import { connect } from 'react-redux';
+
+const useStyles = (colors) =>
+  makeStyles((theme) => ({
   wrapper: {
     height: '45px',
-    background: 'rgb(230, 95, 85)',
+    //background: 'rgb(230, 95, 85)',
+    background: colors.headerTing,
     padding: '1px',
     textAlign: 'left',
     display: 'flex',
@@ -36,11 +41,13 @@ const useStyles = makeStyles((theme) => ({
 
 type Props = {
   initialSearch: String,
+  theme: String, 
 };
 
-export default function HeaderSearch(props: Props) {
-  const styles = useStyles();
-
+function HeaderSearch(props: Props) {
+  //const styles = useStyles();
+  const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
+  const styles = useStyles(colors)();
   return (
     <div className={styles.wrapper}>
       <div>
@@ -58,3 +65,8 @@ export default function HeaderSearch(props: Props) {
     </div>
   );
 }
+const mapStateToProps = (state) => ({
+  theme: state.theme,
+});
+
+export default connect(mapStateToProps, {})(HeaderSearch);
