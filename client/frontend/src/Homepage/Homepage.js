@@ -148,18 +148,7 @@ function Homepage(props: Props) {
           )}
         />
       </div>
-      <div className={styles.music}>
-      <ReactPlayer
-        //url="https://soundcloud.com/glennmorrison/beethoven-moonlight-sonata"
-        url = "https://soundcloud.com/everythingondeckbased/lil-b-i-cook"
-        width='100vw'
-        height='100px'
-        playing="true"
-        loop="true"
-        
-      />
-      </div>
-    </div>
+    </div> 
   );
 }
 const mapStateToProps = (state) => ({
