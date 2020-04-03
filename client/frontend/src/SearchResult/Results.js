@@ -12,7 +12,6 @@ const useStyles = (colors) =>
   makeStyles((theme) => ({
   wrapper: {
     backgroundColor: colors.background,
-    //backgroundColor: 'black',
   },
   container: {
     
@@ -28,7 +27,6 @@ const useStyles = (colors) =>
   },
   resultCount: {
     fontSize: '12pt',
-    //color: 'rgb(120,120,120)',
     color: colors.searchTextPrimary,
     marginTop: '20px',
   },

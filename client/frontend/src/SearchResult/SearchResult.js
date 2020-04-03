@@ -19,21 +19,16 @@ const useStyles = (colors) =>
     display: 'grid',
     backgroundColor: colors.background,
   },
-  // loading: {
-  //   marginTop: '80px',
-  // },
+  
   loading: {
     color: 'rgb(230, 95, 85)',
-    //color: 'white',
     marginTop: '25%',
     marginLeft: '45%',
-    // backgroundColor: 'rgb(50, 49, 49)'
-    // paddingLeft: '150px'
+    
   },
 }));
 
 function SearchResult(props) {
-  //const styles = useStyles();
   const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
   const styles = useStyles(colors)();
   const [loginRedirect, changeLoginRedirect] = useState(false);

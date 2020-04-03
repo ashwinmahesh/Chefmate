@@ -48,7 +48,6 @@ type Props = {
 };
 
 function SingleResult(props: Props) {
-  //const styles = useStyles();
   const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
   const styles = useStyles(colors)();
   const url = changeUrl();

@@ -10,7 +10,6 @@ export const theme = {
       menuPrimary: 'rgb(230, 95, 85)',
       menuHoverPrimary: 'rgb(209, 83, 73)',
       headerPrimary:'rgb(230, 95, 85)',
-      //searchBarBackground: 'white',
       microphonePrimary:'rgb(180,180,180)',
       searchTextPrimary:'black',
       likedPagesPrimary:'green',
@@ -28,17 +27,16 @@ export const theme = {
       tertiaryBackground: 'rgb(48,48,48)',
       primaryText: 'white',
       secondaryText: 'rgb(192,192,192)',
-      historyButtonPrimary: 'rgb(230, 95, 85)', //historyButtonPrimary //histButtonColor
-      textSecondary: 'rgb(230, 95, 85)', //textSecondary //textColor
-      menuPrimary: 'rgb(94, 92, 92)', //menuPrimary //menuBackground
-      menuHoverPrimary: 'rgb(143,116,116)', //hoverPrimary //hoverTing
-      headerPrimary: 'rgb(210,107,107)',//headerPrimary //headerTing
-      //searchBarBackground: 'rgb(50,49,49)', //just be background //searchBarBackground:
-      microphonePrimary:'white', //microphonePrimary //microphone
-      searchTextPrimary:'white', //searchTextPrimary //searchText
-      likedPagesPrimary:'rgb(151,216,151)', //likedPagesPrimary //likeColor
-      linkPrimary:'rgb(107,144,255)', //linkPrimary //linkColor
-      visitedLinkPrimary:'rgb(164,134,247)',//visitedLinkPrimary //visitedLinkColor
+      historyButtonPrimary: 'rgb(230, 95, 85)', 
+      textSecondary: 'rgb(230, 95, 85)', 
+      menuPrimary: 'rgb(94, 92, 92)', 
+      menuHoverPrimary: 'rgb(143,116,116)', 
+      headerPrimary: 'rgb(210,107,107)',
+      microphonePrimary:'white', 
+      searchTextPrimary:'white', 
+      likedPagesPrimary:'rgb(151,216,151)', 
+      linkPrimary:'rgb(107,144,255)', 
+      visitedLinkPrimary:'rgb(164,134,247)',
       homepageSecondary:'rgb(143,116,116)'
   
   

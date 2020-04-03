@@ -8,8 +8,6 @@ import { connect } from 'react-redux';
 const useStyles = (colors) =>
   makeStyles((theme) => ({
   barcolor: {
-    //background: 'rgb(230, 95, 85)',
-    //background: 'rgb(0, 0, 0)',
     background: colors.headerPrimary,
   },
   root: {

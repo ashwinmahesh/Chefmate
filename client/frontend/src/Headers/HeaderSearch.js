@@ -13,7 +13,6 @@ const useStyles = (colors) =>
   makeStyles((theme) => ({
   wrapper: {
     height: '45px',
-    //background: 'rgb(230, 95, 85)',
     background: colors.headerPrimary,
     padding: '1px',
     textAlign: 'left',
@@ -45,7 +44,6 @@ type Props = {
 };
 
 function HeaderSearch(props: Props) {
-  //const styles = useStyles();
   const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
   const styles = useStyles(colors)();
   return (

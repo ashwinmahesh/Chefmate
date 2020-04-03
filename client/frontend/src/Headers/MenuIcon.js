@@ -8,7 +8,6 @@ import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { updateTheme } from '../redux/actions/theme';
 import { theme } from '../template/theme';
-//import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
@@ -20,8 +19,6 @@ const useStyles = (colors) =>
     color: 'white',
   },
   iconStyle: {
-    //color: 'rgb(200,200,200)',
-    //color: 'rgb(0,0,0)',
     color: colors.historyButtonPrimary,
     marginRight: '30px',
   },
@@ -34,7 +31,6 @@ const useStyles = (colors) =>
   menuTextStyle: {
     fontFamily: 'Arial',
     fontSize: '14pt',
-    //color: 'white',
     color: colors.textSecondary,
     textDecoration: 'none',
     '&:visited': {
@@ -45,9 +41,7 @@ const useStyles = (colors) =>
   divStyle: {
     width: '250px',
     '&:hover': {
-      //background: 'rgb(209, 83, 73)',
         background: colors.menuHoverPrimary,
-        //backbround: 'white',
     },
     display: 'flex',
     paddingTop: '10px',
@@ -65,7 +59,6 @@ const useStyles = (colors) =>
     paddingLeft: '25px',
   },
   drawerPaper: {
-    //background: 'rgb(230, 95, 85)',
     background: colors.menuPrimary,
   },
   logo: {
@@ -82,7 +75,6 @@ const useStyles = (colors) =>
   },
   divider: {
     flex: 1,
-    //background: 'rgb(190, 190,190)',
       background: 'white',
   },
   dividierDiv: {

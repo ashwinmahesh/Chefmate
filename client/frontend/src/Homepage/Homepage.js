@@ -25,26 +25,19 @@ const useStyles = (colors) =>
     maxWidth: '700px',
     marginBottom: '25px',
     background: colors.homepageSecondary,
-    //color: 'white',
   },
   logo: {
     width: '500px',
     height: '125px',
     marginBottom: '50px',
-    //background: 'rgb(40,40,40)',
   },
   contents: {
     marginTop: '100px',
-    //color:'white',
-    //background: 'rgb(40,40,40)',
   },
   searchButton: {
-    //fontSize: '22pt',
     fontSize: '22pt',
     marginLeft: '6px',
-    //color: 'rgb(230, 95, 85)',
     color: 'rgb(230, 95, 85)',
-    //background: 'rgb(40,40,40)',
   },
   music: {
     backgroundColor: 'red',
