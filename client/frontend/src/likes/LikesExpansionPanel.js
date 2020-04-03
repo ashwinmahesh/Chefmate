@@ -9,7 +9,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FaStar } from 'react-icons/fa';
 import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
-import { theme } from './theme';
+import { theme } from '../template/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>

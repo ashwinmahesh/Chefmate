@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
 import LikesExpansionPanel from './LikesExpansionPanel';
 import { CircularProgress, Typography } from '@material-ui/core';
-import { theme } from './theme';
+import { theme } from '../template/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>

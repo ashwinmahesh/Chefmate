@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import LikeDislikeButtons from '../LikeDislikeButtons/LikeDislikeButtons';
 
-import { theme } from './theme';
+import { theme } from '../template/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
@@ -11,19 +11,19 @@ const useStyles = (colors) =>
     fontSize: '12pt',
     margin: '0px',
     marginBottom: '5px',
-    color: colors.searchText,
+    color: colors.searchTextPrimary,
   },
   link: {
     fontSize: '17pt',
     margin: '0px',
     textDecoration: 'none',
-    color:colors.linkColor,
+    color:colors.linkPrimary,
     '&:hover': {
       textDecoration: 'underline',
     },
   },
   sampleText: {
-    color: colors.searchText,
+    color: colors.searchTextPrimary,
     margin: '0px',
     marginTop: '7px',
   },
@@ -31,7 +31,7 @@ const useStyles = (colors) =>
     marginBottom: '30px',
   },
   likeCount: {
-    color: colors.likeColor,
+    color: colors.likedPagesPrimary,
     margin: '0px',
     display: 'inline-block',
     marginLeft: '20px',

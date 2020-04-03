@@ -5,20 +5,20 @@ import { FaChevronRight, FaChevronLeft } from 'react-icons/fa';
 
 import logo from '../images/logo.png';
 
-import { theme } from './theme';
+import { theme } from '../template/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
   wrapper: {
-    backgroundColor: colors.searchBarBackground,
+    backgroundColor: colors.background,
     //backgroundColor: 'black',
   },
   container: {
     
   },
   subcontainer: {
-    backgroundColor: colors.searchBarBackground,
+    backgroundColor: colors.background,
     textAlign: 'Left',
     marginLeft: '100px',
     width: '650px',
@@ -29,7 +29,7 @@ const useStyles = (colors) =>
   resultCount: {
     fontSize: '12pt',
     //color: 'rgb(120,120,120)',
-    color: colors.searchText,
+    color: colors.searchTextPrimary,
     marginTop: '20px',
   },
   logo: {

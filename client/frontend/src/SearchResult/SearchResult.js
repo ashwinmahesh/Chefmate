@@ -9,7 +9,7 @@ import Timeout from './Timeout';
 // import loading from '../images/loading.gif';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { theme } from './theme';
+import { theme } from '../template/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
@@ -17,7 +17,7 @@ const useStyles = (colors) =>
   container: {
     width: '100vw',
     display: 'grid',
-    backgroundColor: colors.searchBarBackground,
+    backgroundColor: colors.background,
   },
   // loading: {
   //   marginTop: '80px',

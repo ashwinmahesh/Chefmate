@@ -7,7 +7,7 @@ import logo from '../images/logo.png';
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux';
 import { updateTheme } from '../redux/actions/theme';
-import { theme } from './theme';
+import { theme } from '../template/theme';
 //import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
@@ -22,7 +22,7 @@ const useStyles = (colors) =>
   iconStyle: {
     //color: 'rgb(200,200,200)',
     //color: 'rgb(0,0,0)',
-    color: colors.histButtonColor,
+    color: colors.historyButtonPrimary,
     marginRight: '30px',
   },
   thumbsUp: {
@@ -35,7 +35,7 @@ const useStyles = (colors) =>
     fontFamily: 'Arial',
     fontSize: '14pt',
     //color: 'white',
-    color: colors.textColor,
+    color: colors.textSecondary,
     textDecoration: 'none',
     '&:visited': {
       color: 'white',
@@ -46,7 +46,7 @@ const useStyles = (colors) =>
     width: '250px',
     '&:hover': {
       //background: 'rgb(209, 83, 73)',
-        background: colors.hoverTing,
+        background: colors.menuHoverPrimary,
         //backbround: 'white',
     },
     display: 'flex',
@@ -66,7 +66,7 @@ const useStyles = (colors) =>
   },
   drawerPaper: {
     //background: 'rgb(230, 95, 85)',
-    background: colors.menuBackground,
+    background: colors.menuPrimary,
   },
   logo: {
     width: '125px',

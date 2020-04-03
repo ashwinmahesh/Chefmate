@@ -10,7 +10,7 @@ import HeaderSimple from '../Headers/HeaderSimple';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import ReactPlayer from "react-player"
 
-import { theme } from './theme';
+import { theme } from '../template/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
@@ -24,7 +24,8 @@ const useStyles = (colors) =>
     width: '80vw',
     maxWidth: '700px',
     marginBottom: '25px',
-    background: colors.searchBarBackground,
+    background: colors.homepageSecondary,
+    //color: 'white',
   },
   logo: {
     width: '500px',
@@ -34,6 +35,7 @@ const useStyles = (colors) =>
   },
   contents: {
     marginTop: '100px',
+    //color:'white',
     //background: 'rgb(40,40,40)',
   },
   searchButton: {

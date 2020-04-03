@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import MenuIcon from '../Headers/MenuIcon';
-import { theme } from './theme';
+import { theme } from '../template/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
@@ -10,7 +10,7 @@ const useStyles = (colors) =>
   barcolor: {
     //background: 'rgb(230, 95, 85)',
     //background: 'rgb(0, 0, 0)',
-    background: colors.headerTing,
+    background: colors.headerPrimary,
   },
   root: {
     flexGrow: 1,

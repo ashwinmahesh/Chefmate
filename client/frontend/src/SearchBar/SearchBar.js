@@ -5,7 +5,7 @@ import { FaSearch, FaMicrophone } from 'react-icons/fa';
 import { getSpeech } from '../voice/Voice';
 
 
-import { theme } from './theme';
+import { theme } from '../template/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
@@ -17,12 +17,12 @@ const useStyles = (colors) =>
     paddingRight: '5px',
     marginLeft: '15px',
     width: '550px',
-    backgroundColor: colors.searchBarBackground,
+    backgroundColor: colors.background,
   },
   textField: {
     fontSize: '13pt',
     marginLeft: '10px',
-    color: colors.searchText,
+    color: colors.searchTextPrimary,
     flex: 1,
   },
   flex: {
@@ -31,11 +31,11 @@ const useStyles = (colors) =>
   },
   searchButton: {
     fontSize: '15pt',
-    color: colors.headerTing,
+    color: colors.headerPrimary,
   },
   microphone: {
     fontSize: '15pt',
-    color: colors.microphone,
+    color: colors.microphonePrimary,
   },
   divider: {
     height: '25px',

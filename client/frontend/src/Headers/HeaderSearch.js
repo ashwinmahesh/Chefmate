@@ -6,7 +6,7 @@ import logo from '../images/logo.png';
 import SearchBar from '../SearchBar/SearchBar';
 import MenuIcon from './MenuIcon';
 
-import { theme } from './theme';
+import { theme } from '../template/theme';
 import { connect } from 'react-redux';
 
 const useStyles = (colors) =>
@@ -14,7 +14,7 @@ const useStyles = (colors) =>
   wrapper: {
     height: '45px',
     //background: 'rgb(230, 95, 85)',
-    background: colors.headerTing,
+    background: colors.headerPrimary,
     padding: '1px',
     textAlign: 'left',
     display: 'flex',
