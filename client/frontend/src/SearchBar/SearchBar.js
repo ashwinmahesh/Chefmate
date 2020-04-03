@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, InputBase, Divider, IconButton } from '@material-ui/core';
 import { FaSearch, FaMicrophone } from 'react-icons/fa';
-import NotImplemented from '../Alerts/NotImplemented';
+import { getSpeech } from '../voice/Voice';
 
 const useStyles = makeStyles((theme) => ({
   barWrapper: {
@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
   },
   microphone: {
     fontSize: '15pt',
-    color: 'rgb(180,180,180)',
   },
   divider: {
     height: '25px',
@@ -44,19 +43,20 @@ type Props = {
 export default function SearchBar(props: Props) {
   const styles = useStyles();
   const [query, changeQuery] = useState(props.initialSearch);
-  const [alertOpen, changeAlertOpen] = useState(false);
+  const [listening, setListening] = useState(false);
 
   function handleQueryChange(event) {
     changeQuery(event.target.value);
   }
 
-  function handleAlertClose() {
-    changeAlertOpen(false);
+  function handleSpokenQueryChange(newQuery) {
+    changeQuery(newQuery);
   }
 
   function microphoneClicked() {
-    console.log('Activating voice control');
-    changeAlertOpen(true);
+    const newListening = !listening;
+    setListening(newListening);
+    getSpeech(newListening, handleSpokenQueryChange);
   }
 
   function handleKeyDown(event) {
@@ -80,14 +80,12 @@ export default function SearchBar(props: Props) {
         <IconButton
           edge="start"
           className={styles.microphone}
-          color="inherit"
-          aria-label="menu"
           onClick={microphoneClicked}
         >
-          <FaMicrophone />
+          <FaMicrophone
+            color={listening ? 'rgb(50, 151, 240)' : 'rgb(180,180,180)'}
+          />
         </IconButton>
-
-        <NotImplemented open={alertOpen} handleClose={handleAlertClose} />
 
         <Divider className={styles.divider} orientation="vertical" />
 
