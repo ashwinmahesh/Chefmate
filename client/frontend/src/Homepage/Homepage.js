@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import HeaderSimple from '../Headers/HeaderSimple';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import ReactPlayer from "react-player"
 
 import { theme } from './theme';
 import { connect } from 'react-redux';
@@ -43,6 +44,12 @@ const useStyles = (colors) =>
     color: 'rgb(230, 95, 85)',
     //background: 'rgb(40,40,40)',
   },
+  music: {
+    backgroundColor: 'red',
+    bottom: '0',
+    height: '100px',
+    position: 'fixed'
+  }
 }));
 type Props = {
   theme: String,
@@ -140,6 +147,17 @@ function Homepage(props: Props) {
             </>
           )}
         />
+      </div>
+      <div className={styles.music}>
+      <ReactPlayer
+        //url="https://soundcloud.com/glennmorrison/beethoven-moonlight-sonata"
+        url = "https://soundcloud.com/everythingondeckbased/lil-b-i-cook"
+        width='100vw'
+        height='100px'
+        playing="true"
+        loop="true"
+        
+      />
       </div>
     </div>
   );
