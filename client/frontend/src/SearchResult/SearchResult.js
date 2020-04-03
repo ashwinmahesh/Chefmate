@@ -80,6 +80,7 @@ function SearchResult(props) {
           numSearched={numSearched}
           searchTime={searchTime}
           likesDislikes={userLikesDislikes}
+          query={oldQuery}
         />
       ) : (
         <NoResults />

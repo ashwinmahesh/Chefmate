@@ -80,6 +80,7 @@ type Props = {
   searchTime: Number,
   likesDislikes: [{}],
   theme: String,
+  query: String,
 };
 
 function Results(props: Props) {
@@ -143,7 +144,9 @@ function Results(props: Props) {
           likeStatus={likeStatus}
           likes={Math.floor(Math.random() * 100000 + 5000)}
           key={document['_id']}
-          sampleText={document['description']}
+          desc={document['description']}
+          body={document['body']}
+          query={props.query}
         />
       );
     }
