@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
   },
   microphone: {
     fontSize: '15pt',
-    color: 'rgb(180,180,180)',
   },
   divider: {
     height: '25px',
@@ -40,8 +39,6 @@ const useStyles = makeStyles((theme) => ({
 type Props = {
   initialSearch: String,
 };
-
-const { barWrapper, textField, flex, searchButton, microphone, divider } = useStyles;
 
 export default function SearchBar(props: Props) {
   const styles = useStyles();
@@ -66,8 +63,6 @@ export default function SearchBar(props: Props) {
     <Paper className={styles.barWrapper}>
       <div className={styles.flex}>
         <InputBase
-          id="textField"
-          style={textField}
           placeholder="Search Chefmate"
           inputProps={{ 'aria-label': 'Search Chefmate' }}
           className={styles.textField}
@@ -78,11 +73,11 @@ export default function SearchBar(props: Props) {
         <IconButton
           edge="start"
           className={styles.microphone}
-          color="inherit"
-          aria-label="menu"
           onClick={microphoneClicked}
         >
-          <FaMicrophone />
+          <FaMicrophone
+            color={listening ? 'rgb(50, 151, 240)' : 'rgb(180,180,180)'}
+          />
         </IconButton>
 
         <Divider className={styles.divider} orientation="vertical" />
