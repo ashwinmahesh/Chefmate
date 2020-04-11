@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { makeStyles, StylesProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import SingleResult from './SingleResult';
 import { FaChevronRight, FaChevronLeft } from 'react-icons/fa';
 
@@ -105,24 +105,6 @@ function Results(props: Props) {
     changeCurrentPage(newPage);
   }
 
-  function renderTestSites() {
-    const output = [];
-    for (var i = 0; i < pagesPerScreen; i++) {
-      output.push(
-        <SingleResult
-          url="https://www.google.com/images"
-          title="Google - Images"
-          sampleText="Hello i am random sample text for google. This is text related to what you
-        have searched for. Blah blah blah here is some more text."
-          likes={69420}
-          likeStatus={0}
-          key={i}
-        />
-      );
-    }
-    return output;
-  }
-
   function renderSites() {
     const output = [];
     for (
@@ -174,6 +156,7 @@ function Results(props: Props) {
       <>
         <div className={styles.logoAndNext}>
           <a
+            href={undefined}
             onClick={prevPressed}
             className={currentPage === 1 ? styles.hidden : null}
           >
@@ -183,6 +166,7 @@ function Results(props: Props) {
             <img src={logo} className={styles.logo} alt="Chefmate logo" />
           </a>
           <a
+            href={undefined}
             onClick={nextPressed}
             className={currentPage === pages ? styles.hidden : null}
           >
@@ -200,7 +184,6 @@ function Results(props: Props) {
         Found {props.numSearched} results ({props.searchTime} seconds)
       </p>
       <div className={styles.resultContainer}>
-        {/* {renderTestSites()} */}
         {renderSites()}
         {renderPages()}
       </div>

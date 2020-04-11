@@ -23,7 +23,10 @@ const useStyles = (colors) =>
       width: '80vw',
       maxWidth: '700px',
       marginBottom: '25px',
-      background: colors.homepageSecondary,
+    },
+    searchFieldBorder: {
+      borderColor: colors.primaryText,
+      color: colors.primaryText,
     },
     logo: {
       width: '500px',
@@ -126,7 +129,19 @@ function Homepage(props: Props) {
                 variant="outlined"
                 onChange={handleQueryChange}
                 className={styles.searchField}
+                color="white"
                 value={query}
+                // InputProps={{
+                //   classes: {
+                //     // root: styles.searchFieldBorder,
+                //     // notchedOutline: styles.searchFieldBorder,
+                //   },
+                // }}
+                InputLabelProps={{
+                  classes: {
+                    root: styles.searchFieldBorder,
+                  },
+                }}
               />
               <a href={query.length !== 0 ? `/result/${query}` : undefined}>
                 <IconButton

@@ -37,7 +37,7 @@ export default function GoogleButton() {
   return (
     <Paper className={styles.googlePaper} elevation={3}>
       <a href="/auth/google" className={styles.googleLink}>
-        <img src={googleLogo} />
+        <img src={googleLogo} alt="Google logo" />
         <p className={styles.googleText}>Sign In With Google</p>
       </a>
     </Paper>

@@ -1,5 +1,3 @@
-'use strict';
-
 //------------------------SPEECH RECOGNITION-----------------------------
 
 const SpeechRecognition = window.webkitSpeechRecognition;
@@ -20,15 +18,11 @@ export function getSpeech(listening: Boolean, handleSpeechChange: (String) => vo
 
   let finalTranscript = '';
   recognition.onresult = (event) => {
-    let interimTranscript = '';
-
     for (let i = event.resultIndex; i < event.results.length; i++) {
       const transcript = event.results[i][0].transcript;
       if (event.results[i].isFinal) {
         finalTranscript += transcript + ' ';
         handleSpeechChange(finalTranscript);
-      } else {
-        interimTranscript += transcript;
       }
     }
   };
