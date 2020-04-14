@@ -68,6 +68,7 @@ const useStyles = (colors) =>
         textDecoration: 'underline',
       },
       border: 'none',
+      backgroundColor: colors.background,
     },
     hidden: {
       visibility: 'hidden',

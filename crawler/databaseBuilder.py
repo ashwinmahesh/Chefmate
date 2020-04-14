@@ -49,29 +49,37 @@ class DatabaseBuilder:
       if self.mode=='DEV' and count>=5:
         break
  
-  def buildRawText(self, printStatements=False):
+  def buildRawText(self):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
+    rawData = open(filePath, 'r')
 
-    file = open(filePath, 'r')
-    for line in file:
+    count=0
+    modePos = 0
+    url, title, description, body = '','','',''
+
+    for line in rawData:
       if line == "\n":
         continue
-      url = file.readline()
-      title = file.readline()
-      body = file.readline()
-
-      url = link[6:len(link)-1]
-      title = title[7:len(title)-1]
-      body = body[6:len(body)-1]
-
-      self.addDocumentToCollection(url, title, body)
-      self.buildInvertedIndex(body, url)
+      if modePos == 0:
+        url = line[6:len(line)-1]
+      elif modePos == 1:
+        title = line[7:len(line)-1]
+      elif modePos == 2:
+        description = line[13: len(line)-1]
+      elif modePos == 3:
+        body = line[6:len(line)-1]
       
-      if printStatements:
-        log('entry', link)
-        log('entry', title)
-        log('entry', body)
-      
+      modePos +=1
+
+      if modePos == 4:
+        count += 1
+
+        self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
+        self.buildInvertedIndex(body, url)
+
+        modePos = modePos % 4
+        if self.mode == 'DEV' and count >=5:
+          break
   
   def addDocumentToCollection(self, url, title, body, description, pageRank):
     log("crawler", "Adding "+url+" to collection.")

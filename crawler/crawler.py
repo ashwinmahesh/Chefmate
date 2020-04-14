@@ -57,8 +57,8 @@ class Crawler:
         else:
           htmlQueue.add(link)
 
-    FileIO.deleteFileContents(self.queueFile)
-    FileIO.setToFile(htmlQueue, self.queueFile)
+    FileIO.deleteFileContents(self.crawledFile)
+    FileIO.setToFile(htmlQueue, self.crawledFile)
     log('time', 'Finished crawling XML sitemap for '+self.siteName+' in '+str(time.time() - startTime)+' seconds')
   
   def findNewLinksXML(self, page):

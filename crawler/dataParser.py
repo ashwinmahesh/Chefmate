@@ -8,6 +8,8 @@ log = helpers.log
 from extractData import extractData
 
 class DataParser:
+  MAX_BUFFER_LEN = 10
+
   def __init__(self, siteName):
     self.siteName = siteName
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
@@ -15,24 +17,32 @@ class DataParser:
     self.links = set()
 
   def runParser(self):
+    buffer = []
+    FileIO.deleteFileContents(self.indexFile)
+
     if not os.path.isfile(self.crawledFile):
       log('error', 'No crawled file.')
       return self
+    
     self.links = FileIO.fileToSet(self.crawledFile)
     if not self.links:
       log('error','Crawled file is empty')
       return self
-    data = FileIO.readJsonFile(self.indexFile)
+
     for link in self.links:
-      if link not in data:
-        obj = extractData(link)
-        data[link] = {
-            'title': obj['title'],
-            'body': obj['body'],
-            'description': obj['description']
-        }
-    FileIO.deleteFileContents(self.indexFile)
-    FileIO.writeJsonFile(data, self.indexFile)
+      obj = extractData(link)
+      buffer.append('link: ' + link + '\n')
+      buffer.append('title: ' + obj['title']+ '\n')
+      buffer.append('description: ' + obj['description']+ '\n',)
+      buffer.append('body: ' + obj['body'].replace('\n', '') + '\n\n')
+
+      if(len(buffer) == 4 * DataParser.MAX_BUFFER_LEN):
+        FileIO.writeToFile(self.indexFile, "".join(buffer))
+        buffer[:] = []
+    
+    if(len(buffer) > 0):
+      FileIO.writeToFile(self.indexFile, "".join(buffer))
+      buffer[:] = []
 
 if __name__ == "__main__":
   parser = DataParser('EpiCurious')
