@@ -62,13 +62,13 @@ class DatabaseBuilder:
       if line == "\n":
         continue
       if modePos == 0:
-        url = line[6:len(url)-1]
+        url = line[6:len(line)-1]
       elif modePos == 1:
-        title = line[7:len(title)-1]
+        title = line[7:len(line)-1]
       elif modePos == 2:
-        description = line[13: len(description)-1]
+        description = line[13: len(line)-1]
       elif modePos == 3:
-        body = line[6:len(body)-1]
+        body = line[6:len(line)-1]
       
       modePos +=1
 
