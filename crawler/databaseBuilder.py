@@ -63,7 +63,7 @@ class DatabaseBuilder:
       body = rawData.readline()
 
       count += 1
-      url = url[6:len(link)-1]
+      url = url[6:len(url)-1]
       title = title[7:len(title)-1]
       description = description[13: len(description)-1]
       body = body[6:len(body)-1]
