@@ -7,12 +7,15 @@ import numpy as np
 import time
 from cosineSimilarity import cosineSimilarity
 
-def rank(terms, inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, authority):
+# def rank(terms, inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, authority):
+def rank(terms, termReverseMap):
   startTime = time.time()
 
   docURLs = set()
-  queryTermWeights = np.zeros(InvertedIndex.objects.count())
+  queryTermWeights = np.zeros(len(termReverseMap))
+  queryStr=''
   for term in terms:
+    queryStr+=term + ' '
     try:
       termEntry = InvertedIndex.objects.get(term=term)
 
@@ -29,20 +32,20 @@ def rank(terms, inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, aut
   rankings = []
 
   for url in docURLs:
-    docIndex = crawlerReverseMap[url]
-    docWeight = inMemoryTFIDF[:,docIndex]
-    rankVal = (cosineSimilarity(queryTermWeights, docWeight) * 0.85) + (pageRanks[docIndex] * 0.08) + (authority[docIndex] * 0.07)
+    document = Crawler.objects.get(url=url)
+    docWeights = np.zeros(len(termReverseMap))
+    for term in document['body']:
+      termNum = termReverseMap.get(term)
+      if(termNum == None):
+        continue
+      docWeights[termNum] += 1
 
-    # log('Ranking', 'Ranking value of '+url+' = '+str(rankVal))
+    rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
     rankings.append(rankVal)
     docUrlArr.append(url)
 
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
-
-  queryStr=''
-  for term in terms:
-    queryStr+=term + ' '
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
   return sortedDocUrls
