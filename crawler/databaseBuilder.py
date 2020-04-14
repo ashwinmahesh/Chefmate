@@ -49,28 +49,31 @@ class DatabaseBuilder:
       if self.mode=='DEV' and count>=5:
         break
  
-  def buildRawText(self, printStatements=False):
+  def buildRawText(self):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
+    rawData = open(filePath, 'r')
 
-    file = open(filePath, 'r')
-    for line in file:
+    count=0
+    for line in rawData:
       if line == "\n":
         continue
-      url = file.readline()
-      title = file.readline()
-      body = file.readline()
+      url = rawData.readline()
+      title = rawData.readline()
+      description = rawData.readline()
+      body = rawData.readline()
 
-      url = link[6:len(link)-1]
+      count += 1
+      url = url[6:len(link)-1]
       title = title[7:len(title)-1]
+      description = description[13: len(description)-1]
       body = body[6:len(body)-1]
 
-      self.addDocumentToCollection(url, title, body)
+      #self.addDocumentToCollection(url, title, body)
+      self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
       self.buildInvertedIndex(body, url)
-      
-      if printStatements:
-        log('entry', link)
-        log('entry', title)
-        log('entry', body)
+
+      if self.mode == 'DEV' and count >=5:
+        break
       
   
   def addDocumentToCollection(self, url, title, body, description, pageRank):
