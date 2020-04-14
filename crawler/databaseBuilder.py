@@ -54,26 +54,46 @@ class DatabaseBuilder:
     rawData = open(filePath, 'r')
 
     count=0
+    mode = ['url', 'title', 'desc', 'body']
+    modePos = 0
+    url, title, description, body = '','','',''
+
     for line in rawData:
       if line == "\n":
         continue
-      url = rawData.readline()
-      title = rawData.readline()
-      description = rawData.readline()
-      body = rawData.readline()
+      if modePos == 0:
+        url = line[6:len(url)-1]
+      elif modePos == 1:
+        title = line[7:len(title)-1]
+      elif modePos == 2:
+        description = line[13: len(description)-1]
+      elif modePos == 3:
+        body = line[6:len(body)-1]
+      
+      modePos +=1
 
-      count += 1
-      url = url[6:len(url)-1]
-      title = title[7:len(title)-1]
-      description = description[13: len(description)-1]
-      body = body[6:len(body)-1]
+      if modePos == 4:
+        count += 1
+
+        self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
+        self.buildInvertedIndex(body, url)
+
+        modePos = modePos % 4
+        if self.mode == 'DEV' and count >=5:
+          break
+
+      # count += 1
+      # url = url[6:len(url)-1]
+      # title = title[7:len(title)-1]
+      # description = description[13: len(description)-1]
+      # body = body[6:len(body)-1]
 
       #self.addDocumentToCollection(url, title, body)
-      self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
-      self.buildInvertedIndex(body, url)
+      # self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
+      # self.buildInvertedIndex(body, url)
 
-      if self.mode == 'DEV' and count >=5:
-        break
+      # if self.mode == 'DEV' and count >=5:
+      #   break
       
   
   def addDocumentToCollection(self, url, title, body, description, pageRank):
