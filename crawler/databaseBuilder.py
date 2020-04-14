@@ -54,7 +54,6 @@ class DatabaseBuilder:
     rawData = open(filePath, 'r')
 
     count=0
-    mode = ['url', 'title', 'desc', 'body']
     modePos = 0
     url, title, description, body = '','','',''
 
@@ -81,20 +80,6 @@ class DatabaseBuilder:
         modePos = modePos % 4
         if self.mode == 'DEV' and count >=5:
           break
-
-      # count += 1
-      # url = url[6:len(url)-1]
-      # title = title[7:len(title)-1]
-      # description = description[13: len(description)-1]
-      # body = body[6:len(body)-1]
-
-      #self.addDocumentToCollection(url, title, body)
-      # self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
-      # self.buildInvertedIndex(body, url)
-
-      # if self.mode == 'DEV' and count >=5:
-      #   break
-      
   
   def addDocumentToCollection(self, url, title, body, description, pageRank):
     log("crawler", "Adding "+url+" to collection.")

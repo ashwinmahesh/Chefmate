@@ -47,7 +47,6 @@ def buildIndex(iterations, reset=True, resetFiles=True, passwordLock=True, dev=F
   for domain in domains:
     domainStartTime = time.time()
 
-    # options['crawl'] and Crawler(domain['name'], domain['root']).runSpider(iterations)
     options['crawl'] and Crawler(domain['name'], domain['root']).runSitemapCrawler()
 
     inlinkGraphFile = 'domains/'+domain['name']+'/'+domain['name']+'_inlinks.json'
@@ -56,7 +55,6 @@ def buildIndex(iterations, reset=True, resetFiles=True, passwordLock=True, dev=F
 
     options['parse'] and DataParser(domain['name']).runParser()
 
-    # options['database'] and DatabaseBuilder(domain['name'], mode='DEV' if dev else 'PROD').build()
     options['database'] and DatabaseBuilder(domain['name'], mode='DEV' if dev else 'PROD').buildRawText()
 
 
