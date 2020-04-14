@@ -7,7 +7,6 @@ import numpy as np
 import time
 from cosineSimilarity import cosineSimilarity
 
-# def rank(terms, inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, authority):
 def rank(terms, termReverseMap):
   startTime = time.time()
 
