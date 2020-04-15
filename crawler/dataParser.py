@@ -34,7 +34,7 @@ class DataParser:
       buffer.append('link: ' + link + '\n')
       buffer.append('title: ' + obj['title']+ '\n')
       buffer.append('description: ' + obj['description']+ '\n',)
-      buffer.append('body: ' + obj['body'].replace('\n', '') + '\n\n')
+      buffer.append('body: ' + obj['body'].replace('\n', ' ') + '\n\n')
 
       if(len(buffer) == 4 * DataParser.MAX_BUFFER_LEN):
         FileIO.writeToFile(self.indexFile, "".join(buffer))
