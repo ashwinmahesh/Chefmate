@@ -198,7 +198,7 @@ export default function BeautifulLogin() {
             <GoogleButton />
           </div>
 
-          <a className={styles.signup} href="/#">
+          <a className={styles.signup} href="/signup">
             Create an account
           </a>
         </CardContent>
