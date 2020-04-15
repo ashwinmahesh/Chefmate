@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { updateUser } from './redux/actions/user';
 import { updateTheme } from './redux/actions/theme';
+import BeautifulSignup from './BeautifulLogin/BeautifulSignup';
 
 // import ReactPlayer from "react-player";
 // import { FaFileExcel } from 'react-icons/fa';
@@ -34,6 +35,7 @@ function App(props) {
             <Route exact path="/" component={Homepage} />
             <Route exact path="/intro" component={LoginPage} />
             <Route exact path="/login" component={BeautifulLogin} />
+            <Route exact path="/signup" component={BeautifulSignup} />
             <Route path="/result/:query" component={SearchResult} />
             <Route exact path="/history" component={History} />
             <Route exact path="/likes" component={Likes} />

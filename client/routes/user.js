@@ -72,11 +72,38 @@ module.exports = app => {
   })
 
   app.post('/processLogin', (req, res) => {
+    //TODO: Finish logging in using passport local strategy.
+    //Status can be removed from body. I just did it to test
     const { username, password, status } = req.body;
     if (status===1) {
       return res.json({success: 1})
     }
     return res.json({success: -1})
+  })
+
+  app.get('/validateUsername/:username', (req, res) => {
+    const username = req.params['username'];
+    
+    User.findOne({ userid: username }).then((existingUser) => {
+      if (existingUser) {
+        log("Register", "Found existing user")
+        return res.json(sendPacket(0, 'Email already exists in system.'))
+      } else {
+        log("Register", 'No user exists')
+        return res.json(sendPacket(1, 'Email is free within system.'))
+      }
+    });
+  })
+
+  app.post('/processRegister', (req, res) => {
+    //TODO: Create a new entry for the user in the User table. Use bcrypt to hash the password. Then log them in using a new passport local strategy.
+    //Redirect to homepage (main search screen) once completed
+    const { username, password} = req.body;
+    let successFullyCreated = true;
+
+    if(successFullyCreated) {
+      return res.json(sendPacket(1, 'Successfully created user'));
+    }
   })
 
 }
