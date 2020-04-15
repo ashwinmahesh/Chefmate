@@ -21,7 +21,7 @@ def extractData(baseURL):
   description = metaDesc.get('content') if metaDesc!=None else 'No description provided.'
 
   body=''
-  for node in soup.findAll(['p', 'a']):
+  for node in soup.findAll(['p', 'a', 'div']):
     body+=node.text+'\n'
 
   output = dict(link=baseURL, title=title, body=body, description=description)
