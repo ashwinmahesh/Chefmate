@@ -113,8 +113,8 @@ function BeautifulSignup(props: Props) {
   const [confirmPassword, changeConfirmPassword] = useState('');
 
   const [usernameErr, changeUsernameErr] = useState('');
-  const [passwordErr, changePasswordErr] = useState(true);
-  const [confirmPasswordErr, changeConfirmPasswordErr] = useState(true);
+  const [passwordErr, changePasswordErr] = useState(false);
+  const [confirmPasswordErr, changeConfirmPasswordErr] = useState(false);
 
   const steps = ['Username', 'Password', 'Confirm'];
 
@@ -154,6 +154,7 @@ function BeautifulSignup(props: Props) {
   async function handleNextButtonClicked() {
     if (currentStep === 0) handleStep0NextButtonClick();
     if (currentStep === 1) handleStep1NextButtonClick();
+    if (currentStep === 2) handleStep2NextButtonClick();
   }
 
   function handleStep0NextButtonClick() {
@@ -179,9 +180,29 @@ function BeautifulSignup(props: Props) {
   }
 
   function handleStep1NextButtonClick() {
-    const newStep = currentStep + 1;
-    setCurrentStep(newStep);
+    setLoading(true);
+    let hasErr = false;
+    timer.current = setTimeout(async () => {
+      if (password.length < 8) {
+        changePasswordErr(true);
+        hasErr = true;
+      } else changePasswordErr(false);
+
+      if (confirmPassword !== password) {
+        changeConfirmPasswordErr(true);
+        hasErr = true;
+      } else changeConfirmPasswordErr(false);
+
+      setLoading(false);
+      if (!hasErr) {
+        const newStep = currentStep + 1;
+        setCurrentStep(newStep);
+      }
+    }, 1000);
   }
+
+  function handleStep2NextButtonClick() {}
+
   function getStepContent(step) {
     if (step === 0) return renderStep0();
     if (step === 1) return renderStep1();
@@ -283,6 +304,7 @@ function BeautifulSignup(props: Props) {
                 variant="contained"
                 color="white"
                 onClick={handlePreviousButtonClicked}
+                disabled={loading}
               >
                 Back
               </Button>
@@ -293,6 +315,7 @@ function BeautifulSignup(props: Props) {
               variant="contained"
               color="primary"
               onClick={handleNextButtonClicked}
+              disabled={loading}
             >
               {currentStep < steps.length - 1 ? 'Next' : 'Submit'}
             </Button>
