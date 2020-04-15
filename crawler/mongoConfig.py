@@ -11,6 +11,7 @@ class Crawler(Document):
   pageRank = FloatField(required=True, default=1.0)
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
+  tfidf = DictField(required=True, default={})
 
 class InvertedIndex(Document):
   term = StringField(required=True, primary_key=True)

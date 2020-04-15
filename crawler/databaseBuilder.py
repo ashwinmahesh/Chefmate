@@ -83,7 +83,7 @@ class DatabaseBuilder:
   
   def addDocumentToCollection(self, url, title, body, description, pageRank):
     log("crawler", "Adding "+url+" to collection.")
-    crawlerDoc = Crawler(url=url, title=title, body=body, description=description, pageRank=pageRank)
+    crawlerDoc = Crawler(url=url, title=title, body=body, description=description, pageRank=pageRank, tfidf={'Ashwin': 0})
     crawlerDoc.save()
     
   def buildInvertedIndex(self, body, url):
@@ -117,7 +117,6 @@ class DatabaseBuilder:
           'url': url,
           'termCount': 1,
           'pos':[termPos],
-          'tfidf': 0
         }})
         newTermEntry.save()
 

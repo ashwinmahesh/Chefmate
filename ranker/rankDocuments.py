@@ -7,18 +7,23 @@ import numpy as np
 import time
 from cosineSimilarity import cosineSimilarity
 
-def rank(terms, inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, authority):
+def rank(terms, termReverseMap):
   startTime = time.time()
 
+  log("Ranking", 'Calculating rankings for query')
   docURLs = set()
-  queryTermWeights = np.zeros(InvertedIndex.objects.count())
+  queryTermWeights = np.zeros(len(termReverseMap))
+  queryStr=''
   for term in terms:
+    queryStr+=term + ' '
     try:
       termEntry = InvertedIndex.objects.get(term=term)
 
       docInfoList=termEntry['doc_info']
       for docKey in docInfoList:
-        docURLs.add(docInfoList[docKey]['url'])
+        url = docInfoList[docKey]['url']
+        if url[0:8] == 'https://':
+          docURLs.add(url)
 
       termNum = termReverseMap[term]
       queryTermWeights[termNum] += 1
@@ -29,20 +34,27 @@ def rank(terms, inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, aut
   rankings = []
 
   for url in docURLs:
-    docIndex = crawlerReverseMap[url]
-    docWeight = inMemoryTFIDF[:,docIndex]
-    rankVal = (cosineSimilarity(queryTermWeights, docWeight) * 0.85) + (pageRanks[docIndex] * 0.08) + (authority[docIndex] * 0.07)
+    document = Crawler.objects.get(url=url)
+    if 'Page not found' in document['title']:
+      continue
 
-    # log('Ranking', 'Ranking value of '+url+' = '+str(rankVal))
+    docWeights = np.zeros(len(termReverseMap))
+    for term in document['body'].lower().split():
+      termNum = termReverseMap.get(term)
+      if(termNum == None):
+        continue
+      if 'tfidf' not in document or term not in document['tfidf']:
+        docWeights[termNum] += 0.01
+      else:
+        tfidf = document['tfidf'][term]
+        docWeights[termNum] += tfidf
+
+    rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
     rankings.append(rankVal)
     docUrlArr.append(url)
 
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
-
-  queryStr=''
-  for term in terms:
-    queryStr+=term + ' '
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
   return sortedDocUrls
