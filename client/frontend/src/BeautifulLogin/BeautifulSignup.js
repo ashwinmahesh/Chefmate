@@ -7,7 +7,6 @@ import {
   CardContent,
   TextField,
   Button,
-  // CircularProgress,
   LinearProgress,
   Stepper,
   Step,
@@ -95,6 +94,15 @@ const useStyles = (colors) =>
       marginRight: '20px',
       marginBottom: '35px',
     },
+    creationError: {
+      color: 'red',
+      fontStyle: 'italic',
+      fontFamily: 'Arial, Helvetica, sans-serif',
+      fontSize: '13pt',
+      textAlign: 'left',
+      marginLeft: '20px',
+      marginRight: '20px',
+    },
   }));
 
 type Props = {
@@ -115,6 +123,7 @@ function BeautifulSignup(props: Props) {
   const [usernameErr, changeUsernameErr] = useState('');
   const [passwordErr, changePasswordErr] = useState(false);
   const [confirmPasswordErr, changeConfirmPasswordErr] = useState(false);
+  const [submissionErr, changeSubmissionErr] = useState(false);
 
   const steps = ['Username', 'Password', 'Confirm'];
 
@@ -201,7 +210,19 @@ function BeautifulSignup(props: Props) {
     }, 1000);
   }
 
-  function handleStep2NextButtonClick() {}
+  async function handleStep2NextButtonClick() {
+    setLoading(true);
+    timer.current = setTimeout(async () => {
+      const { data } = await axios.post('/processRegister', { username, password });
+      setLoading(false);
+      if (data['success'] === 1) {
+        changeSubmissionErr(false);
+        changeRedirect(true);
+      } else {
+        changeSubmissionErr(true);
+      }
+    }, 1000);
+  }
 
   function getStepContent(step) {
     if (step === 0) return renderStep0();
@@ -257,6 +278,11 @@ function BeautifulSignup(props: Props) {
   function renderStep2() {
     return (
       <>
+        {submissionErr && (
+          <p className={styles.creationError}>
+            There was an error creating the account. Please try again later
+          </p>
+        )}
         <p className={styles.confirmText}>An account will be created for</p>{' '}
         <p className={styles.confirmEmail}>{username}</p>
       </>
@@ -285,7 +311,7 @@ function BeautifulSignup(props: Props) {
           <p className={styles.header}>Create Account</p>
 
           <Stepper activeStep={currentStep}>
-            {steps.map((label, index) => {
+            {steps.map((label) => {
               const stepProps = {};
               const labelProps = {};
 
