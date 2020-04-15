@@ -8,7 +8,10 @@ import {
   // TextField,
   // Button,
   // CircularProgress,
-  // LinearProgress,
+  LinearProgress,
+  Stepper,
+  Step,
+  StepLabel,
 } from '@material-ui/core';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
@@ -43,6 +46,15 @@ const useStyles = (colors) =>
       verticalAlign: 'center',
       marginTop: '13px',
     },
+    linearProgress: {
+      backgroundColor: 'rgb(230, 95, 85)',
+    },
+    linearProgressBg: {
+      backgroundColor: 'rgb(232, 180, 176)',
+    },
+    linearProgressRoot: {
+      height: 5,
+    },
   }));
 
 type Props = {
@@ -54,6 +66,10 @@ function BeautifulSignup(props: Props) {
   const styles = useStyles(colors)();
 
   const [loginRedirect, changeRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const steps = ['Username', 'Password', 'Confirm'];
 
   async function checkAuthentication() {
     const { data } = await axios.get('/checkAuthenticated');
@@ -70,6 +86,15 @@ function BeautifulSignup(props: Props) {
     <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <Card raised className={styles.card}>
+        <LinearProgress
+          classes={{
+            root: styles.linearProgressRoot,
+            barColorPrimary: styles.linearProgress,
+            colorPrimary: styles.linearProgressBg,
+          }}
+          variant={loading ? 'indeterminate' : 'determinate'}
+          value={100}
+        />
         <CardContent className={styles.cardContent}>
           <a href="/login" className={styles.backArrow}>
             <FaArrowLeft color={colors.headerPrimary} size={24} />
@@ -77,6 +102,19 @@ function BeautifulSignup(props: Props) {
           <img src={logo} alt="Chefmate Logo" className={styles.logo} />
 
           <p className={styles.header}>Create Account</p>
+
+          <Stepper activeStep={currentStep}>
+            {steps.map((label, index) => {
+              const stepProps = {};
+              const labelProps = {};
+
+              return (
+                <Step key={label} {...stepProps}>
+                  <StepLabel {...labelProps}>{label}</StepLabel>
+                </Step>
+              );
+            })}
+          </Stepper>
         </CardContent>
       </Card>
     </div>
