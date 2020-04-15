@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
@@ -112,11 +112,13 @@ function BeautifulSignup(props: Props) {
   const [password, changePassword] = useState('');
   const [confirmPassword, changeConfirmPassword] = useState('');
 
-  const [usernameErr, changeUsernameErr] = useState(true);
+  const [usernameErr, changeUsernameErr] = useState('');
   const [passwordErr, changePasswordErr] = useState(true);
   const [confirmPasswordErr, changeConfirmPasswordErr] = useState(true);
 
   const steps = ['Username', 'Password', 'Confirm'];
+
+  const timer = useRef();
 
   async function checkAuthentication() {
     const { data } = await axios.get('/checkAuthenticated');
@@ -127,6 +129,7 @@ function BeautifulSignup(props: Props) {
 
   useEffect(() => {
     checkAuthentication();
+    clearTimeout(timer.current);
   }, []);
 
   function handleUsernameChange(event) {
@@ -148,11 +151,31 @@ function BeautifulSignup(props: Props) {
     }
   }
 
-  function handleNextButtonClicked() {
-    if (currentStep < steps.length - 1) {
-      const newStep = currentStep + 1;
-      setCurrentStep(newStep);
-    }
+  async function handleNextButtonClicked() {
+    setLoading(true);
+
+    if (currentStep === 0) handleStep0ButtonClick();
+  }
+
+  function handleStep0ButtonClick() {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    timer.current = setTimeout(async () => {
+      setLoading(false);
+      if (!re.test(String(username).toLowerCase())) {
+        changeUsernameErr('Email address not valid');
+        return;
+      }
+
+      const { data } = await axios.get(`/validateUsername/${username}`);
+      console.log('Data:', data);
+      if (data.success === 1) {
+        changeUsernameErr('');
+        const newStep = currentStep + 1;
+        setCurrentStep(newStep);
+      } else {
+        changeUsernameErr('Email already exists');
+      }
+    }, 1000);
   }
 
   function getStepContent(step) {
@@ -166,13 +189,13 @@ function BeautifulSignup(props: Props) {
       <>
         <p className={styles.tabDesc}>Enter your email:</p>
         <TextField
-          error={usernameErr}
+          error={usernameErr !== ''}
           label="Email"
           value={username}
           variant="outlined"
           className={styles.emailField}
           onChange={handleUsernameChange}
-          helperText={usernameErr ? 'Email already exists' : ' '}
+          helperText={usernameErr}
         />
       </>
     );

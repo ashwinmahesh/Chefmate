@@ -79,4 +79,18 @@ module.exports = app => {
     return res.json({success: -1})
   })
 
+  app.get('/validateUsername/:username', (req, res) => {
+    const username = req.params['username'];
+    
+    User.findOne({ userid: username }).then((existingUser) => {
+      if (existingUser) {
+        log("Register", "Found existing user")
+        return res.json(sendPacket(0, 'Email already exists in system.'))
+      } else {
+        log("Register", 'No user exists')
+        return res.json(sendPacket(1, 'Email is free within system.'))
+      }
+    });
+  })
+
 }
