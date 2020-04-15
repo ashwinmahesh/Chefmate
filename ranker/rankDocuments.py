@@ -38,12 +38,12 @@ def rank(terms, termReverseMap):
       continue
 
     docWeights = np.zeros(len(termReverseMap))
-    for term in document['body']:
+    for term in document['body'].lower().split():
       termNum = termReverseMap.get(term)
       if(termNum == None):
         continue
       if 'tfidf' not in document or term not in document['tfidf']:
-        docWeights[termNum] += 1
+        docWeights[termNum] += 0.01
       else:
         tfidf = document['tfidf'][term]
         docWeights[termNum] += tfidf

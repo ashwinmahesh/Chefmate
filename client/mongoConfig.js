@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const log = require('./logger');
 
-// const databaseAddr = '18.222.251.5';
-const databaseAddr = '3.21.167.180';
+const databaseAddr = '18.222.251.5';
+// const databaseAddr = '3.21.167.180';
 
 const databaseName = 'ChefmateDB'
 // const databaseName = 'ChefmateDB_Alt'

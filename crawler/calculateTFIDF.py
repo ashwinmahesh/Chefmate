@@ -22,10 +22,10 @@ def calculateTFIDF():
                 log_tf = math.log(tf, 2) + 1
             tf_idf = log_tf * idf
 
-            url = docInfoList[docKey]['url']
+            url = termEntry['doc_info'][docKey]['url']
             if url[0:8] == 'https://':
                 document = Crawler.objects.get(url=url)
-                if tfidf not in document:
+                if 'tfidf' not in document:
                     document['tfidf'] = {}
                 document['tfidf'][term] = tf_idf
                 document.save()
