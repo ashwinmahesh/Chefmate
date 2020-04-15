@@ -20,7 +20,9 @@ def rank(terms, termReverseMap):
 
       docInfoList=termEntry['doc_info']
       for docKey in docInfoList:
-        docURLs.add(docInfoList[docKey]['url'])
+        url = docInfoList[docKey]['url']
+        if url[0:8] == 'https://':
+          docURLs.add(url)
 
       termNum = termReverseMap[term]
       queryTermWeights[termNum] += 1
@@ -32,6 +34,9 @@ def rank(terms, termReverseMap):
 
   for url in docURLs:
     document = Crawler.objects.get(url=url)
+    if 'Page not found' in document['title']:
+      continue
+
     docWeights = np.zeros(len(termReverseMap))
     for term in document['body']:
       termNum = termReverseMap.get(term)
