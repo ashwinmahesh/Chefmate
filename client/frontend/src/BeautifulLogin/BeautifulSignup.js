@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 import {
   Card,
   CardContent,
-  // TextField,
-  // Button,
+  TextField,
+  Button,
   // CircularProgress,
   LinearProgress,
   Stepper,
@@ -55,6 +55,24 @@ const useStyles = (colors) =>
     linearProgressRoot: {
       height: 5,
     },
+    tabDesc: {
+      fontSize: '13pt',
+      fontWeight: 'bold',
+      fontFamily: 'Arial, Helvetica, sans-serif',
+      textAlign: 'left',
+      marginLeft: '25px',
+    },
+    emailField: {
+      width: '375px',
+      marginTop: '15px',
+      marginBottom: '35px',
+    },
+    buttonDiv: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginLeft: '20px',
+      marginRight: '20px',
+    },
   }));
 
 type Props = {
@@ -68,6 +86,8 @@ function BeautifulSignup(props: Props) {
   const [loginRedirect, changeRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [username, changeUsername] = useState('');
+  const [usernameErr, changeUsernameErr] = useState(true);
 
   const steps = ['Username', 'Password', 'Confirm'];
 
@@ -81,6 +101,24 @@ function BeautifulSignup(props: Props) {
   useEffect(() => {
     checkAuthentication();
   }, []);
+
+  function handleUsernameChange(event) {
+    changeUsername(event.target.value);
+  }
+
+  function handlePreviousButtonClicked() {
+    if (currentStep > 0) {
+      const newStep = currentStep - 1;
+      setCurrentStep(newStep);
+    }
+  }
+
+  function handleNextButtonClicked() {
+    if (currentStep < steps.length - 1) {
+      const newStep = currentStep + 1;
+      setCurrentStep(newStep);
+    }
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -115,6 +153,41 @@ function BeautifulSignup(props: Props) {
               );
             })}
           </Stepper>
+          <p className={styles.tabDesc}>Enter your email:</p>
+          <TextField
+            error={usernameErr}
+            label="Email"
+            variant="outlined"
+            className={styles.emailField}
+            onChange={handleUsernameChange}
+            helperText={usernameErr ? 'Email already exists' : ' '}
+          />
+          <div className={styles.buttonDiv}>
+            {currentStep > 0 ? (
+              <Button
+                variant="contained"
+                color="white"
+                onClick={handlePreviousButtonClicked}
+              >
+                Back
+              </Button>
+            ) : (
+              <Button></Button>
+            )}
+            {currentStep < steps.length - 1 ? (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNextButtonClicked}
+              >
+                Next
+              </Button>
+            ) : (
+              <Button variant="contained" color="primary">
+                Submit
+              </Button>
+            )}
+          </div>
         </CardContent>
       </Card>
     </div>
