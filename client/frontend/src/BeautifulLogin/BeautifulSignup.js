@@ -67,6 +67,10 @@ const useStyles = (colors) =>
       marginTop: '15px',
       marginBottom: '35px',
     },
+    passwordField: {
+      width: '375px',
+      marginTop: '15px',
+    },
     buttonDiv: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -87,7 +91,12 @@ function BeautifulSignup(props: Props) {
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [username, changeUsername] = useState('');
+  const [password, changePassword] = useState('');
+  const [confirmPassword, changeConfirmPassword] = useState('');
+
   const [usernameErr, changeUsernameErr] = useState(true);
+  const [passwordErr, changePasswordErr] = useState(true);
+  const [confirmPasswordErr, changeConfirmPasswordErr] = useState(true);
 
   const steps = ['Username', 'Password', 'Confirm'];
 
@@ -106,6 +115,14 @@ function BeautifulSignup(props: Props) {
     changeUsername(event.target.value);
   }
 
+  function handlePasswordChange(event) {
+    changePassword(event.target.value);
+  }
+
+  function handleConfirmPasswordChange(event) {
+    changeConfirmPassword(event.target.value);
+  }
+
   function handlePreviousButtonClicked() {
     if (currentStep > 0) {
       const newStep = currentStep - 1;
@@ -118,6 +135,56 @@ function BeautifulSignup(props: Props) {
       const newStep = currentStep + 1;
       setCurrentStep(newStep);
     }
+  }
+
+  function getStepContent(step) {
+    if (step === 0) return renderStep0();
+    if (step === 1) return renderStep1();
+  }
+
+  function renderStep0() {
+    return (
+      <>
+        <p className={styles.tabDesc}>Enter your email:</p>
+        <TextField
+          error={usernameErr}
+          label="Email"
+          value={username}
+          variant="outlined"
+          className={styles.emailField}
+          onChange={handleUsernameChange}
+          helperText={usernameErr ? 'Email already exists' : ' '}
+        />
+      </>
+    );
+  }
+
+  function renderStep1() {
+    return (
+      <>
+        <p className={styles.tabDesc}>Enter your password:</p>
+        <TextField
+          error={passwordErr}
+          value={password}
+          label="Password"
+          variant="outlined"
+          className={styles.passwordField}
+          onChange={handlePasswordChange}
+          type="password"
+          helperText={passwordErr ? 'Password must be atleast 8 characters' : ' '}
+        />
+        <TextField
+          error={confirmPasswordErr}
+          value={confirmPassword}
+          label="Confirm Password"
+          variant="outlined"
+          className={styles.emailField}
+          onChange={handleConfirmPasswordChange}
+          type="password"
+          helperText={confirmPasswordErr ? 'Passwords do not match' : ' '}
+        />
+      </>
+    );
   }
 
   return (
@@ -153,15 +220,8 @@ function BeautifulSignup(props: Props) {
               );
             })}
           </Stepper>
-          <p className={styles.tabDesc}>Enter your email:</p>
-          <TextField
-            error={usernameErr}
-            label="Email"
-            variant="outlined"
-            className={styles.emailField}
-            onChange={handleUsernameChange}
-            helperText={usernameErr ? 'Email already exists' : ' '}
-          />
+          {getStepContent(currentStep)}
+
           <div className={styles.buttonDiv}>
             {currentStep > 0 ? (
               <Button
