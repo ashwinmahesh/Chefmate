@@ -109,7 +109,6 @@ class DatabaseBuilder:
           'url': url,
           'termCount': 1,
           'pos':[termPos],
-          'tfidf': 0
         }})
         newTermEntry.save()
 

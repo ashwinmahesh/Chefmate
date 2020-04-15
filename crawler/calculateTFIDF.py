@@ -21,7 +21,7 @@ def calculateTFIDF():
             if (tf != 0):
                 log_tf = math.log(tf, 2) + 1
             tf_idf = log_tf * idf
-            # termEntry['doc_info'][docKey]['tfidf']=tf_idf
+
             url = docInfoList[docKey]['url']
             if url[0:8] == 'https://':
                 document = Crawler.objects.get(url=url)
@@ -29,9 +29,7 @@ def calculateTFIDF():
                     document['tfidf'] = {}
                 document['tfidf'][term] = tf_idf
                 document.save()
-        
-        # termEntry.save()
-        
+                
     log("time", 'Execution finished in '+str(time.time()-startTime)+' seconds.')
 
 if __name__ == "__main__":
