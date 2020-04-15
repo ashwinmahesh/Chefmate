@@ -30,7 +30,12 @@ const CrawlerSchema = new mongoose.Schema(
       required: [true, "Authority is required"],
       default: 1
     },
-    pageRank: { type: Number, required: [true, "PageRank is required"], default: 1 }
+    pageRank: { type: Number, required: [true, "PageRank is required"], default: 1 },
+    tfidf: {
+      type: {}, 
+      required: [true, 'Initial TFIDF is required. Default is {}'], 
+      default: {}
+    }
   },
   { timestamps: true }
 );

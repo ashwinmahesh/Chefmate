@@ -42,7 +42,11 @@ def rank(terms, termReverseMap):
       termNum = termReverseMap.get(term)
       if(termNum == None):
         continue
-      docWeights[termNum] += 1
+      if 'tfidf' not in document or term not in document['tfidf']:
+        docWeights[termNum] += 1
+      else:
+        tfidf = document['tfidf'][term]
+        docWeights[termNum] += tfidf
 
     rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
