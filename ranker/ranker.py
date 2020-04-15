@@ -45,7 +45,7 @@ def rankQuery(query):
   log('Ranker', 'Received query: '+query)
   queryTerms = stemQuery(query)
   sortedDocUrls = rank(queryTerms, termReverseMap)
-  return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls})
+  return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls[0:200]})
 
 @app.route('/fetchDocuments', methods=['POST'])
 def fetchDocuments():

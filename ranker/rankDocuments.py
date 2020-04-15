@@ -10,6 +10,7 @@ from cosineSimilarity import cosineSimilarity
 def rank(terms, termReverseMap):
   startTime = time.time()
 
+  log("Ranking", 'Calculating rankings for query')
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
   queryStr=''

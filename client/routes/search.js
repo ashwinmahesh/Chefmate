@@ -7,7 +7,7 @@ const { User, Query } = require('../mongoConfig');
 module.exports = (app) => {
   app.get('/search/:query', async (request, response) => {
     const query = request.params['query'];
-    log('query', `Received query from client: ${query}`);
+    log('query', `Received query from client: ${query}. Sending data to ranker`);
     const data = await makeRequest('ranker', `query/${query}`);
 
     Query.findById(query, (err, oldQueryObj) => {
@@ -25,7 +25,7 @@ module.exports = (app) => {
       }
     });
 
-    log('ranker', data.message);
+    log('Fetch', `Received response from Ranker: ${data.message}`);
     return response.json(
       sendPacket(
         data.success,
@@ -37,7 +37,7 @@ module.exports = (app) => {
 
   app.post('/fetchDocuments', async (req, res) => {
     const startTime = Date.now();
-    log('fetch', 'Fetching documents from ranker');
+    log('fetch', 'Fetching documents from ranker using sorted list of document urls');
 
     const docUrls = req.body['docUrls'].slice(0, 60);
     const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {
