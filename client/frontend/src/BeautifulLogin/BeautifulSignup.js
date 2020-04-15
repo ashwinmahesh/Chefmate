@@ -152,13 +152,13 @@ function BeautifulSignup(props: Props) {
   }
 
   async function handleNextButtonClicked() {
-    setLoading(true);
-
-    if (currentStep === 0) handleStep0ButtonClick();
+    if (currentStep === 0) handleStep0NextButtonClick();
+    if (currentStep === 1) handleStep1NextButtonClick();
   }
 
-  function handleStep0ButtonClick() {
+  function handleStep0NextButtonClick() {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    setLoading(true);
     timer.current = setTimeout(async () => {
       setLoading(false);
       if (!re.test(String(username).toLowerCase())) {
@@ -178,6 +178,10 @@ function BeautifulSignup(props: Props) {
     }, 1000);
   }
 
+  function handleStep1NextButtonClick() {
+    const newStep = currentStep + 1;
+    setCurrentStep(newStep);
+  }
   function getStepContent(step) {
     if (step === 0) return renderStep0();
     if (step === 1) return renderStep1();
@@ -285,19 +289,13 @@ function BeautifulSignup(props: Props) {
             ) : (
               <Button></Button>
             )}
-            {currentStep < steps.length - 1 ? (
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNextButtonClicked}
-              >
-                Next
-              </Button>
-            ) : (
-              <Button variant="contained" color="primary">
-                Submit
-              </Button>
-            )}
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNextButtonClicked}
+            >
+              {currentStep < steps.length - 1 ? 'Next' : 'Submit'}
+            </Button>
           </div>
         </CardContent>
       </Card>
