@@ -77,6 +77,24 @@ const useStyles = (colors) =>
       marginLeft: '20px',
       marginRight: '20px',
     },
+    confirmText: {
+      fontSize: '14pt',
+      fontWeight: 'bold',
+      fontFamily: 'Arial, Helvetica, sans-serif',
+      textAlign: 'left',
+      marginLeft: '20px',
+      marginRight: '20px',
+      marginBottom: '10px',
+    },
+    confirmEmail: {
+      fontSize: '14pt',
+      fontWeight: 'bold',
+      fontFamily: 'Arial, Helvetica, sans-serif',
+      textAlign: 'left',
+      marginLeft: '20px',
+      marginRight: '20px',
+      marginBottom: '35px',
+    },
   }));
 
 type Props = {
@@ -140,6 +158,7 @@ function BeautifulSignup(props: Props) {
   function getStepContent(step) {
     if (step === 0) return renderStep0();
     if (step === 1) return renderStep1();
+    if (step === 2) return renderStep2();
   }
 
   function renderStep0() {
@@ -183,6 +202,15 @@ function BeautifulSignup(props: Props) {
           type="password"
           helperText={confirmPasswordErr ? 'Passwords do not match' : ' '}
         />
+      </>
+    );
+  }
+
+  function renderStep2() {
+    return (
+      <>
+        <p className={styles.confirmText}>An account will be created for</p>{' '}
+        <p className={styles.confirmEmail}>{username}</p>
       </>
     );
   }
