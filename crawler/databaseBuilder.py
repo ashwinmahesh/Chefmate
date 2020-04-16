@@ -35,6 +35,7 @@ class DatabaseBuilder:
     self.MAX_THREADS = threads
     self.buildQueue = []
     self.readSemaphore = True
+    self.invertedIndexSemaphore = True
   
   def build(self):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
@@ -118,34 +119,8 @@ class DatabaseBuilder:
             threadPool[i].join()
 
         modePos = modePos % 4
-        if self.mode == 'DEV' and count >=5:
+        if self.mode == 'DEV' and count >=40:
           break
-
-# ------------------------ OLD DATABASE BUILDER CODE -------------------
-    # for line in rawData:
-    #   if line == "\n":
-    #     continue
-    #   if modePos == 0:
-    #     url = line[6:len(line)-1]
-    #   elif modePos == 1:
-    #     title = line[7:len(line)-1]
-    #   elif modePos == 2:
-    #     description = line[13: len(line)-1]
-    #   elif modePos == 3:
-    #     body = line[6:len(line)-1]
-      
-    #   modePos +=1
-
-    #   if modePos == 4:
-    #     count += 1
-        
-
-    #     self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
-    #     self.buildInvertedIndex(body, url)
-
-    #     modePos = modePos % 4
-    #     if self.mode == 'DEV' and count >=5:
-    #       break
   
   def addDocumentToCollection(self, url, title, body, description, pageRank):
     log("crawler", "Adding "+url+" to collection.")
@@ -166,6 +141,9 @@ class DatabaseBuilder:
 
       term=DatabaseBuilder.porterStemmer.stem(termRaw)
 
+      while(not self.readSemaphore):
+        pass
+      self.invertedIndexSemaphore = False
       try:
         termEntry = InvertedIndex.objects.get(term=term)
       
@@ -176,6 +154,7 @@ class DatabaseBuilder:
         else:
           termEntry.doc_info[dotRemovedUrl]={'url':url, 'termCount': 1, 'pos':[termPos], 'tfidf':0}
         termEntry.save()
+        self.invertedIndexSemaphore = True
 
       except DoesNotExist:
         newTermEntry = InvertedIndex(term=term,
@@ -185,6 +164,7 @@ class DatabaseBuilder:
           'pos':[termPos],
         }})
         newTermEntry.save()
+        self.invertedIndexSemaphore = True
 
       if self.mode=='DEV' and termPos>=10:
         break
