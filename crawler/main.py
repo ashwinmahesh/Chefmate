@@ -1,5 +1,8 @@
 from buildIndex import buildIndex
 
+#crawl true, parse true, everything else false, pass into buildIndex, will then only run those things and not mess w database. reset:false to stop from updating everytime.
+#dev:true only for database building. returns after 5 docs to rapidly test. keep pageRank:false for latest version of master. 
+
 options = {
   'crawl':False,
   'pageRank': False,

@@ -103,6 +103,9 @@ class Crawler:
     
     return self.findNewLinksHTML(parseLink, page)
 
+  #Finding in-links and out-links for each page used to be done in crawler (this file). When we updated the crawler, we made it so it "just checks the site map rather than going page by page".
+  #So I need to do this in-link and out-link finding in extractData or whatever (the file I'm working on).
+
   def findNewLinksHTML(self, parseLink, page):
     soup = BeautifulSoup(page.content, 'lxml')
     output = set()
