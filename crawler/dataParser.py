@@ -11,9 +11,8 @@ from threading import Thread
 
 class DataParser:
   MAX_BUFFER_LEN = 10
-  MAX_THREADS = 4
 
-  def __init__(self, siteName):
+  def __init__(self, siteName, threads):
     self.siteName = siteName
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
     self.indexFile = FileIO.createSiteIndexFile(self.siteName)
@@ -21,6 +20,7 @@ class DataParser:
     self.linksList = None
     self.readSemaphore = True
     self.writeSemaphore = True
+    self.MAX_THREADS = threads
 
   def parserWorker(self):
     buffer = []
@@ -64,14 +64,14 @@ class DataParser:
       return self
     
     threadPool = []
-    for i in range(0, DataParser.MAX_THREADS):
+    for i in range(0, self.MAX_THREADS):
       newThread = Thread(name='parser_'+str(i), target=self.parserWorker)
       threadPool.append(newThread)
     
-    for i in range(0, DataParser.MAX_THREADS):
+    for i in range(0, self.MAX_THREADS):
       threadPool[i].start()
     
-    for i in range(0, DataParser.MAX_THREADS):
+    for i in range(0, self.MAX_THREADS):
       threadPool[i].join()
 
 if __name__ == "__main__":
