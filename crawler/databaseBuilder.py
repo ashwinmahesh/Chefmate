@@ -27,7 +27,7 @@ class DatabaseBuilder:
   connect(databaseName, host=databaseAddr, port=27017)
   stopwords = set(nltk.corpus.stopwords.words('english'))
   porterStemmer = nltk.stem.PorterStemmer()
-  MAX_BUFFER = 5
+  MAX_BUFFER = 30
 
   def __init__(self, domain, threads, mode='DEV'):
     self.domain = domain
@@ -63,19 +63,22 @@ class DatabaseBuilder:
         pass
 
       self.readSemaphore = False
-      bufferSize = itemSize * DatabaseBuilder.MAX_BUFFER
-      start = len(self.buildQueue) - bufferSize - 1 if len(self.buildQueue) >= bufferSize else 0
-      end = len(self.buildQueue)-1 if len(self.buildQueue) >= bufferSize else len(self.buildQueue)
+      buildBufferSize = 5 ##Change this back later
+
+      start = len(self.buildQueue) - buildBufferSize - 1 if len(self.buildQueue) >= buildBufferSize else 0
+      end = len(self.buildQueue)-1 if len(self.buildQueue) >= buildBufferSize else len(self.buildQueue)
       buffer = self.buildQueue[start : end]
       del self.buildQueue[start : end]
       self.readSemaphore = True  
 
-      for i in range(0, len(buffer), 4):
-        url = buffer[i]
-        title = buffer[i+1]
-        description = buffer[i+2]
-        body = buffer[i+3]
-      
+      for document in buffer:
+        url = document['url']
+        print(url)
+        title = document['title']
+        description = document['description']
+        body = document['body']
+        # self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
+        # self.buildInvertedIndex(body, url)
       
 
   def buildRawText(self):
@@ -88,17 +91,9 @@ class DatabaseBuilder:
 
     threadPool = []
     for i in range(0, self.MAX_THREADS):
-      newThread = Thread(name='builder_'+str(i), target=makeDocuments)
+      newThread = Thread(name='builder_'+str(i), target=self.makeDocuments)
       threadPool.append(newThread)
-
-    ### PLAN OF ACTION ###
-    # 0. Create ThreadPool before loop
-    # 1. Switch to buffer based line reading
-    # 2. Read N Lines from buffer
-    # 3. Start threads using buffer
-    # 4. Join threads after buffer
-    # 5. Go to next iteration -> Repeat process
-
+    
     for line in rawData:
       if line == "\n":
         continue
@@ -115,13 +110,43 @@ class DatabaseBuilder:
 
       if modePos == 4:
         count += 1
-
-        self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
-        self.buildInvertedIndex(body, url)
+        self.buildQueue.append({'url': url, 'title': title, 'description': description, 'body': body})
+        
+        if(len(self.buildQueue) == DatabaseBuilder.MAX_BUFFER):
+          for i in range(0, self.MAX_THREADS):
+            threadPool[i].start()
+          for i in range(0, self.MAX_THREADS):
+            threadPool[i].join()
 
         modePos = modePos % 4
         if self.mode == 'DEV' and count >=5:
           break
+
+# ------------------------ OLD DATABASE BUILDER CODE -------------------
+    # for line in rawData:
+    #   if line == "\n":
+    #     continue
+    #   if modePos == 0:
+    #     url = line[6:len(line)-1]
+    #   elif modePos == 1:
+    #     title = line[7:len(line)-1]
+    #   elif modePos == 2:
+    #     description = line[13: len(line)-1]
+    #   elif modePos == 3:
+    #     body = line[6:len(line)-1]
+      
+    #   modePos +=1
+
+    #   if modePos == 4:
+    #     count += 1
+        
+
+    #     self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
+    #     self.buildInvertedIndex(body, url)
+
+    #     modePos = modePos % 4
+    #     if self.mode == 'DEV' and count >=5:
+    #       break
   
   def addDocumentToCollection(self, url, title, body, description, pageRank):
     log("crawler", "Adding "+url+" to collection.")
