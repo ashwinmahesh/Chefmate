@@ -141,8 +141,9 @@ class DatabaseBuilder:
 
       term=DatabaseBuilder.porterStemmer.stem(termRaw)
 
-      while(not self.readSemaphore):
+      while(not self.invertedIndexSemaphore):
         pass
+      
       self.invertedIndexSemaphore = False
       try:
         termEntry = InvertedIndex.objects.get(term=term)
