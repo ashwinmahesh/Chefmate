@@ -57,13 +57,12 @@ class DatabaseBuilder:
  
 
   def makeDocuments(self):
-    itemSize = 4
+    buildBufferSize = 5
     while(len(self.buildQueue) > 0):
       while(not self.readSemaphore):
         pass
 
       self.readSemaphore = False
-      buildBufferSize = 5 ##Change this back later
 
       start = len(self.buildQueue) - buildBufferSize - 1 if len(self.buildQueue) >= buildBufferSize else 0
       end = len(self.buildQueue)-1 if len(self.buildQueue) >= buildBufferSize else len(self.buildQueue)
@@ -77,8 +76,8 @@ class DatabaseBuilder:
         title = document['title']
         description = document['description']
         body = document['body']
-        # self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
-        # self.buildInvertedIndex(body, url)
+        self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
+        self.buildInvertedIndex(body, url)
       
 
   def buildRawText(self):
