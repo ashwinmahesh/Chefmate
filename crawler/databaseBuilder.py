@@ -11,6 +11,8 @@ import time
 import ssl
 import nltk
 
+from threading import Thread
+
 try:
     _create_unverified_https_context = ssl._create_unverified_context
 except AttributeError:
@@ -25,10 +27,14 @@ class DatabaseBuilder:
   connect(databaseName, host=databaseAddr, port=27017)
   stopwords = set(nltk.corpus.stopwords.words('english'))
   porterStemmer = nltk.stem.PorterStemmer()
+  MAX_BUFFER = 5
 
-  def __init__(self, domain, mode='DEV'):
+  def __init__(self, domain, threads, mode='DEV'):
     self.domain = domain
     self.mode = mode
+    self.MAX_THREADS = threads
+    self.buildQueue = []
+    self.readSemaphore = True
   
   def build(self):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
@@ -49,6 +55,29 @@ class DatabaseBuilder:
       if self.mode=='DEV' and count>=5:
         break
  
+
+  def makeDocuments(self):
+    itemSize = 4
+    while(len(self.buildQueue) > 0):
+      while(not self.readSemaphore):
+        pass
+
+      self.readSemaphore = False
+      bufferSize = itemSize * DatabaseBuilder.MAX_BUFFER
+      start = len(self.buildQueue) - bufferSize - 1 if len(self.buildQueue) >= bufferSize else 0
+      end = len(self.buildQueue)-1 if len(self.buildQueue) >= bufferSize else len(self.buildQueue)
+      buffer = self.buildQueue[start : end]
+      del self.buildQueue[start : end]
+      self.readSemaphore = True  
+
+      for i in range(0, len(buffer), 4):
+        url = buffer[i]
+        title = buffer[i+1]
+        description = buffer[i+2]
+        body = buffer[i+3]
+      
+      
+
   def buildRawText(self):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
     rawData = open(filePath, 'r')
@@ -56,6 +85,19 @@ class DatabaseBuilder:
     count=0
     modePos = 0
     url, title, description, body = '','','',''
+
+    threadPool = []
+    for i in range(0, self.MAX_THREADS):
+      newThread = Thread(name='builder_'+str(i), target=makeDocuments)
+      threadPool.append(newThread)
+
+    ### PLAN OF ACTION ###
+    # 0. Create ThreadPool before loop
+    # 1. Switch to buffer based line reading
+    # 2. Read N Lines from buffer
+    # 3. Start threads using buffer
+    # 4. Join threads after buffer
+    # 5. Go to next iteration -> Repeat process
 
     for line in rawData:
       if line == "\n":

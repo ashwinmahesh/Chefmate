@@ -55,7 +55,7 @@ def buildIndex(iterations, threads=1, reset=True, resetFiles=True, passwordLock=
 
     options['parse'] and DataParser(domain['name'], threads).runParser()
 
-    options['database'] and DatabaseBuilder(domain['name'], mode='DEV' if dev else 'PROD').buildRawText()
+    options['database'] and DatabaseBuilder(domain['name'], threads=threads, mode='DEV' if dev else 'PROD').buildRawText()
 
 
     log("time", domain['name']+" finished running in "+str(time.time()-domainStartTime)+" seconds.")
