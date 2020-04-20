@@ -18,7 +18,7 @@ def tfidfWorker():
     log('tfidf', 'Calculating TFIDF for all terms starting with ' + currentLetter.upper())
     regex = re.compile('^'+currentLetter, re.IGNORECASE)
     terms = InvertedIndex.objects(term=regex)
-    
+
     for termEntry in terms: 
       term = termEntry['term']
 
@@ -45,7 +45,6 @@ def tfidfWorker():
 def calculateTFIDF(threads): 
   startTime = time.time()
   connect(databaseName, host=databaseAddr, port=27017)
-  print(InvertedIndex.objects.count())
   log('tfidf', 'Calculating TFIDF scores for all terms and documents')
 
   for i in range(ord('a'), ord('z')+1):
