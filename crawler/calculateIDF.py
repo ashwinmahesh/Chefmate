@@ -20,7 +20,6 @@ def idfThreadWorker():
     terms = InvertedIndex.objects(term=regex)
 
     for termEntry in terms:
-      # print(termEntry.term)
       docsContaining = float(len(termEntry.doc_info))
       termEntry['idf'] = math.log(Crawler.objects.count() / docsContaining, 2)
       termEntry.save()
