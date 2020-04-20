@@ -7,6 +7,6 @@ def stemQuery(query, stopwords):
   porterStemmer = PorterStemmer()
   tokenedText = word_tokenize(query)
   for word in tokenedText:
-    if word not in stopwords:
-      output.append(porterStemmer.stem(word))
+    # if word not in stopwords:
+    output.append(porterStemmer.stem(word))
   return output
