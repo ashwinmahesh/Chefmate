@@ -3,36 +3,68 @@ from mongoConfig import *
 import math
 import time
 import sys
+import re
+from threading import Thread
 sys.path.append('..')
 from helpers import log
 
-def calculateTFIDF(): 
+letters = []
+
+def tfidfWorker():
+  
+  while(len(letters) > 0):
+    currentLetter = letters.pop()
     startTime = time.time()
-    connect(databaseName, host=databaseAddr, port=27017)
-    terms = InvertedIndex.objects()
-    log('tfidf', 'Calculating TFIDF scores for all terms and documents')
+    log('tfidf', 'Calculating TFIDF for all terms starting with ' + currentLetter.upper())
+    regex = re.compile('^'+currentLetter, re.IGNORECASE)
+    terms = InvertedIndex.objects(term=regex)
+    
     for termEntry in terms: 
-        term = termEntry['term']
-        idf = termEntry['idf']
+      term = termEntry['term']
 
-        for docKey in termEntry["doc_info"]:
-            tf = termEntry['doc_info'][docKey]['termCount']
-            log_tf = 0
-            if (tf != 0):
-                log_tf = math.log(tf, 2) + 1
-            tf_idf = log_tf * idf
+      idf = termEntry['idf']
 
-            url = termEntry['doc_info'][docKey]['url']
-            if url[0:8] == 'https://':
-                document = Crawler.objects.get(url=url)
-                if 'tfidf' not in document:
-                    document['tfidf'] = {}
-                document['tfidf'][term] = tf_idf
-                document.save()
-                
-    log("time", 'Execution finished in '+str(time.time()-startTime)+' seconds.')
+      for docKey in termEntry["doc_info"]:
+        tf = termEntry['doc_info'][docKey]['termCount']
+        log_tf = 0
+        if (tf != 0):
+          log_tf = math.log(tf, 2) + 1
+          tf_idf = log_tf * idf
+
+        url = termEntry['doc_info'][docKey]['url']
+        if url[0:8] == 'https://':
+          document = Crawler.objects.get(url=url)
+          if 'tfidf' not in document:
+            document['tfidf'] = {}
+            document['tfidf'][term] = tf_idf
+            document.save()
+
+    log('time', 'Finished calculating tfidf for letter ' + currentLetter.upper() + ' in ' + str(time.time() - startTime) + ' seconds')
+
+
+def calculateTFIDF(threads): 
+  startTime = time.time()
+  connect(databaseName, host=databaseAddr, port=27017)
+  print(InvertedIndex.objects.count())
+  log('tfidf', 'Calculating TFIDF scores for all terms and documents')
+
+  for i in range(ord('a'), ord('z')+1):
+    letters.append(chr(i))
+
+  threadPool = []
+  for i in range(0, threads):
+    newThread = Thread(name='tfidf_'+str(i), target=tfidfWorker)
+    threadPool.append(newThread)
+
+  for i in range(0, threads):
+    threadPool[i].start()
+  
+  for i in range(0, threads):
+    threadPool[i].join()
+      
+  log("time", 'Execution finished in '+str(time.time()-startTime)+' seconds.')
 
 if __name__ == "__main__":
-  calculateTFIDF()
-    
+  calculateTFIDF(4)
+  
 
