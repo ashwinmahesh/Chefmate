@@ -60,6 +60,6 @@ def buildIndex(iterations, reset=True, resetFiles=True, passwordLock=True, dev=F
 
     log("time", domain['name']+" finished running in "+str(time.time()-domainStartTime)+" seconds.")
   
-  options['idf'] and DatabaseBuilder.calculateIDF()
+  # options['idf'] and DatabaseBuilder.calculateIDF()
   options['tfidf'] and calculateTFIDF()
   log("time", "Program finished running in "+str(time.time()-programStartTime)+" seconds.")
