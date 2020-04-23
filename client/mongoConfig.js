@@ -66,6 +66,11 @@ const UserSchema = new mongoose.Schema(
       type: [String],
       required: [true, "History required. Resort to default {}"],
       default: []
+    },
+    recent_queries: {
+      type: [String],
+      required: [true, "Recent Queries required. Resort to default {}"],
+      default: ["DEFAULT VAL 1", "DEFAULT VAL 2"]
     }
   },
   { timestamps: true }
