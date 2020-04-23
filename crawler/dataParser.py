@@ -29,8 +29,8 @@ class DataParser:
         pass
 
       self.readSemaphore = False
-      start = len(self.linksList) - DataParser.MAX_BUFFER_LEN - 1 if len(self.linksList) >= DataParser.MAX_BUFFER_LEN else 0
-      end = len(self.linksList)-1 if len(self.linksList) >= DataParser.MAX_BUFFER_LEN else len(self.linksList)
+      start = len(self.linksList) - DataParser.MAX_BUFFER_LEN - 1 if len(self.linksList) > DataParser.MAX_BUFFER_LEN else 0
+      end = len(self.linksList)
       toParse = self.linksList[start : end]
       del self.linksList[start : end]
       self.readSemaphore = True
@@ -38,9 +38,15 @@ class DataParser:
       for link in toParse:
         obj = extractData(link)
         buffer.append('link: ' + link + '\n')
-        buffer.append('title: ' + obj['title']+ '\n')
+
+        title = obj['title'] if obj['title']!=None else self.siteName
+        buffer.append('title: ' + title+ '\n')
+
         buffer.append('description: ' + obj['description']+ '\n',)
-        buffer.append('body: ' + obj['body'].replace('\n', ' ') + '\n\n')
+
+        beforeCleanupBody = obj['body'].replace('\n', ' ')
+        afterCleanupBody = ' '.join(beforeCleanupBody.split())
+        buffer.append('body: ' + afterCleanupBody + '\n\n')
       
       while(not self.writeSemaphore):
         pass
