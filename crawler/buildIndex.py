@@ -21,7 +21,7 @@ domains = [
 
 loginPwd = '$2b$12$xteJc6kD6a3QSpi3MCHz5OyJWFY47uls8iw33Y.mwhqPtd168bOt.'.encode('UTF-8')
 
-def buildIndex(iterations, reset=True, resetFiles=True, passwordLock=True, dev=False, options={'crawl':True, 'pageRank': True, 'parse':True, 'database':True, 'idf':True, 'tfidf':True}):
+def buildIndex(iterations, threads=1, reset=True, resetFiles=True, passwordLock=True, dev=False, options={'crawl':True, 'pageRank': True, 'parse':True, 'database':True, 'idf':True, 'tfidf':True}):
   log('build index', 'Running full suite of crawler programs.')
   programStartTime = time.time()
 
@@ -53,9 +53,9 @@ def buildIndex(iterations, reset=True, resetFiles=True, passwordLock=True, dev=F
     outlinkGraphFile = 'domains/'+domain['name']+'/'+domain['name']+'_outlinks.json'
     options['pageRank'] and calculatePageRank(domain['name'], inlinkGraphFile, outlinkGraphFile, 3)
 
-    options['parse'] and DataParser(domain['name']).runParser()
+    options['parse'] and DataParser(domain['name'], threads).runParser()
 
-    options['database'] and DatabaseBuilder(domain['name'], mode='DEV' if dev else 'PROD').buildRawText()
+    options['database'] and DatabaseBuilder(domain['name'], threads=threads, mode='DEV' if dev else 'PROD').buildRawText()
 
 
     log("time", domain['name']+" finished running in "+str(time.time()-domainStartTime)+" seconds.")
