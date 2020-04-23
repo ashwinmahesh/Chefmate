@@ -11,6 +11,7 @@ from crawler import Crawler
 from dataParser import DataParser
 from databaseBuilder import DatabaseBuilder
 from calculateTFIDF import calculateTFIDF
+from calculateIDF import calculateIDF
 from calculatePageRank import calculatePageRank
 
 domains = [
@@ -60,6 +61,6 @@ def buildIndex(iterations, threads=1, reset=True, resetFiles=True, passwordLock=
 
     log("time", domain['name']+" finished running in "+str(time.time()-domainStartTime)+" seconds.")
   
-  # options['idf'] and DatabaseBuilder.calculateIDF()
-  options['tfidf'] and calculateTFIDF()
+  options['idf'] and calculateIDF(threads)
+  options['tfidf'] and calculateTFIDF(threads)
   log("time", "Program finished running in "+str(time.time()-programStartTime)+" seconds.")

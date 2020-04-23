@@ -11,7 +11,6 @@ from helpers import log
 letters = []
 
 def tfidfWorker():
-  
   while(len(letters) > 0):
     currentLetter = letters.pop()
     startTime = time.time()
