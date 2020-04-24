@@ -113,7 +113,6 @@ module.exports = app => {
         log('error', 'Error finding user. Could not get recent queries');
         return res.json(sendPacket(0, 'Unable to find user'))
       }
-
       console.log(user['recent_queries']);
 
       return res.json(sendPacket(1, 'Successfully found user recent queries', { recent_queries: user['recent_queries'] }));
