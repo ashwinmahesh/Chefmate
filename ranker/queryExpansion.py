@@ -32,6 +32,8 @@ def threadedQueryExpansionWorker(queryDocInfo):
     Nab, Nb = 0, 0
     
     for term in terms:
+      if term['_id'][0:len('https://')] == 'https://':
+        continue
       Nab = 0
       termDocInfo = term['doc_info']
       Nb = len(termDocInfo)
@@ -94,6 +96,8 @@ def queryExpansion(query, terms):
   chiSquaredVals = []
   termsList = []
   for term in terms:
+    if term['_id'][0:len('https://')] == 'https://':
+      continue
     termsList.append(term['_id'])
     Nab = 0
     termDocInfo = term['doc_info']
@@ -106,7 +110,7 @@ def queryExpansion(query, terms):
     chiSquared = ((Nab - (Na * Nb)/N)**2) / (Na * Nb)
     chiSquaredVals.append(chiSquared)
 
-  sortedChiSquaredVals = [(chiSquared, term) for chiSquared, term in sorted(zip(chiSquaredVals, termsList), reverse=True)][0:30]
+  sortedChiSquaredVals = [(chiSquared, term) for chiSquared, term in sorted(zip(chiSquaredVals, termsList), reverse=True)][0:MAX_SIMILAR_TERMS]
   log("time", "Finished performing Query Expansion in " + str(time.time() - startTime) + ' seconds.')
   return sortedChiSquaredVals
 
