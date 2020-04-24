@@ -15,7 +15,17 @@ const useStyles = makeStyles((theme) => ({
     width: '650px',
     zIndex: '3',
     marginTop: '10px',
+  
   },
+  btn:{
+    backgroudColor: '#38698e',
+    height: '35px',
+    width: '150px',
+    fontSize: '20px',
+    color: 'white',
+    borderRadius: '4px',
+    top: '20px'
+  }
 }));
 
 export default function BeautifulHomepage(props) {
@@ -45,7 +55,7 @@ export default function BeautifulHomepage(props) {
         <a href="/login">
           <button id="btn">Continue</button> <br></br>
         </a>
-        <button id="btn">About us!</button>
+        {/* <button id="btn">About us!</button> */}
       </LoginBox>
       <div>
         <AboutUs />

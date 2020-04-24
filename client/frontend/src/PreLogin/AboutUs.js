@@ -19,9 +19,10 @@ const useStyles = makeStyles((theme) => ({
     },
     header: {
         width: '100%',
-        height: '80px',
+        height: '70px',
         marginTop: '10px',
-        backgroundColor: '#FFCCCB',
+        borderBottom: '2px solid lightgrey',
+        paddingBottom: '10px'
     
     },
     font: {
@@ -29,20 +30,25 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 'bold',
         fontSize: 30,
         paddingTop: '20px',
+        paddingBottom: '10px',
         letterSpacing: '2px'
     },
    
     insideFont: {
-        padding: '30px',
-        fontSize: '20px',
+        padding: '10px',
+        fontSize: '27px',
         marginLeft: '20px',
         marginRight: '20px',
+        fontFamily: 'Trebuchet MS',
+        fontWeight: 'bold',
+        paddingBottom: '10px',
+        letterSpacing: '1px'
         
     },
     image: {
         float: 'left',
         marginLeft: '40px',
-        marginTop: '150px',
+        marginTop: '50px',
     },
     img: {
         width: '300px',
@@ -63,12 +69,11 @@ export default function AboutUs(props) {
     return (
          <div className={styles.wrapper}>
                 <div className={styles.header}>
-                   <p className={styles.font}> What we do </p>
                     <p className={styles.insideFont}> 
                         ChefMate is a web application that will allow users to search for recipes across popular <br></br>
                         cooking websites and display results ranked according to their preferences. 
                     </p>
-            </div>
+                 </div>
                 <div className={styles.image}>
                 <img src={img4} className={styles.img} />
                 <p className={styles.txtunder}> 

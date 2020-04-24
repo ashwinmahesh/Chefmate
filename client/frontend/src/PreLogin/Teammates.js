@@ -22,21 +22,21 @@ const useStyles = makeStyles((theme) => ({
     },
     header: {
         width: '100%',
-        height: '80px',
-        marginTop: '10px',
-        backgroundColor: '#FFCCCB',
+        height: '70px',
+        borderBottom: '2px solid lightgrey',
+        borderTop: '2px solid lightgrey',
+        paddingBottom: '15px'
 
     },
     font: {
         textAlignVertical: "center",// <-- the magic
         fontWeight: 'bold',
         fontSize: 30,
-        paddingTop: '20px',
-        letterSpacing: '2px'
+        letterSpacing: '2px',
     },
 
     insideFont: {
-        padding: '30px',
+        padding: '35px',
         fontSize: '20px',
         marginLeft: '20px',
         marginRight: '20px',
@@ -45,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     image: {
         float: 'left',
         marginLeft: '200px',
-        marginTop: '50px',
+        marginTop: '40px',
     },
     img: {
         width: '200px',
@@ -66,7 +66,7 @@ export default function Teammates(props) {
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
-                <p className={styles.font}> Meet the team </p>
+                <p className={styles.font}> Our team </p>
             </div>
         <div className={styles.image}>
             <img src={profile1} className={styles.img} />
