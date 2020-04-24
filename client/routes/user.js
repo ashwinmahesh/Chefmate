@@ -114,8 +114,6 @@ module.exports = app => {
         return res.json(sendPacket(0, 'Unable to find user'))
       }
 
-      if(!('recent_queries' in user)) user['recent_queries']= 'dEfAulT';
-
       console.log(user['recent_queries']);
 
       return res.json(sendPacket(1, 'Successfully found user recent queries', { recent_queries: user['recent_queries'] }));

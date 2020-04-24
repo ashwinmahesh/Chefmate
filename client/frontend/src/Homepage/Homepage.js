@@ -78,7 +78,7 @@ function Homepage(props: Props) {
       const { recent_queries } = data['content'];
       console.log(recent_queries);
       const queryTermList = [];
-      for (var i = 0; i < recent_queries.length; i++) {
+      for (var i = recent_queries.length - 1; i >= 0; i--) {
         queryTermList.push(recent_queries[i]);
       }
       changeAutocompleteData(queryTermList);

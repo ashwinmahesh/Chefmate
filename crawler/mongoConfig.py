@@ -26,7 +26,7 @@ class User(Document):
   likes = DictField(required=True, default={})
   dislikes = DictField(required=True, default={})
   history = ListField(StringField(required=True, default={}))
-  recent_queries = ListField(StringField(required=True, default={"Default_1", "Default_2"}))
+  recent_queries = ListField(StringField(required=True, default={}))
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
