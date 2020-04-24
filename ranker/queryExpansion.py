@@ -13,16 +13,16 @@ from nltk.stem import PorterStemmer
 
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 N = Crawler.objects.count()
-specialChars = ['\(', '\.', '$']
+porterStemmer = PorterStemmer()
+MAX_SIMILAR_TERMS = 20
 
+#-------- Variables below are only used in Threaded Query Expansion -----------
+specialChars = ['\(', '\.', '$']
 characters = []
 chiSquaredVals = []
 termsList = []
-porterStemmer = PorterStemmer()
 
-MAX_SIMILAR_TERMS = 20
-
-def queryExpansionWorker(queryDocInfo):
+def threadedQueryExpansionWorker(queryDocInfo):
   Na = len(queryDocInfo)
   while(len(characters) > 0):
     nextChar = characters.pop()
@@ -44,7 +44,7 @@ def queryExpansionWorker(queryDocInfo):
       termsList.append(term['_id'])
       chiSquaredVals.append(chiSquared)
 
-def queryExpansion(query, threads=1):
+def threadedQueryExpansion(query, threads=1):
   startTime = time.time()
   log("QE", 'Performing Query Expansion on ' + query)
 
@@ -61,7 +61,7 @@ def queryExpansion(query, threads=1):
 
   threadPool = []
   for i in range(0, threads):
-    newThread = Thread(name='queryExpansion_'+str(i), target=queryExpansionWorker, args=(queryDocInfo,))
+    newThread = Thread(name='queryExpansion_'+str(i), target=threadedQueryExpansionWorker, args=(queryDocInfo,))
     threadPool.append(newThread)
   
   for i in range(0, threads):
@@ -75,10 +75,9 @@ def queryExpansion(query, threads=1):
 
   return sortedChiSquaredVals
 
-
 #This stores the inverted index in memory for actually really fast calculation.
 #Should probably move forward with this method if we want to use it. Threading is wayyyy too slow.
-def unthreadedQueryExpansion(query, terms):
+def queryExpansion(query, terms):
   startTime = time.time()
   log("QE", 'Performing Query Expansion on ' + query)
 
@@ -112,8 +111,8 @@ def unthreadedQueryExpansion(query, terms):
   return sortedChiSquaredVals
 
 if __name__ == "__main__":
-  # print(queryExpansion('chicken', 4))
-  # print(queryExpansion('butter', 4))
+  # print(queryExpansion('chicken', threads=4))
+  # print(queryExpansion('butter', threads=4))
 
   terms = json.loads(InvertedIndex.objects.to_json())
 
