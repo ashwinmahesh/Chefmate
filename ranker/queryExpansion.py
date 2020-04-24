@@ -9,6 +9,7 @@ import rankerDBConfig
 import re
 import json
 from threading import Thread
+from nltk.stem import PorterStemmer 
 
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 N = Crawler.objects.count()
@@ -17,6 +18,9 @@ specialChars = ['\(', '\.', '$']
 characters = []
 chiSquaredVals = []
 termsList = []
+porterStemmer = PorterStemmer()
+
+MAX_SIMILAR_TERMS = 20
 
 def queryExpansionWorker(queryDocInfo):
   Na = len(queryDocInfo)
@@ -51,7 +55,8 @@ def queryExpansion(query, threads=1):
   for char in specialChars:
     characters.append(char)
 
-  queryTerm = json.loads(InvertedIndex.objects.get(term=query).to_json())
+  stemmedQuery = porterStemmer.stem(query)
+  queryTerm = json.loads(InvertedIndex.objects.get(term=stemmedQuery).to_json())
   queryDocInfo = queryTerm['doc_info']
 
   threadPool = []
@@ -65,17 +70,54 @@ def queryExpansion(query, threads=1):
   for i in range(0, threads):
     threadPool[i].join()
   
-  sortedChiSquaredVals = [(chiSquared, term) for chiSquared, term in sorted(zip(chiSquaredVals, termsList), reverse=True)][0:30]
+  sortedChiSquaredVals = [(chiSquared, term) for chiSquared, term in sorted(zip(chiSquaredVals, termsList), reverse=True)][0:MAX_SIMILAR_TERMS]
   log("time", "Finished performing Query Expansion in " + str(time.time() - startTime) + ' seconds.')
 
   return sortedChiSquaredVals
 
 
-#TODO - Copy this from earlier commits. This stores the inverted index in memory for actually really fast calculation.
+#This stores the inverted index in memory for actually really fast calculation.
 #Should probably move forward with this method if we want to use it. Threading is wayyyy too slow.
-def unthreadedQE(query, terms):
-  pass
+def unthreadedQueryExpansion(query, terms):
+  startTime = time.time()
+  log("QE", 'Performing Query Expansion on ' + query)
+
+  stemmedQuery = porterStemmer.stem(query)
+  try:
+    queryTerm = json.loads(InvertedIndex.objects.get(term=stemmedQuery).to_json())
+  except DoesNotExist:
+    return []
+  queryDocInfo = queryTerm['doc_info']
+
+  Na = len(queryDocInfo)
+  Nab, Nb = 0, 0
+  
+  chiSquaredVals = []
+  termsList = []
+  for term in terms:
+    termsList.append(term['_id'])
+    Nab = 0
+    termDocInfo = term['doc_info']
+    Nb = len(termDocInfo)
+    
+    for urlKey in termDocInfo:
+      if urlKey in queryDocInfo:
+        Nab += 1
+    
+    chiSquared = ((Nab - (Na * Nb)/N)**2) / (Na * Nb)
+    chiSquaredVals.append(chiSquared)
+
+  sortedChiSquaredVals = [(chiSquared, term) for chiSquared, term in sorted(zip(chiSquaredVals, termsList), reverse=True)][0:30]
+  log("time", "Finished performing Query Expansion in " + str(time.time() - startTime) + ' seconds.')
+  return sortedChiSquaredVals
 
 if __name__ == "__main__":
-  print(queryExpansion('chicken', 4))
-  print(queryExpansion('butter', 4))
+  # print(queryExpansion('chicken', 4))
+  # print(queryExpansion('butter', 4))
+
+  terms = json.loads(InvertedIndex.objects.to_json())
+
+  print(unthreadedQueryExpansion('chicken', terms))
+  print(unthreadedQueryExpansion('butter', terms))
+  print(unthreadedQueryExpansion('biscuits', terms))
+  print(unthreadedQueryExpansion('nuggets', terms))
