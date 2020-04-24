@@ -11,8 +11,6 @@ import img3 from '../images/img3.jpg';
 import img4 from '../images/img4.jpg';
 
 
-
-
 const useStyles = makeStyles((theme) => ({
     wrapper: {
         minHeight: '100vh'
@@ -23,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '10px',
         borderBottom: '2px solid lightgrey',
         paddingBottom: '10px'
-    
     },
     font: {
         textAlignVertical: "center",// <-- the magic
@@ -33,21 +30,19 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '10px',
         letterSpacing: '2px'
     },
-   
     insideFont: {
         padding: '10px',
         fontSize: '27px',
         marginLeft: '20px',
         marginRight: '20px',
-        fontFamily: 'Trebuchet MS',
+        fontFamily: 'Vernon Adams',
         fontWeight: 'bold',
         paddingBottom: '10px',
-        letterSpacing: '1px'
-        
+        letterSpacing: '1px' 
     },
     image: {
         float: 'left',
-        marginLeft: '40px',
+        marginLeft: '50px',
         marginTop: '50px',
     },
     img: {
@@ -57,15 +52,12 @@ const useStyles = makeStyles((theme) => ({
     txtunder: {
         teextAlign: 'center',
         gridRow: '1',
-        
-
+        fontFamily: 'Times New Roman'
     }
 }));
 
 export default function AboutUs(props) {
     const styles = useStyles();
-    
-
     return (
          <div className={styles.wrapper}>
                 <div className={styles.header}>
@@ -86,7 +78,6 @@ export default function AboutUs(props) {
                 </br>thus we've created a better cooking<br>
                 </br> related search engine to engance user<br>
                 </br>experience. </p></div>
-
             <div className={styles.image}>
                 <img src={img1} className={styles.img} />
                 <p className={styles.txtunder}> 
@@ -98,7 +89,6 @@ export default function AboutUs(props) {
                 </br> we calculated the page rank for the <br> 
                 </br> retrieved documents and return the <br>
                 </br>best ranked pages. </p> </div>
-
             <div className={styles.image}>
                 <img src={img3} className={styles.img} />
                 <p className={styles.txtunder}> 
@@ -111,7 +101,6 @@ export default function AboutUs(props) {
                 </br>  the user have a great  experience.  <br>
                 </br>
                 </p> </div>
-
             <div className={styles.image}>
                 <img src={img2} className={styles.img} />
                 <p className={styles.txtunder}> 

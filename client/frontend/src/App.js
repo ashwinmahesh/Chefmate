@@ -38,7 +38,7 @@ function App(props) {
             <Route exact path="/" component={Homepage} />
             <Route exact path="/intro" component={LoginPage} />
             <Route exact path="/login" component={BeautifulLogin} />
-            <Route exact path="/newlogin" component={BeautifulHomepage} />
+            <Route exact path="/about" component={BeautifulHomepage} />
             <Route exact path="/signup" component={BeautifulSignup} />
             <Route path="/result/:query" component={SearchResult} />
             <Route exact path="/history" component={History} />

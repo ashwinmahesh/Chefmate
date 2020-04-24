@@ -12,35 +12,30 @@ import profile4 from '../images/profile4.jpg';
 import profile5 from '../images/profile5.jpg';
 import profile6 from '../images/profile6.jpg';
 
-
-
-
-
 const useStyles = makeStyles((theme) => ({
     wrapper: {
         minHeight: '100vh'
     },
     header: {
         width: '100%',
-        height: '70px',
+        height: '50px',
         borderBottom: '2px solid lightgrey',
         borderTop: '2px solid lightgrey',
-        paddingBottom: '15px'
-
+        paddingBottom: '10px'
     },
     font: {
         textAlignVertical: "center",// <-- the magic
         fontWeight: 'bold',
+        margin: '12px',
         fontSize: 30,
         letterSpacing: '2px',
+        fontFamily: 'Vernon Adams',
     },
-
     insideFont: {
         padding: '35px',
         fontSize: '20px',
         marginLeft: '20px',
         marginRight: '20px',
-
     },
     image: {
         float: 'left',
@@ -54,19 +49,17 @@ const useStyles = makeStyles((theme) => ({
     txtunder: {
         teextAlign: 'center',
         gridRow: '1',
-
-
+        fontFamily: 'Times New Roman',
+        fontSize: '18px'
     }
 }));
 
 export default function Teammates(props) {
     const styles = useStyles();
-
-
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
-                <p className={styles.font}> Our team </p>
+                <p className={styles.font}> Our Team </p>
             </div>
         <div className={styles.image}>
             <img src={profile1} className={styles.img} />
@@ -86,7 +79,6 @@ export default function Teammates(props) {
                     <b>Vishva Pandya</b><br></br>
                     Software Engineer </p>
         </div>
-            
             <div className={styles.image}>
                 <img src={profile5} className={styles.img} />
                 <p className={styles.txtunder}>
@@ -99,7 +91,6 @@ export default function Teammates(props) {
                     <b>Arshad Alikhan</b><br></br>
                     UI Engineer </p>
             </div>
-           
             <div className={styles.image}>
                 <img src={profile6} className={styles.img} />
                 <p className={styles.txtunder}>
@@ -107,7 +98,5 @@ export default function Teammates(props) {
                     UI Engineer</p>
             </div>
      </div>
-        
-
     );
 }
