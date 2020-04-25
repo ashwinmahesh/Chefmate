@@ -4,6 +4,9 @@ const sendPacket = require('../sendPacket');
 const { User} = require('../mongoConfig');
 
 const maxHistoryLength = 100;
+const clicksBuffSize = 5;
+
+var clicksBuffer = String[clicksBuffSize];
 
 module.exports = app => {
   app.get('/user', (req, res) => {
@@ -25,6 +28,11 @@ module.exports = app => {
     await user.save(err => {
       if (err) log("error", 'Error saving user history update');
     })
+
+    // Logging clicks
+    var datetime = (new Date()).toString();
+    datetime.concat(" HEY THERERR \"", req.query, "\" - ", redirectUrl);
+    console.log(datetime);
   
     if (user!==null) log("redirect", `Sending user ${user.userid} to ${redirectUrl}`)
     return res.redirect(redirectUrl)
