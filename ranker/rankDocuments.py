@@ -26,8 +26,11 @@ def rank(queryTerms, termReverseMap, invertedIndex):
       if url[0:8] == 'https://':
         docURLs.add(url)
 
-    termNum = termReverseMap[term]
-    queryTermWeights[termNum] += 1
+    termNum = termReverseMap[termEntry['term']]
+    if termEntry['term'] in queryTerms:
+      queryTermWeights[termNum] += 2
+    else:
+      queryTermWeights[termNum] += 1
 
   docUrlArr = []
   rankings = []
