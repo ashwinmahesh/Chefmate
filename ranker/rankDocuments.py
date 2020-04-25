@@ -6,35 +6,38 @@ from helpers import log
 import numpy as np
 import time
 from cosineSimilarity import cosineSimilarity
+from fetchDocuments import fetchDocuments
 
-def rank(terms, termReverseMap):
+def rank(queryTerms, termReverseMap, invertedIndex):
   startTime = time.time()
 
-  log("Ranking", 'Calculating rankings for query')
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
   queryStr=''
-  for term in terms:
+  for term in queryTerms:
     queryStr+=term + ' '
-    try:
-      termEntry = InvertedIndex.objects.get(term=term)
-
-      docInfoList=termEntry['doc_info']
-      for docKey in docInfoList:
-        url = docInfoList[docKey]['url']
-        if url[0:8] == 'https://':
-          docURLs.add(url)
-
-      termNum = termReverseMap[term]
-      queryTermWeights[termNum] += 1
-    except DoesNotExist:
-      log("query", 'Term not found - '+term)
   
+  log("QE", 'Expanding Query Terms')
+  expandedTerms = fetchDocuments(queryTerms, invertedIndex)
+  for termEntry in expandedTerms:
+    docInfoList=termEntry['doc_info']
+    for docKey in docInfoList:
+      url = docInfoList[docKey]['url']
+      if url[0:8] == 'https://':
+        docURLs.add(url)
+
+    termNum = termReverseMap[term]
+    queryTermWeights[termNum] += 1
+
   docUrlArr = []
   rankings = []
 
+  log("Ranking", 'Calculating rankings for query')
   for url in docURLs:
-    document = Crawler.objects.get(url=url)
+    try:
+      document = Crawler.objects.get(url=url)
+    except DoesNotExist:
+      continue
     if 'Page not found' in document['title']:
       continue
 

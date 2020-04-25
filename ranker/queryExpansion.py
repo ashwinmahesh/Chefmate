@@ -99,9 +99,9 @@ def queryExpansion(query, terms):
   chiSquaredVals = []
   termsList = []
   for term in terms:
-    if term['_id'][0:len('https://')] == 'https://':
+    if term['term'][0:len('https://')] == 'https://':
       continue
-    termsList.append(term['_id'])
+    termsList.append(term['term'])
     Nab = 0
     termDocInfo = term['doc_info']
     Nb = len(termDocInfo)
