@@ -5,6 +5,7 @@ sys.path.append('..')
 sys.path.append('../crawler')
 import rankerDBConfig
 import json
+from helpers import log
 
 from nltk.stem import PorterStemmer 
 
