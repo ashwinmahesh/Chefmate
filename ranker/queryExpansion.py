@@ -16,6 +16,9 @@ N = Crawler.objects.count()
 porterStemmer = PorterStemmer()
 MAX_SIMILAR_TERMS = 20
 
+###Can do this threaded, maybe have start and end index for terms for each thread, then just use those b/c that is an array
+### Look into this. See if it actually speeds up calculation.
+
 #-------- Variables below are only used in Threaded Query Expansion -----------
 specialChars = ['\(', '\.', '$']
 characters = []

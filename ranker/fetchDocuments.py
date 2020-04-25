@@ -8,12 +8,12 @@ import json
 
 from nltk.stem import PorterStemmer 
 
-def fetchDocuments(queryTerms, allTerms):
+def fetchDocuments(stemmedQueryTerms, allTerms):
   expandedList = []
-  for term in queryTerms:
+  for term in stemmedQueryTerms:
     expandedList.append(term)
 
-  for queryTerm in queryTerms:
+  for queryTerm in stemmedQueryTerms:
      expandedList += [term for chiSquare, term in queryExpansion(queryTerm, allTerms)]
   return expandedList
 
