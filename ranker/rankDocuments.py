@@ -54,7 +54,7 @@ def rank(queryTerms, termReverseMap, invertedIndex):
       if(termNum == None):
         continue
       if 'tfidf' not in document or term not in document['tfidf']:
-        docWeights[termNum] += 0.01
+        docWeights[termNum] += 0.0001
       else:
         tfidf = document['tfidf'][term]
         docWeights[termNum] += tfidf
