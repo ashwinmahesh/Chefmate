@@ -18,6 +18,7 @@ def fetchDocuments(stemmedQueryTerms, invertedIndex):
   
   termDBObjects = []
   for term in expandedList:
+    #InvertedIndex already being passed in. Use the one being passed in to fetch term
     try:
       termEntry = InvertedIndex.objects.get(term=term)
       termDBObjects.append(termEntry)

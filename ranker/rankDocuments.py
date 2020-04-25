@@ -7,6 +7,9 @@ import numpy as np
 import time
 from cosineSimilarity import cosineSimilarity
 from fetchDocuments import fetchDocuments
+from nltk.stem import PorterStemmer 
+
+porterStemmer = PorterStemmer()
 
 def rank(queryTerms, termReverseMap, invertedIndex):
   startTime = time.time()
@@ -45,7 +48,8 @@ def rank(queryTerms, termReverseMap, invertedIndex):
       continue
 
     docWeights = np.zeros(len(termReverseMap))
-    for term in document['body'].lower().split():
+    for rawTerm in document['body'].lower().split():
+      term = porterStemmer.stem(rawTerm)
       termNum = termReverseMap.get(term)
       if(termNum == None):
         continue
