@@ -4,10 +4,10 @@ from buildIndex import buildIndex
 #dev:true only for database building. returns after 5 docs to rapidly test. keep pageRank:false for latest version of master. 
 
 options = {
-  'crawl':False,
+  'crawl':True,
   'pageRank': False,
-  'parse':False,
-  'database':True,
+  'parse':True,
+  'database':False,
   'idf':False,
   'tfidf':False
 }
