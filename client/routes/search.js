@@ -1,6 +1,7 @@
 const log = require('../logger');
 const makeRequest = require('../makeRequest');
 const sendPacket = require('../sendPacket');
+const clickLogger = require('../clickLogger');
 
 const { User, Query } = require('../mongoConfig');
 
@@ -8,6 +9,7 @@ module.exports = (app) => {
   app.get('/search/:query', async (request, response) => {
     const query = request.params['query'];
     log('query', `Received query from client: ${query}. Sending data to ranker`);
+    clickLogger.setCurrQuery(query);
     const data = await makeRequest('ranker', `query/${query}`);
 
     Query.findById(query, (err, oldQueryObj) => {
