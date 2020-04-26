@@ -33,8 +33,8 @@ class Query(Document):
   query = StringField(required=True, primary_key=True)
   count = IntField(required=True, default=1)
 
-databaseName = 'ChefmateDB'
-# databaseName = 'ChefmateDB_Alt'
+# databaseName = 'ChefmateDB'
+databaseName = 'ChefmateDB_Alt'
 
 # databaseAddr = '18.219.145.177' #NEW DB
 databaseAddr = '18.222.251.5'
