@@ -68,7 +68,6 @@ function Homepage(props: Props) {
 
   useEffect(() => {
     checkAuthentication();
-    // Get recent queries here
     fetchRecentQueries();
   }, []);
 
@@ -76,7 +75,6 @@ function Homepage(props: Props) {
     const { data } = await axios.get(`/recentQueries`);
     if (data['success'] === 1) {
       const { recent_queries } = data['content'];
-      console.log(recent_queries);
       const queryTermList = [];
       for (var i = recent_queries.length - 1; i >= 0; i--) {
         queryTermList.push(recent_queries[i]);
@@ -89,7 +87,6 @@ function Homepage(props: Props) {
     changeQuery(newValue);
 
     if (newValue.length >= 3) {
-      console.log("op")
       const { data } = await axios.get(`/autocomplete/${newValue}`);
       if (data['success'] === 1) {
         const { queries } = data['content'];

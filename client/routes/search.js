@@ -34,7 +34,6 @@ module.exports = (app) => {
         }
         user.recent_queries.addToSet(query);
         
-        console.log(user['recent_queries']);
         user.save(err => {
           if (err) log("error", 'Error saving user recent queries update');
         })
