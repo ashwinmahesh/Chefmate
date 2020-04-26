@@ -12,11 +12,12 @@ def loadInvertedIndexToMemory():
   log('info', 'Loading Inverted Index into main memory.')
   startTime=time.time()
 
-  invertedIndex = [(term['doc_info'], term['term']) for term in InvertedIndex.objects()]
+  invertedIndex = InvertedIndex.objects()
+  allTerms = [(term['doc_info'], term['term']) for term in invertedIndex]
   
   termReverseMap = {}
-  for i in range(0, len(invertedIndex)):
-    termReverseMap[invertedIndex[i][1]] = i
+  for i in range(0, len(allTerms)):
+    termReverseMap[allTerms[i][1]] = i
 
   log('time', 'Finished loading Inverted Index into main memory in ' + str(time.time()-startTime) + ' seconds.')
-  return termReverseMap
+  return termReverseMap, invertedIndex
