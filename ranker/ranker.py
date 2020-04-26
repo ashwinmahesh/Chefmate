@@ -37,6 +37,9 @@ connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=2701
 termReverseMap, invertedIndex = loadInvertedIndexToMemory()
 stopwords = set(nltk.corpus.stopwords.words('english'))
 
+QUERY_EXPANSION = True
+PSEUDO_RELEVANCE_FEEDBACK = True
+
 @app.route('/', methods=["GET"])
 def index():
   return 'I am the ranker!'
@@ -45,7 +48,7 @@ def index():
 def rankQuery(query):
   log('Ranker', 'Received query: '+query)
   queryTerms = stemQuery(query, stopwords)
-  sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex)
+  sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')
   return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls[0:200]})
 

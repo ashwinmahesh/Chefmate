@@ -8,10 +8,11 @@ import time
 from cosineSimilarity import cosineSimilarity
 from fetchDocuments import fetchDocuments
 from nltk.stem import PorterStemmer 
+from pseudoRelevanceFeedback import performPseudoRelevanceFeedback
 
 porterStemmer = PorterStemmer()
 
-def rank(queryTerms, termReverseMap, invertedIndex):
+def rank(queryTerms, termReverseMap, invertedIndex, queryExpansion=False, pseudoRelevanceFeedback=False):
   startTime = time.time()
 
   docURLs = set()
@@ -21,7 +22,7 @@ def rank(queryTerms, termReverseMap, invertedIndex):
     queryStr+=term + ' '
   
   log("QE", 'Expanding Query Terms')
-  expandedTerms = fetchDocuments(queryTerms, invertedIndex)
+  expandedTerms = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
   for termEntry in expandedTerms:
     docInfoList=termEntry['doc_info']
     for docKey in docInfoList:
@@ -65,6 +66,9 @@ def rank(queryTerms, termReverseMap, invertedIndex):
     docUrlArr.append(url)
 
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
+  
+  if pseudoRelevanceFeedback:
+    performPseudoRelevanceFeedback(queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap)
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
   return sortedDocUrls

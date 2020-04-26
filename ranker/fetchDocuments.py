@@ -9,17 +9,17 @@ from helpers import log
 
 from nltk.stem import PorterStemmer 
 
-def fetchDocuments(stemmedQueryTerms, invertedIndex):
+def fetchDocuments(stemmedQueryTerms, invertedIndex, queryExpansion=False):
   expandedList = []
   for term in stemmedQueryTerms:
     expandedList.append(term)
 
-  for queryTerm in stemmedQueryTerms:
-     expandedList += [term for chiSquare, term in queryExpansion(queryTerm, invertedIndex)]
+  if queryExpansion:
+    for queryTerm in stemmedQueryTerms:
+      expandedList += [term for chiSquare, term in queryExpansion(queryTerm, invertedIndex)]
   
   termDBObjects = []
   for term in expandedList:
-    #InvertedIndex already being passed in. Use the one being passed in to fetch term
     try:
       termEntry = InvertedIndex.objects.get(term=term)
       termDBObjects.append(termEntry)
