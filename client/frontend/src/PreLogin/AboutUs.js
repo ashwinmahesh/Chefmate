@@ -13,14 +13,20 @@ import img4 from '../images/img4.jpg';
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
-        minHeight: '100vh'
+        backgroundColor: '#38698e',
+        opacity: '.8',
+        display: 'flex',
+        flexWrap: 'wrap',
+        paddingBottom: '18px'
     },
     header: {
         width: '100%',
-        height: '70px',
-        marginTop: '10px',
-        borderBottom: '2px solid lightgrey',
-        paddingBottom: '10px'
+        height: '100px',
+        borderBottom: '2px solid black',
+        paddingBottom: '20px',
+        paddingTop: '3px',
+        backgroundColor: 'black',
+        color: 'white'
     },
     font: {
         textAlignVertical: "center",// <-- the magic
@@ -28,31 +34,41 @@ const useStyles = makeStyles((theme) => ({
         fontSize: 30,
         paddingTop: '20px',
         paddingBottom: '10px',
-        letterSpacing: '2px'
+        letterSpacing: '2px',
+        color: 'white'
+
     },
     insideFont: {
         padding: '10px',
         fontSize: '27px',
         marginLeft: '20px',
         marginRight: '20px',
-        fontFamily: 'Vernon Adams',
+        fontFamily: 'Ubuntu',
         fontWeight: 'bold',
         paddingBottom: '10px',
-        letterSpacing: '1px' 
+        letterSpacing: '1px',
+        color: 'white'
     },
     image: {
         float: 'left',
         marginLeft: '50px',
         marginTop: '50px',
+        
     },
     img: {
         width: '300px',
         height: '300px',
+        borderColor: 'black',
+        display: 'flex'
     },
     txtunder: {
         teextAlign: 'center',
         gridRow: '1',
-        fontFamily: 'Times New Roman'
+        fontFamily: 'Ubuntu',
+        color: 'white',
+        fontSize: '17px',
+        width: '300px'
+
     }
 }));
 
@@ -69,47 +85,46 @@ export default function AboutUs(props) {
                 <div className={styles.image}>
                 <img src={img4} className={styles.img} />
                 <p className={styles.txtunder}> 
-                We have be ranked and recommended <br>
-                </br> recipes to our users according to sites that <br>
-                </br> they frequently visit through our engine.<br>
-                </br>Traditional search engines have seeds <br>
-                </br>throughout the entire internet, whereas <br>
-                </br>ours has only be popular cooking sites, <br>
-                </br>thus we've created a better cooking<br>
-                </br> related search engine to engance user<br>
-                </br>experience. </p></div>
+                We have be ranked and recommended
+                recipes to our users according to sites that 
+                they frequently visit through our engine
+                Traditional search engines have seeds
+                throughout the entire internet, whereas
+                ours has only be popular cooking sites,
+                thus we've created a better cooking
+                related search engine to engance user
+                experience. </p></div>
             <div className={styles.image}>
                 <img src={img1} className={styles.img} />
                 <p className={styles.txtunder}> 
-                After retrieving all the relevant documents <br>
-                </br> containing parts of the query search, we <br>
-                </br> calculated each page’s metric using <br>
-                </br>each individual page’s hub and authority <br>
-                </br>scores in relation to the query. Furthermore,<br>
-                </br> we calculated the page rank for the <br> 
-                </br> retrieved documents and return the <br>
-                </br>best ranked pages. </p> </div>
+                After retrieving all the relevant documents
+                 containing parts of the query search, we
+                 calculated each page’s metric using
+                each individual page’s hub and authority 
+                scores in relation to the query. Furthermore,
+                we calculated the page rank for the  
+                retrieved documents and return the
+                best ranked pages. </p> </div>
             <div className={styles.image}>
                 <img src={img3} className={styles.img} />
                 <p className={styles.txtunder}> 
-                Not only do we provide users with <br>
-                </br> recipes, but we also show them video <br>
-                </br>  tutorials on how to make certain <br>
-                </br>  recipes and allow them to download <br>
-                </br> their recipes as PDFs to their <br>
-                </br>  computers. We are focused on making <br>
-                </br>  the user have a great  experience.  <br>
-                </br>
+                Not only do we provide users with
+                recipes, but we also show them video
+                tutorials on how to make certain 
+                recipes and allow them to download 
+                their recipes as PDFs to their
+                computers. We are focused on making 
+                the user have a great  experience. 
                 </p> </div>
             <div className={styles.image}>
                 <img src={img2} className={styles.img} />
                 <p className={styles.txtunder}> 
-                We enabled users to like and dislike <br></br> 
-                their pages and created appropriate UI <br>
-                </br> to showthem their results. We also display <br>
-                </br> a history of their recently searched items.<br>
-                </br> If we do not recognize an item, we <br>
-                </br> suggest them an item to help their search.
+                We enabled users to like and dislike
+                their pages and created appropriate UI 
+                to showthem their results. We also display
+                 a history of their recently searched items.
+                 If we do not recognize an item, we 
+                 suggest them an item to help their search.
                 </p></div>  
          </div>
            

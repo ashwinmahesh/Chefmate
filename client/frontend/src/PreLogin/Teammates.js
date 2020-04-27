@@ -14,14 +14,22 @@ import profile6 from '../images/profile6.jpg';
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
-        minHeight: '100vh'
+        backgroundColor: 'darkgrey',
+        display: 'flex',
+        flexWrap: 'wrap'
     },
     header: {
         width: '100%',
-        height: '50px',
+        height: '70px',
         borderBottom: '2px solid lightgrey',
         borderTop: '2px solid lightgrey',
-        paddingBottom: '10px'
+        paddingBottom: '8px',
+        paddingTop: '10px',
+        backgroundColor: 'black',
+        opacity: '.8',
+        color: 'white',
+        fontFamily: 'Ubuntu'
+
     },
     font: {
         textAlignVertical: "center",// <-- the magic
@@ -40,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     image: {
         float: 'left',
         marginLeft: '200px',
-        marginTop: '40px',
+        marginTop: '20px',
     },
     img: {
         width: '200px',
@@ -49,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     txtunder: {
         teextAlign: 'center',
         gridRow: '1',
-        fontFamily: 'Times New Roman',
+        fontFamily: 'Ubuntu',
         fontSize: '18px'
     }
 }));
