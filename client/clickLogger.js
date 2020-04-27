@@ -1,19 +1,52 @@
 var currQuery = "example";
-var numOfEntries = 0;
+var currQueryTime = 0;
+var currNumDocs = 0;
+var numOfClicksBuffEntries = 0;
+var numOfSearchTimeBuffEntries = 0;
 const clicksBuffSize = 5;
+const searchTimeBuffSize = 1;
 var clicksBuffer = new Array(clicksBuffSize);
+var searchTimeBuffer = new Array(searchTimeBuffSize);
 
 
 function setCurrQuery(query) {
     currQuery = query;
 }
 
+function setCurrNumDocs(num) {
+  currNumDocs = num;
+}
+
+function setCurrQueryTime(time) {
+  currQueryTime = time.toString();
+  var datetime = (new Date()).toString();
+  datetime = datetime.concat(" - ", currQueryTime, " - ", 5, "\n");
+  console.log("debug", `Datetime: ${datetime}`);
+  if (numOfSearchTimeBuffEntries < searchTimeBuffSize) {
+    searchTimeBuffer.push(datetime);
+    numOfSearchTimeBuffEntries++;
+  } else {
+    var fs = require('fs')
+    var fw = fs.createWriteStream('./logs/searchTime.txt', {
+        flags: 'a' // 'a' means appending
+    });
+
+    for (var i = 0; i < searchTimeBuffSize; i++) {
+      var temp = searchTimeBuffer.pop();
+      fw.write(temp);
+    }
+    fw.write(datetime);
+    numOfSearchTimeBuffEntries = 0;
+    fw.end();
+  }
+}
+
+
+
 function recordClick(redirect) {
-    // Logging clicks
     var datetime = (new Date()).toString();
-    datetime = datetime.concat("\"", currQuery.toString(), "\" - ", redirect.toString(), "\n");
-    console.log("debug", `datetime: ${datetime}`);
-    if (numOfEntries < clicksBuffSize) {
+    datetime = datetime.concat("- \"", currQuery.toString(), "\" - ", redirect.toString(), "\n");
+    if (numOfClicksBuffEntries < clicksBuffSize) {
       clicksBuffer.push(datetime);
       numOfEntries++;
     } else {
@@ -22,15 +55,14 @@ function recordClick(redirect) {
           flags: 'a' // 'a' means appending
       });
 
-      for (var i = 0; i < clicksBuffSize - 1; i++) {
+      for (var i = 0; i < clicksBuffSize; i++) {
         var temp = clicksBuffer.pop();
         fw.write(temp);
       }
       fw.write(datetime);
-      numOfEntries = 0;
+      numOfClicksBuffEntries = 0;
       fw.end();
-      console.log("debug", 'wrote to clicks.txt')
     }
-    console.log("debug", `Current numOfEntries ${numOfEntries}`)
 }
-module.exports = {setCurrQuery, recordClick};
+
+module.exports = {setCurrQuery, setCurrNumDocs, setCurrQueryTime, recordClick};

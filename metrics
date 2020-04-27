@@ -1,0 +1,21 @@
+#!/bin/sh 
+
+if [ $# -eq 0 ]
+then
+    echo "No arguments provided: for help, run ./metrics help"
+    exit
+fi
+
+if [ $1 == 'help' ]
+then
+    echo "\nCurrent Metrics Inlclude...\n"
+    echo "      1. Average Search Time:    ./metrics avg-search-time"
+    echo "\n"
+    exit
+fi
+
+if [ $1 == 'avg-search-time' ]
+then
+    echo "gathering avg search time..."
+    python metrics.py 1
+fi
