@@ -60,7 +60,6 @@ def performPseudoRelevanceFeedback(queryMatrix, rankedDocuments, invertedIndex, 
   docURLs = set()
   newQueryForCalculation = np.array(queryMatrix, copy=True)
 
-  ###Fetch documents and perform cosine similarity  
   for termInfo in sortedTermWeightings:
     newQueryForCalculation[termInfo[1]] += 1
     term = invertedIndex[termInfo[1]]

@@ -37,7 +37,7 @@ def tfidfWorker():
           except DoesNotExist:
             continue
           if 'tfidf' not in document:
-            document['tfidf'] = {'Ashwin': 0}
+            document['tfidf'] = {}
           document['tfidf'][term.replace('.', ',')] = tf_idf
           document.save()
 
