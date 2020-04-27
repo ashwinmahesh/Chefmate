@@ -7,6 +7,7 @@ from helpers import log
 from mongoConfig import *
 import numpy as np
 import rankerDBConfig
+from cosineSimilarity import cosineSimilarity
 
 ##Try it with Rocchio first. If that's not good, then use KL-Divergence
 # Assume top N documents are relevant (maybe 10?), rest are non-relevant.
@@ -17,7 +18,6 @@ import rankerDBConfig
 
 #Bring back in memory TFIDF otherwise fuck this cuz it'll take too long
 
-#Run this after running rankDocuments, can't test this without doing that.
 ALPHA = 8
 BETA = 16.0
 GAMMA = 4.0
@@ -53,16 +53,43 @@ def performPseudoRelevanceFeedback(queryMatrix, rankedDocuments, invertedIndex, 
   newQuery = np.add(newQuery, relevantWeights)
   newQuery = np.add(newQuery, nonRelevantWeights)
 
-  #TODO Calculate all the cosine similarities again and re-rank
-  #Add top ranked terms to the query, refetch, then re-rank
+  #Add top ranked terms to the query, calculate all the cosine similarities again, and re-rank
   numberList = [i for i in range(0, len(invertedIndex))]
   sortedTermWeightings = [(termWeight, numberList) for termWeight, numberList in sorted(zip(newQuery, numberList), reverse=True)][0:MAX_NEW_WORDS]
 
+  docURLs = set()
   newQueryForCalculation = np.array(queryMatrix, copy=True)
-  for term in sortedTermWeightings:
-    newQueryForCalculation[numberList] += 1
+
+  ###Fetch documents and perform cosine similarity  
+  for termInfo in sortedTermWeightings:
+    newQueryForCalculation[termInfo[1]] += 1
+    term = invertedIndex[termInfo[1]]
+    docInfoList=term['doc_info']
+    for docKey in docInfoList:
+      url = docInfoList[docKey]['url']
+      if url[0:8] == 'https://':
+        docURLs.add(url)
   
-  ###Fetch documents and perform cosine similarity
+  rankings = []
+  docUrlArr = []
+
+  for url in docURLs:
+    try:
+      document = Crawler.objects.get(url=url)
+    except DoesNotExist:
+      continue
+    if 'Page not found' in document['title']:
+      continue
+    
+    docIndex = crawlerReverseMap[url]
+    docWeights = inMemoryTFIDF[:,docIndex]
+
+    rankVal = (cosineSimilarity(newQueryForCalculation, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+
+    rankings.append(rankVal)
+    docUrlArr.append(url)
+
+  sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
 
   log('time', 'Finished performing Pseudo-Relevance Feedback in ' + str(time.time() - startTime) + ' seconds')
-  return newQuery
+  return sortedDocUrls
