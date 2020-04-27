@@ -39,7 +39,7 @@ def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerRevers
   docUrlArr = []
   rankings = []
 
-  log("Ranking", 'Calculating rankings for query')
+  log("Ranking", 'Calculating rankings for query: '+queryStr)
   for url in docURLs:
     try:
       document = Crawler.objects.get(url=url)
