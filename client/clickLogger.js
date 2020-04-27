@@ -18,8 +18,26 @@ function setCurrNumDocs(num) {
 }
 
 function setCurrQueryTime(time) {
+  var datetime = new Date();
+  let dd = datetime.getDate();
+
+  let mm = datetime.getMonth()+1; 
+  const yyyy = datetime.getFullYear();
+
+  let hr = datetime.getHours();
+  let min = datetime.getMinutes();
+  let sec = datetime.getSeconds();
+
+  if(dd<10) dd =`0${dd}`;
+  if(mm<10) mm =`0${mm}`;
+  if(hr<10) hr = `0${hr}`;
+  if(min<10) min = `0${min}`;
+  if(sec<10) sec = `0${sec}`;
+  
+  datetime = `${yyyy}/${mm}/${dd} ${hr}:${min}:${sec}`;
+
   currQueryTime = time.toString();
-  var datetime = (new Date()).toString();
+
   datetime = datetime.concat(" - ", currQueryTime, " - ", 5, "\n");
   console.log("debug", `Datetime: ${datetime}`);
   if (numOfSearchTimeBuffEntries < searchTimeBuffSize) {

@@ -1,6 +1,2 @@
-Sun Apr 26 2020 20:28:33 GMT-0400 (Eastern Daylight Time) - 78753 - 5
-Sun Apr 26 2020 20:28:58 GMT-0400 (Eastern Daylight Time) - 207 - 5
-Sun Apr 26 2020 21:09:40 GMT-0400 (Eastern Daylight Time) - 180 - 5
-Sun Apr 26 2020 21:09:44 GMT-0400 (Eastern Daylight Time) - 167 - 5
-Sun Apr 26 2020 21:11:35 GMT-0400 (Eastern Daylight Time) - 89942 - 5
-Sun Apr 26 2020 21:13:41 GMT-0400 (Eastern Daylight Time) - 93764 - 5
+2020/04/27 14:07:11 - 857 - 5
+2020/04/27 14:30:35 - 426 - 5

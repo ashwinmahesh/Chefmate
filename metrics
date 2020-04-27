@@ -9,7 +9,9 @@ fi
 if [ $1 == 'help' ]
 then
     echo "\nCurrent Metrics Inlclude...\n"
-    echo "      1. Average Search Time:    ./metrics avg-search-time"
+    echo "      1. Average Search Time:    ./metrics avg-search-time <yyyy/mm/dd:hr:min:sec> <yyyy/mm/dd:hr:min:sec>"
+    echo "              * Dates Optional, if included the avg search time returned is the avg from date 1 to date 2 *"
+    echo "              * ex: ./metrics avg-search-time 2020/01/01-00:00:00 2020/04/27:02:33:59 *"
     echo "\n"
     exit
 fi
@@ -17,5 +19,10 @@ fi
 if [ $1 == 'avg-search-time' ]
 then
     echo "gathering avg search time..."
-    python metrics.py 1
+    if [ $# -eq 3 ]
+    then
+        python metrics.py 1 $2 $3
+    else
+        python metrics.py 1
+    fi
 fi
