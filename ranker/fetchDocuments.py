@@ -1,4 +1,4 @@
-from queryExpansion import queryExpansion
+from queryExpansion import performQueryExpansion
 from mongoConfig import *
 import sys
 sys.path.append('..')
@@ -16,7 +16,7 @@ def fetchDocuments(stemmedQueryTerms, invertedIndex, queryExpansion=False):
 
   if queryExpansion:
     for queryTerm in stemmedQueryTerms:
-      expandedList += [term for chiSquare, term in queryExpansion(queryTerm, invertedIndex)]
+      expandedList += [term for chiSquare, term in performQueryExpansion(queryTerm, invertedIndex)]
   
   termDBObjects = []
   for term in expandedList:

@@ -82,7 +82,7 @@ def threadedQueryExpansion(query, threads=1):
 
 #This stores the inverted index in memory for actually really fast calculation.
 #Should probably move forward with this method if we want to use it. Threading is wayyyy too slow.
-def queryExpansion(query, terms):
+def performQueryExpansion(query, terms):
   startTime = time.time()
   log("QE", 'Performing Query Expansion on ' + query)
 
