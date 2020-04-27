@@ -9,6 +9,8 @@ def getServerPath(serverName):
     return 'http://localhost:8001'
   elif serverName == 'ranker':
     return 'http://localhost:8002'
+  elif serverName == 'recommender':
+    return 'http://localhost:8003'
   else:
     return "ERROR"
 
