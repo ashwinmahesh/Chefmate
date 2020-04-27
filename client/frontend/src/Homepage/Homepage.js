@@ -68,7 +68,20 @@ function Homepage(props: Props) {
 
   useEffect(() => {
     checkAuthentication();
+    fetchRecentQueries();
   }, []);
+
+  async function fetchRecentQueries() {
+    const { data } = await axios.get(`/recentQueries`);
+    if (data['success'] === 1) {
+      const { recent_queries } = data['content'];
+      const queryTermList = [];
+      for (var i = recent_queries.length - 1; i >= 0; i--) {
+        queryTermList.push(recent_queries[i]);
+      }
+      changeAutocompleteData(queryTermList);
+    }
+  }
 
   async function handleAutocompleteChange(_, newValue) {
     changeQuery(newValue);
@@ -83,7 +96,7 @@ function Homepage(props: Props) {
         }
         changeAutocompleteData(queryTermList);
       }
-    }
+    } 
   }
   async function handleQueryChange(event) {
     changeQuery(event.target.value);

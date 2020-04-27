@@ -25,6 +25,22 @@ module.exports = (app) => {
       }
     });
 
+    User.findById(request.user._id, (err, user) => {
+      if(err) {
+        log('error', 'Error finding user. Could not update recent queries');
+      } else {
+        while (user.recent_queries.length > 7) {
+          user.recent_queries.pull(user.recent_queries[0]);
+        }
+        user.recent_queries.addToSet(query);
+        
+        user.save(err => {
+          if (err) log("error", 'Error saving user recent queries update');
+        })
+      }
+
+    })
+
     log('Fetch', `Received response from Ranker: ${data.message}`);
     return response.json(
       sendPacket(

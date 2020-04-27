@@ -106,4 +106,15 @@ module.exports = app => {
     }
   })
 
+  app.get('/recentQueries', (req, res) => {
+    if(req.user === undefined) return res.json(sendPacket(0, 'Unable to fetch because User not logged in.'));
+    User.findById(req.user._id, (err, user) => {
+      if(err) {
+        log('error', 'Error finding user. Could not get recent queries');
+        return res.json(sendPacket(0, 'Unable to find user'))
+      }
+      return res.json(sendPacket(1, 'Successfully found user recent queries', { recent_queries: user['recent_queries'] }));
+    })
+  });
+
 }
