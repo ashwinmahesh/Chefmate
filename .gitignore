@@ -3,6 +3,7 @@ client/frontend/package-lock.json
 client/node_modules/
 crawler/venv/
 ranker/venv/
+recommender/venv/
 crawler/domains/
 crawler/test/
 __pycache__/
