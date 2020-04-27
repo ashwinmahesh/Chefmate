@@ -59,7 +59,7 @@ def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerRevers
     #   else:
     #     tfidf = document['tfidf'][term]
     #     docWeights[termNum] += tfidf
-    
+
     docIndex = crawlerReverseMap[url]
     docWeights = inMemoryTFIDF[:,docIndex]
 
@@ -71,7 +71,7 @@ def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerRevers
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
   
   if pseudoRelevanceFeedback:
-    performPseudoRelevanceFeedback(queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap)
+    performPseudoRelevanceFeedback(queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap)
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
   return sortedDocUrls
