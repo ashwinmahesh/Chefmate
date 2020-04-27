@@ -3,15 +3,12 @@ var currQueryTime = 0;
 var currNumDocs = 0;
 var numOfClicksBuffEntries = 0;
 var numOfSearchTimeBuffEntries = 0;
-const clicksBuffSize = 5;
+const clicksBuffSize = 1;
 const searchTimeBuffSize = 1;
 var clicksBuffer = new Array(clicksBuffSize);
 var searchTimeBuffer = new Array(searchTimeBuffSize);
 
-
-function setCurrQuery(query) {
-    currQuery = query;
-}
+const fs = require('fs')
 
 function setCurrNumDocs(num) {
   currNumDocs = num;
@@ -44,7 +41,6 @@ function setCurrQueryTime(time) {
     searchTimeBuffer.push(datetime);
     numOfSearchTimeBuffEntries++;
   } else {
-    var fs = require('fs')
     var fw = fs.createWriteStream('./logs/searchTime.txt', {
         flags: 'a' // 'a' means appending
     });
@@ -59,16 +55,13 @@ function setCurrQueryTime(time) {
   }
 }
 
-
-
-function recordClick(redirect) {
+function recordClick(redirect, currQuery) {
     var datetime = (new Date()).toString();
     datetime = datetime.concat("- \"", currQuery.toString(), "\" - ", redirect.toString(), "\n");
     if (numOfClicksBuffEntries < clicksBuffSize) {
       clicksBuffer.push(datetime);
-      numOfEntries++;
+      numOfClicksBuffEntries++;
     } else {
-      var fs = require('fs')
       var fw = fs.createWriteStream('./logs/clicks.txt', {
           flags: 'a' // 'a' means appending
       });
@@ -83,4 +76,4 @@ function recordClick(redirect) {
     }
 }
 
-module.exports = {setCurrQuery, setCurrNumDocs, setCurrQueryTime, recordClick};
+module.exports = {setCurrNumDocs, setCurrQueryTime, recordClick};

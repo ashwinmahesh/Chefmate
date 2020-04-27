@@ -27,7 +27,7 @@ module.exports = app => {
       if (err) log("error", 'Error saving user history update');
     })
 
-    clickLogger.recordClick(redirectUrl);
+    clickLogger.recordClick(req.query.redirect, req.query.userQuery);
     if (user!==null) log("redirect", `Sending user ${user.userid} to ${redirectUrl}`)
     return res.redirect(redirectUrl)
   })

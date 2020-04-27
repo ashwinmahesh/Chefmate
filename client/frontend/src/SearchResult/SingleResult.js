@@ -53,7 +53,7 @@ function SingleResult(props: Props) {
   const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
   const styles = useStyles(colors)();
   const url = changeUrl();
-  const redirectUrl = '/updateHistory?redirect=' + props.url;
+  const redirectUrl = '/updateHistory?redirect=' + props.url + "&userQuery=" + props.query;
   const maxLength = 170;
   const searchTerms = props.query
     .toLowerCase()
