@@ -14,10 +14,11 @@ from mongoConfig import *
 from rankDocuments import rank
 from stemQuery import stemQuery
 import rankerDBConfig
-from loadInvertedIndexToMemory import loadInvertedIndexToMemory
 
 import ssl
 import nltk
+
+from initialize import initialize
 
 try:
     _create_unverified_https_context = ssl._create_unverified_context
@@ -34,7 +35,8 @@ app = Flask(__name__)
 port = 80 if app.config['ENV']=='production' else 8002
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 
-termReverseMap, invertedIndex = loadInvertedIndexToMemory()
+inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority = initialize()
+
 stopwords = set(nltk.corpus.stopwords.words('english'))
 
 @app.route('/', methods=["GET"])
@@ -64,6 +66,7 @@ def fetchDocuments():
 
   log('ranker', 'Finished fetching documents in '+str(time.time() - startTime) + ' seconds')
   return sendPacket(1, 'Successfully retrieved documents', {'documents':documents})
+
 
 if __name__ == "__main__":
   log('info', "Ranker is listening on port "+str(port) +", " + str(app.config['ENV']) + " environment.")

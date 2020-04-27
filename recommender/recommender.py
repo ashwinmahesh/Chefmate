@@ -6,6 +6,7 @@ sys.path.append('../ranker')
 import requests
 import time
 import rankerDBConfig
+from loadInvertedIndexToMemory import loadInvertedIndexToMemory
 
 from helpers import *
 
@@ -16,10 +17,24 @@ app = Flask(__name__)
 port = 8003
 
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
+inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority = loadInvertedIndexToMemory()
 
 @app.route('/', methods=['GET'])
 def index():
   return 'Recommender server loaded successfully'
+
+@app.route('/initializeRanker', methods=['GET'])
+def initializeRanker():
+  log('inverted index', 'Sending in-memory objects to ranker')
+  return sendPacket(1, 'Successfully sent in-memory objects', 
+    { 'inMemoryTFIDF':inMemoryTFIDF,
+    'invertedIndex': invertedIndex,
+    'crawlerReverseMap': crawlerReverseMap,
+    'termReverseMap': termReverseMap,
+    'pageRanks': pageRanks,
+    'authority': authority
+    }
+  )
 
 if __name__ == '__main__':
   log('info', "Recommender is listening on port "+str(port) +", " + str(app.config['ENV']) + " environment.")
