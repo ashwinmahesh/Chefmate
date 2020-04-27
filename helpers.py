@@ -26,15 +26,16 @@ def makeRequest(server, route, method="GET", data={}):
     return res
   if method == 'GET':
     try:
-      res=requests.get(serverPath+'/'+route, timeout=3)
+      res=requests.get(serverPath+'/'+route, timeout=120)
       res.raise_for_status()
       res = res.content
-    except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.RequestException):
+    except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.RequestException) as err:
+      print("Error:", err)
       return res
 
   elif method == 'POST':
     try:
-      res=requests.post(serverPath+'/'+route, data, timeout=3)
+      res=requests.post(serverPath+'/'+route, data, timeout=120)
       res.raise_for_status()
       res=res.content
     except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.RequestException):

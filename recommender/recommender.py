@@ -5,6 +5,7 @@ sys.path.append('../crawler')
 sys.path.append('../ranker')
 import requests
 import time
+import numpy as np
 import rankerDBConfig
 from loadInvertedIndexToMemory import loadInvertedIndexToMemory
 
@@ -18,6 +19,8 @@ port = 8003
 
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority = loadInvertedIndexToMemory()
+inMemoryTFIDF_File = 'memoryObjects/inMemoryTFIDF.txt'
+np.savetxt(inMemoryTFIDF_File, inMemoryTFIDF)
 
 @app.route('/', methods=['GET'])
 def index():
@@ -27,12 +30,12 @@ def index():
 def initializeRanker():
   log('inverted index', 'Sending in-memory objects to ranker')
   return sendPacket(1, 'Successfully sent in-memory objects', 
-    { 'inMemoryTFIDF':inMemoryTFIDF,
-    'invertedIndex': invertedIndex,
-    'crawlerReverseMap': crawlerReverseMap,
-    'termReverseMap': termReverseMap,
-    'pageRanks': pageRanks,
-    'authority': authority
+    { 'inMemoryTFIDF': 'memoryObjects/inMemoryTFIDF.txt',
+      'invertedIndex': invertedIndex,
+      'crawlerReverseMap': crawlerReverseMap,
+      'termReverseMap': termReverseMap,
+      'pageRanks': pageRanks,
+      'authority': authority
     }
   )
 
