@@ -8,10 +8,11 @@ import time
 from cosineSimilarity import cosineSimilarity
 from fetchDocuments import fetchDocuments
 from nltk.stem import PorterStemmer 
+from pseudoRelevanceFeedback import performPseudoRelevanceFeedback
 
 porterStemmer = PorterStemmer()
 
-def rank(queryTerms, termReverseMap, invertedIndex):
+def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
   startTime = time.time()
 
   docURLs = set()
@@ -21,7 +22,7 @@ def rank(queryTerms, termReverseMap, invertedIndex):
     queryStr+=term + ' '
   
   log("QE", 'Expanding Query Terms')
-  expandedTerms = fetchDocuments(queryTerms, invertedIndex)
+  expandedTerms = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
   for termEntry in expandedTerms:
     docInfoList=termEntry['doc_info']
     for docKey in docInfoList:
@@ -38,7 +39,7 @@ def rank(queryTerms, termReverseMap, invertedIndex):
   docUrlArr = []
   rankings = []
 
-  log("Ranking", 'Calculating rankings for query')
+  log("Ranking", 'Calculating rankings for query: '+queryStr)
   for url in docURLs:
     try:
       document = Crawler.objects.get(url=url)
@@ -47,17 +48,8 @@ def rank(queryTerms, termReverseMap, invertedIndex):
     if 'Page not found' in document['title']:
       continue
 
-    docWeights = np.zeros(len(termReverseMap))
-    for rawTerm in document['body'].lower().split():
-      term = porterStemmer.stem(rawTerm)
-      termNum = termReverseMap.get(term)
-      if(termNum == None):
-        continue
-      if 'tfidf' not in document or term not in document['tfidf']:
-        docWeights[termNum] += 0.0001
-      else:
-        tfidf = document['tfidf'][term]
-        docWeights[termNum] += tfidf
+    docIndex = crawlerReverseMap[url]
+    docWeights = inMemoryTFIDF[:,docIndex]
 
     rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
@@ -65,6 +57,9 @@ def rank(queryTerms, termReverseMap, invertedIndex):
     docUrlArr.append(url)
 
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
+  
+  if pseudoRelevanceFeedback:
+    sortedDocUrls = performPseudoRelevanceFeedback(queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap)
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
   return sortedDocUrls
