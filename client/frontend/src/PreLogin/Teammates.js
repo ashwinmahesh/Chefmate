@@ -14,7 +14,8 @@ import profile6 from '../images/profile6.jpg';
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
-        backgroundColor: 'darkgrey',
+        backgroundColor: '#38698e',
+        opacity: '.95',
         display: 'flex',
         flexWrap: 'wrap'
     },
@@ -26,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '8px',
         paddingTop: '10px',
         backgroundColor: 'black',
-        opacity: '.8',
         color: 'white',
-        fontFamily: 'Ubuntu'
+        fontFamily: 'Ubuntu',
+        opacity: '.9'
 
     },
     font: {
@@ -53,12 +54,15 @@ const useStyles = makeStyles((theme) => ({
     img: {
         width: '200px',
         height: '200px',
+        justifyContent: 'center',
+        border: '2px solid white'
     },
     txtunder: {
         teextAlign: 'center',
         gridRow: '1',
         fontFamily: 'Ubuntu',
-        fontSize: '18px'
+        fontSize: '18px',
+        color: 'white'
     }
 }));
 

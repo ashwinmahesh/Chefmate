@@ -12,19 +12,31 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 const useStyles = makeStyles((theme) => ({
   img: {
-    width: '650px',
-    zIndex: '3',
-    marginTop: '10px',
-  
+    width: '100%',
+    height: '50%',
+    marginBottom: '2%',
+    display: 'block',
+
   },
   btn:{
-    backgroudColor: '#38698e',
-    height: '35px',
+    backgroundColor: '#38698e',
+    height: '40px',
+    // width: '15%',
     width: '150px',
     fontSize: '20px',
     color: 'white',
     borderRadius: '4px',
-    top: '20px'
+    justifyContent: 'center',
+    display: 'block',
+    textAlign: 'center',
+    textDecoration: 'none',
+    margin: '0 auto',
+
+
+  },
+  blockView: {
+    display: 'block',
+    textDecoration: 'none'
   }
 }));
 
@@ -47,16 +59,15 @@ export default function BeautifulHomepage(props) {
   return (
     <>
       {loginRedirect && <Redirect to="/" />}
-      {/* <Transition in={prop} timeout={500}> */}
       <HomepageBackground />
       <LoginBox>
-        <img src={logo} className={styles.img} alt="Chefmate logo" />
-        <br />
-        <a href="/login">
-          <button id="btn">Continue</button> <br></br>
+        <img src={logo} className={styles.img} alt="Chefmate logo" /><br></br>
+        <a href="/login" className={styles.blockView} >
+          <button className={styles.btn}>Continue</button> <br></br>
         </a>
-        {/* <button id="btn">About us!</button> */}
+        
       </LoginBox>
+      
       <div>
         <AboutUs />
       </div>

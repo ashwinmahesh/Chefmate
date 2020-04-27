@@ -16,6 +16,7 @@ import { updateUser } from './redux/actions/user';
 import { updateTheme } from './redux/actions/theme';
 import BeautifulSignup from './BeautifulLogin/BeautifulSignup';
 import BeautifulHomepage from './PreLogin/BeautifulHomepage';
+import Videos from './Videos/Videos';
 
 
 
@@ -42,6 +43,7 @@ function App(props) {
             <Route exact path="/signup" component={BeautifulSignup} />
             <Route path="/result/:query" component={SearchResult} />
             <Route exact path="/history" component={History} />
+            <Route exact path="/videos" component={Videos} />
             <Route exact path="/likes" component={Likes} />
             <Route exact path="/dislikes" component={Dislikes} />
             <Route exact path="*" component={PageNotFound} />

@@ -14,7 +14,7 @@ import img4 from '../images/img4.jpg';
 const useStyles = makeStyles((theme) => ({
     wrapper: {
         backgroundColor: '#38698e',
-        opacity: '.8',
+        opacity: '.9',
         display: 'flex',
         flexWrap: 'wrap',
         paddingBottom: '18px'
@@ -59,7 +59,10 @@ const useStyles = makeStyles((theme) => ({
         width: '300px',
         height: '300px',
         borderColor: 'black',
-        display: 'flex'
+        display: 'flex',
+        justifyContent: 'center',
+        borderRadius: '2px'
+
     },
     txtunder: {
         teextAlign: 'center',

@@ -73,6 +73,13 @@ const useStyles = (colors) =>
     hidden: {
       visibility: 'hidden',
     },
+    didyoumean: {
+      color: 'grey',
+      fontStyle: 'italic'
+    },
+    resultChoice: {
+      color: 'lightblue',
+    },
   }));
 
 type Props = {
@@ -183,6 +190,9 @@ function Results(props: Props) {
     <div className={styles.subcontainer}>
       <p className={styles.resultCount}>
         Found {props.numSearched} results ({props.searchTime} seconds)
+      </p>
+      <p className={styles.didyoumean}>
+        Did you mean <p className={styles.resultChoice}>_________</p>
       </p>
       <div className={styles.resultContainer}>
         {renderSites()}

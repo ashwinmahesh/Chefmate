@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, FormControlLabel, Switch, Drawer } from '@material-ui/core';
-import { FaBars, FaThumbsUp, FaThumbsDown, FaHistory } from 'react-icons/fa';
+import { FaBars, FaThumbsUp, FaThumbsDown, FaHistory, FaVideo } from 'react-icons/fa';
 import { green, red } from '@material-ui/core/colors';
 import logo from '../images/logo.png';
 import Divider from '@material-ui/core/Divider';
@@ -115,7 +115,10 @@ function MenuIcon(props: Props) {
         <FaThumbsDown className={[styles.iconStyle, styles.thumbsDown].join(' ')} />
       ) : (
         <FaHistory className={[styles.iconStyle].join(' ')} />
-      );
+      ,
+        <FaVideo className={[styles.iconStyle].join(' ')} />
+      )
+      ;
     return (
       <div className={styles.divStyle}>
         <a href={'/' + text.toLowerCase()} className={styles.menuTextStyle}>
@@ -163,6 +166,7 @@ function MenuIcon(props: Props) {
         {renderMenuItem('Likes')}
         {renderMenuItem('History')}
         {renderMenuItem('Dislikes')}
+        {renderMenuItem('Videos')}
 
         <div className={[styles.divStyle, styles.switchDiv].join(' ')}>
           <FormControlLabel
