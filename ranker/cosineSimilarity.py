@@ -16,4 +16,6 @@ def cosineSimilarity(termWeights1, termWeights2):
   magnitude2 = np.dot(termWeights2, termWeights2.T)
   bottom = sqrt(magnitude1*magnitude2)
 
+  if(bottom == 0):
+    return 0
   return top/bottom

@@ -12,7 +12,7 @@ from pseudoRelevanceFeedback import performPseudoRelevanceFeedback
 
 porterStemmer = PorterStemmer()
 
-def rank(queryTerms, termReverseMap, invertedIndex, queryExpansion=False, pseudoRelevanceFeedback=False):
+def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
   startTime = time.time()
 
   docURLs = set()
@@ -48,17 +48,20 @@ def rank(queryTerms, termReverseMap, invertedIndex, queryExpansion=False, pseudo
     if 'Page not found' in document['title']:
       continue
 
-    docWeights = np.zeros(len(termReverseMap))
-    for rawTerm in document['body'].lower().split():
-      term = porterStemmer.stem(rawTerm)
-      termNum = termReverseMap.get(term)
-      if(termNum == None):
-        continue
-      if 'tfidf' not in document or term not in document['tfidf']:
-        docWeights[termNum] += 0.0001
-      else:
-        tfidf = document['tfidf'][term]
-        docWeights[termNum] += tfidf
+    # docWeights = np.zeros(len(termReverseMap))
+    # for rawTerm in document['body'].lower().split():
+    #   term = porterStemmer.stem(rawTerm)
+    #   termNum = termReverseMap.get(term)
+    #   if(termNum == None):
+    #     continue
+    #   if 'tfidf' not in document or term not in document['tfidf']:
+    #     docWeights[termNum] += 0.0001
+    #   else:
+    #     tfidf = document['tfidf'][term]
+    #     docWeights[termNum] += tfidf
+    
+    docIndex = crawlerReverseMap[url]
+    docWeights = inMemoryTFIDF[:,docIndex]
 
     rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 

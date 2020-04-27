@@ -34,10 +34,10 @@ app = Flask(__name__)
 port = 80 if app.config['ENV']=='production' else 8002
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 
-termReverseMap, invertedIndex = loadInvertedIndexToMemory()
+inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority = loadInvertedIndexToMemory()
 stopwords = set(nltk.corpus.stopwords.words('english'))
 
-QUERY_EXPANSION = True
+QUERY_EXPANSION = False
 PSEUDO_RELEVANCE_FEEDBACK = True
 
 @app.route('/', methods=["GET"])
@@ -47,8 +47,9 @@ def index():
 @app.route('/query/<query>', methods=['GET'])
 def rankQuery(query):
   log('Ranker', 'Received query: '+query)
+
   queryTerms = stemQuery(query, stopwords)
-  sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
+  sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')
   return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls[0:200]})
 

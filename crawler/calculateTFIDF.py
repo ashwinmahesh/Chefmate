@@ -37,9 +37,9 @@ def tfidfWorker():
           except DoesNotExist:
             continue
           if 'tfidf' not in document:
-            document['tfidf'] = {}
-            document['tfidf'][term] = tf_idf
-            document.save()
+            document['tfidf'] = {'Ashwin': 0}
+          document['tfidf'][term.replace('.', ',')] = tf_idf
+          document.save()
 
     log('time', 'Finished calculating tfidf for letter ' + currentLetter.upper() + ' in ' + str(time.time() - startTime) + ' seconds')
 
