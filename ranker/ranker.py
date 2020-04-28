@@ -44,8 +44,17 @@ def index():
 @app.route('/query/<query>', methods=['GET'])
 def rankQuery(query):
   log('Ranker', 'Received query: '+query)
+  index = query.find(":")
+  newStr = str(index)
+  log('Ranker', 'Number: '+ newStr)
+  if index != -1: 
+    excludedTerms = query[index+1:len(query)]
+    excludedTerms.split(" ")
+  else: 
+    excludedTerms = []
+
   queryTerms = stemQuery(query, stopwords)
-  sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex)
+  sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex, excludedTerms)
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')
   return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls[0:200]})
 

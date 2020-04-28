@@ -11,8 +11,10 @@ from nltk.stem import PorterStemmer
 
 porterStemmer = PorterStemmer()
 
-def rank(queryTerms, termReverseMap, invertedIndex):
+def rank(queryTerms, termReverseMap, invertedIndex, excludedTerms):
   startTime = time.time()
+
+  flag = False
 
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
@@ -50,6 +52,8 @@ def rank(queryTerms, termReverseMap, invertedIndex):
     docWeights = np.zeros(len(termReverseMap))
     for rawTerm in document['body'].lower().split():
       term = porterStemmer.stem(rawTerm)
+      if term in excludedTerms: 
+         flag = True
       termNum = termReverseMap.get(term)
       if(termNum == None):
         continue
@@ -61,8 +65,11 @@ def rank(queryTerms, termReverseMap, invertedIndex):
 
     rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
-    rankings.append(rankVal)
-    docUrlArr.append(url)
+    if flag != True:
+      rankings.append(rankVal)
+      docUrlArr.append(url)
+    else: 
+      flag = False
 
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
 
