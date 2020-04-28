@@ -61,9 +61,6 @@ function Videos(props: Props) {
         }
     }
 
-   
-   
-
     useEffect(() => {
         checkAuthentication();
     }, []);

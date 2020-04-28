@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#38698e',
         opacity: '.95',
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+
     },
     header: {
         width: '100%',
@@ -47,15 +49,14 @@ const useStyles = makeStyles((theme) => ({
         marginRight: '20px',
     },
     image: {
-        float: 'left',
-        marginLeft: '200px',
         marginTop: '20px',
+        width: '450px'
+
     },
     img: {
         width: '200px',
         height: '200px',
-        justifyContent: 'center',
-        border: '2px solid white'
+        border: '2px solid white',
     },
     txtunder: {
         teextAlign: 'center',

@@ -74,8 +74,11 @@ const useStyles = (colors) =>
       visibility: 'hidden',
     },
     didyoumean: {
-      color: 'grey',
-      fontStyle: 'italic'
+      color: 'darkblue',
+      fontSize: '20px',
+      fontStyle: 'italic',
+      fontFamilt: 'Ubuntu',
+      fontWeight: 'bold'
     },
     resultChoice: {
       color: 'lightblue',
@@ -86,6 +89,7 @@ type Props = {
   documents: [{}],
   numSearched: Number,
   searchTime: Number,
+  RelevantWord: String,
   likesDislikes: [{}],
   theme: String,
   query: String,
@@ -192,7 +196,7 @@ function Results(props: Props) {
         Found {props.numSearched} results ({props.searchTime} seconds)
       </p>
       <p className={styles.didyoumean}>
-        Did you mean <p className={styles.resultChoice}>_________</p>
+        Did you mean ({props.RelevantWord})
       </p>
       <div className={styles.resultContainer}>
         {renderSites()}

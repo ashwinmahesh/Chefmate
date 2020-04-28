@@ -54,7 +54,7 @@ function SearchResult(props) {
     const startTime = Date.now();
     const { data } = await axios.get(`/search/${oldQuery}`);
     const docUrls = data['content']['sortedDocUrls'];
-    updateNumSearched(docUrls.length);
+    // updateNumSearched(docUrls.length);
     fetchDocuments(docUrls).then(() => {
       changeSearchTime((Date.now() - startTime) / 1000);
       changeLoading(false);

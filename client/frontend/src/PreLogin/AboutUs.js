@@ -17,7 +17,8 @@ const useStyles = makeStyles((theme) => ({
         opacity: '.9',
         display: 'flex',
         flexWrap: 'wrap',
-        paddingBottom: '18px'
+        paddingBottom: '18px',
+        justifyContent: 'center'
     },
     header: {
         width: '100%',
@@ -51,8 +52,9 @@ const useStyles = makeStyles((theme) => ({
     },
     image: {
         float: 'left',
-        marginLeft: '50px',
         marginTop: '50px',
+        padding: '15px'
+    
         
     },
     img: {
