@@ -1,6 +1,5 @@
 var currQuery = "example";
 var currQueryTime = 0;
-var currNumDocs = 0;
 var numOfClicksBuffEntries = 0;
 var numOfSearchTimeBuffEntries = 0;
 const clicksBuffSize = 1;
@@ -9,10 +8,6 @@ var clicksBuffer = new Array(clicksBuffSize);
 var searchTimeBuffer = new Array(searchTimeBuffSize);
 
 const fs = require('fs')
-
-function setCurrNumDocs(num) {
-  currNumDocs = num;
-}
 
 function setCurrQueryTime(time) {
   var datetime = new Date();
@@ -35,8 +30,7 @@ function setCurrQueryTime(time) {
 
   currQueryTime = time.toString();
 
-  datetime = datetime.concat(" - ", currQueryTime, " - ", 5, "\n");
-  console.log("debug", `Datetime: ${datetime}`);
+  datetime = datetime.concat(" - ", currQueryTime, "\n");
   if (numOfSearchTimeBuffEntries < searchTimeBuffSize) {
     searchTimeBuffer.push(datetime);
     numOfSearchTimeBuffEntries++;
@@ -76,4 +70,4 @@ function recordClick(redirect, currQuery) {
     }
 }
 
-module.exports = {setCurrNumDocs, setCurrQueryTime, recordClick};
+module.exports = {setCurrQueryTime, recordClick};

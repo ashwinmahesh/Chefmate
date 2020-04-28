@@ -61,7 +61,6 @@ module.exports = (app) => {
       User.findById(req.user._id, (err, user) => {
         if (err) log('error', 'Unable to find user');
         else {
-          clickLogger.setCurrNumDocs(documents.numSearched);
           clickLogger.setCurrQueryTime(Date.now() - queryStartTime);
           return res.json(
             sendPacket(1, 'Successfully fetched documents', {
