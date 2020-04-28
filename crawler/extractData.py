@@ -24,11 +24,15 @@ def extractData(baseURL):
   for node in soup.findAll(['p', 'a', 'div', 'li']):
     body+=node.text+'\n'
 
+  #TODO get links for each link. Return. dataParser can use them. Can add to table in memory, I guess.
+  # Hope there are no concurrency issues with that. Need a thread safe ds. Then when done, dataParser can
+  # write to file.
+
   output = dict(link=baseURL, title=title, body=body, description=description)
   return output
 
 if __name__ == "__main__":
-    data = extractData("https://www.epicurious.com/type/salad")
-    print(data['description'])
+  data = extractData("https://www.epicurious.com/type/salad")
+  print(data['description'])
 
 # TODO: For each link, get in links and out links, add to graph, and ultimately write to appropriate files. Use oldcrawler for reference.
