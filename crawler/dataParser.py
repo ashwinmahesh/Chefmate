@@ -73,7 +73,7 @@ class DataParser:
       return self
     
     self.links = FileIO.fileToSet(self.crawledFile)
-    self.linksList = list(self.links)[:20]
+    self.linksList = list(self.links)
 
     if not self.links:
       log('error','Crawled file is empty')
