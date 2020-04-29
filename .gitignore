@@ -1,6 +1,7 @@
 client/package-lock.json
 client/frontend/package-lock.json
 client/node_modules/
+client/logs/
 crawler/venv/
 ranker/venv/
 crawler/domains/

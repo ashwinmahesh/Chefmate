@@ -72,20 +72,21 @@ function SearchResult(props) {
     }
     const docUrls = data['content']['sortedDocUrls'];
     updateNumSearched(docUrls.length);
-    fetchDocuments(docUrls).then(() => {
+    fetchDocuments(docUrls, startTime).then(() => {
       changeSearchTime((Date.now() - startTime) / 1000);
       changeLoading(false);
       stillLoading = false;
     });
   }
 
-  async function fetchDocuments(docUrls) {
-    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
+  async function fetchDocuments(docUrls, startTime) {
+    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls, startTime: startTime });
     if (data['success'] !== 1) {
       changeTimedOut(true);
       changeLoading(false);
       return;
     }
+
     changeDocuments(data['content']['documents']);
     changeUserLikesDislikes([data['content']['likes'], data['content']['dislikes']]);
   }

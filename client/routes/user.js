@@ -1,5 +1,6 @@
 const log = require('../logger');
 const sendPacket = require('../sendPacket');
+const clickLogger = require('../clickLogger');
 
 const { User} = require('../mongoConfig');
 
@@ -25,7 +26,8 @@ module.exports = app => {
     await user.save(err => {
       if (err) log("error", 'Error saving user history update');
     })
-  
+
+    clickLogger.recordClick(req.query.redirect, req.query.userQuery);
     if (user!==null) log("redirect", `Sending user ${user.userid} to ${redirectUrl}`)
     return res.redirect(redirectUrl)
   })
