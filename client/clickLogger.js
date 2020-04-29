@@ -1,5 +1,3 @@
-var currQuery = "example";
-var currQueryTime = 0;
 var numOfClicksBuffEntries = 0;
 var numOfSearchTimeBuffEntries = 0;
 const clicksBuffSize = 1;
@@ -28,7 +26,7 @@ function setCurrQueryTime(time) {
   
   datetime = `${yyyy}/${mm}/${dd} ${hr}:${min}:${sec}`;
 
-  currQueryTime = time.toString();
+  const currQueryTime = time.toString();
 
   datetime = datetime.concat(" - ", currQueryTime, "\n");
   if (numOfSearchTimeBuffEntries < searchTimeBuffSize) {
