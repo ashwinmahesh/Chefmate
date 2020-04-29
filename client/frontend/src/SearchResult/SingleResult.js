@@ -62,10 +62,10 @@ function SingleResult(props: Props) {
 
   function changeUrl() {
     var output = '';
-    let i = props.url.substr(0, 8) == 'https://' ? 8 : 0;
+    let i = props.url.substr(0, 8) === 'https://' ? 8 : 0;
     if (props.url.substr(i, 4) === 'www.') i += 4;
     for (i; i < props.url.length; i++) {
-      if (props.url[i] == '/') {
+      if (props.url[i] === '/') {
         if (i !== props.url.length - 1) output += ' > ';
       } else output += props.url[i];
     }
@@ -115,7 +115,7 @@ function SingleResult(props: Props) {
 
     var bestWindow = body.substring(maxTerm_i, maxTerm_j);
 
-    if (maxTermCount == 0 || bestWindow.split(/[\r\n]/).length > maxLength / 15) {
+    if (maxTermCount === 0 || bestWindow.split(/[\r\n]/).length > maxLength / 15) {
       return props.desc;
     } else {
       return bestWindow;
@@ -135,7 +135,7 @@ function SingleResult(props: Props) {
     return (
       str[i].charCodeAt(0) >= 65 &&
       str[i].charCodeAt(0) <= 90 &&
-      (i == 0 || whiteSpaceChars.includes(str[i - 1]))
+      (i === 0 || whiteSpaceChars.includes(str[i - 1]))
     );
   }
 

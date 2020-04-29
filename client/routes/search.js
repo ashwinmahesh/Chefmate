@@ -7,7 +7,7 @@ const { User, Query } = require('../mongoConfig');
 module.exports = (app) => {
   app.get('/search/:query', async (request, response) => {
     const query = request.params['query'];
-    log('query', `Received query from client: ${query}`);
+    log('query', `Received query from client: ${query}. Sending data to ranker`);
     const data = await makeRequest('ranker', `query/${query}`);
 
     Query.findById(query, (err, oldQueryObj) => {
@@ -25,7 +25,26 @@ module.exports = (app) => {
       }
     });
 
-    log('ranker', data.message);
+
+    if(request.user !== undefined) {
+      User.findById(request.user._id, (err, user) => {
+        if(err) {
+          log('error', 'Error finding user. Could not update recent queries');
+        } else {
+          while (user.recent_queries.length > 7) {
+            user.recent_queries.pull(user.recent_queries[0]);
+          }
+          user.recent_queries.addToSet(query);
+          
+          user.save(err => {
+            if (err) log("error", 'Error saving user recent queries update');
+          })
+        }
+    })
+    }
+  
+
+    log('Fetch', `Received response from Ranker: ${data.message}`);
     return response.json(
       sendPacket(
         data.success,
@@ -37,7 +56,7 @@ module.exports = (app) => {
 
   app.post('/fetchDocuments', async (req, res) => {
     const startTime = Date.now();
-    log('fetch', 'Fetching documents from ranker');
+    log('fetch', 'Fetching documents from ranker using sorted list of document urls');
 
     const docUrls = req.body['docUrls'].slice(0, 60);
     const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {

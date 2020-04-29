@@ -107,6 +107,25 @@ function MenuIcon(props: Props) {
     props.onUpdateTheme(darkModeValue);
   }
 
+  function renderMenuItem(text: String) {
+    const icon =
+      text === 'Likes' ? (
+        <FaThumbsUp className={[styles.iconStyle, styles.thumbsUp].join(' ')} />
+      ) : text === 'Dislikes' ? (
+        <FaThumbsDown className={[styles.iconStyle, styles.thumbsDown].join(' ')} />
+      ) : (
+        <FaHistory className={[styles.iconStyle].join(' ')} />
+      );
+    return (
+      <div className={styles.divStyle}>
+        <a href={'/' + text.toLowerCase()} className={styles.menuTextStyle}>
+          <IconButton>{icon}</IconButton>
+          {text}
+        </a>
+      </div>
+    );
+  }
+
   return (
     <>
       <IconButton
@@ -141,36 +160,9 @@ function MenuIcon(props: Props) {
           <Divider classes={{ root: styles.divider }} light={true} />
         </div>
 
-        <div className={styles.divStyle}>
-          <a href="/likes" className={styles.menuTextStyle}>
-            <IconButton>
-              <FaThumbsUp
-                className={[styles.iconStyle, styles.thumbsUp].join(' ')}
-              />
-            </IconButton>
-            Likes
-          </a>
-        </div>
-
-        <div className={styles.divStyle}>
-          <a href="/history" className={styles.menuTextStyle}>
-            <IconButton>
-              <FaHistory className={[styles.iconStyle].join(' ')} />
-            </IconButton>
-            History
-          </a>
-        </div>
-
-        <div className={styles.divStyle}>
-          <a href="/dislikes" className={styles.menuTextStyle}>
-            <IconButton>
-              <FaThumbsDown
-                className={[styles.iconStyle, styles.thumbsDown].join(' ')}
-              />
-            </IconButton>
-            Dislikes
-          </a>
-        </div>
+        {renderMenuItem('Likes')}
+        {renderMenuItem('History')}
+        {renderMenuItem('Dislikes')}
 
         <div className={[styles.divStyle, styles.switchDiv].join(' ')}>
           <FormControlLabel

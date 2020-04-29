@@ -36,7 +36,7 @@ class FileIO:
 
   @staticmethod
   def writeToFile(filePath, data):
-    file = open(filePath, 'a')
+    file = open(filePath, 'a', encoding="utf-8")
     if data == '':
       file.write(data)
     else:

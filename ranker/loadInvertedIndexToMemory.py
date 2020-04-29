@@ -7,12 +7,12 @@ from mongoengine import *
 from mongoConfig import *
 from helpers import log
 
-
 def loadInvertedIndexToMemory():
   log('info', 'Loading Inverted Index into main memory.')
   startTime=time.time()
 
-  invertedIndex = [(term['doc_info'], term['term']) for term in InvertedIndex.objects()]
+  invertedIndex = InvertedIndex.objects()
+  allTerms = [(term['doc_info'], term['term']) for term in invertedIndex]
   
   documents = []
   pageRanks = []
@@ -30,9 +30,9 @@ def loadInvertedIndexToMemory():
 
   termReverseMap = {}
   for i in range(0, len(invertedIndex)):
-    termReverseMap[invertedIndex[i][1]] = i
+    termReverseMap[allTerms[i][1]] = i
 
-  for termEntry in invertedIndex:
+  for termEntry in allTerms:
     termNum = termReverseMap[termEntry[1]]
     for docKey in termEntry[0]:
       doc = termEntry[0][docKey]
@@ -41,7 +41,7 @@ def loadInvertedIndexToMemory():
       try:
         inMemoryTFIDF[termNum][crawlerAxisPos] = doc['tfidf']
       except:
-        inMemoryTFIDF[termNum][crawlerAxisPos] = 0
+        inMemoryTFIDF[termNum][crawlerAxisPos] = 0.0001
 
   log('time', 'Finished loading Inverted Index into main memory in ' + str(time.time()-startTime) + ' seconds.')
-  return inMemoryTFIDF, crawlerReverseMap, termReverseMap, pageRanks, authority
+  return inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority

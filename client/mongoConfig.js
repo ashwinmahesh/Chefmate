@@ -30,7 +30,12 @@ const CrawlerSchema = new mongoose.Schema(
       required: [true, "Authority is required"],
       default: 1
     },
-    pageRank: { type: Number, required: [true, "PageRank is required"], default: 1 }
+    pageRank: { type: Number, required: [true, "PageRank is required"], default: 1 },
+    tfidf: {
+      type: {}, 
+      required: [true, 'Initial TFIDF is required. Default is {}'], 
+      default: {}
+    }
   },
   { timestamps: true }
 );
@@ -60,6 +65,11 @@ const UserSchema = new mongoose.Schema(
     history: {
       type: [String],
       required: [true, "History required. Resort to default {}"],
+      default: []
+    },
+    recent_queries: {
+      type: [String],
+      required: [true, "Recent Queries required. Resort to default {}"],
       default: []
     }
   },

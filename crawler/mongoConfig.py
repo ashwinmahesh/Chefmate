@@ -11,6 +11,7 @@ class Crawler(Document):
   pageRank = FloatField(required=True, default=1.0)
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
+  tfidf = DictField(required=True, default={})
 
 class InvertedIndex(Document):
   term = StringField(required=True, primary_key=True)
@@ -24,7 +25,8 @@ class User(Document):
   password = StringField(required=False)
   likes = DictField(required=True, default={})
   dislikes = DictField(required=True, default={})
-  history = ListField(StringField(required=True, default={}))
+  history = ListField(StringField(required=True, default=[]))
+  recent_queries = ListField(StringField(required=True, default=[]))
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
@@ -32,10 +34,10 @@ class Query(Document):
   query = StringField(required=True, primary_key=True)
   count = IntField(required=True, default=1)
 
-databaseName = 'ChefmateDB'
-# databaseName = 'ChefmateDB_Alt'
+# databaseName = 'ChefmateDB'
+databaseName = 'ChefmateDB_Alt'
 
-# databaseAddr = '3.21.167.180'
+# databaseAddr = '18.219.145.177' #NEW DB
 databaseAddr = '18.222.251.5'
 # databaseAddr = 'localhost'
 
