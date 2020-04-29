@@ -31,7 +31,7 @@ module.exports = app => {
   })
 
   app.post('/changeLikeStatus', (req, res) => {
-    const { likeStatus, url } = req.body;
+    const { likeStatus, url} = req.body;
     if(req.user === undefined) return res.json(sendPacket(0, 'Unable to save because User not logged in.'));
     User.findById(req.user._id, (err, user) => {
       if(err){
@@ -43,15 +43,18 @@ module.exports = app => {
       if(!('dislikes' in user)) user['dislikes']= {};
   
       const dotReplacedUrl = url.replace(/\./g, '%114')
+
+      const refStr = String(req.headers.referer);
+      const query = refStr.substring(refStr.lastIndexOf('/') + 1);
   
       if (likeStatus === 1) {
         if (dotReplacedUrl in user['dislikes']) delete user['dislikes'][dotReplacedUrl];
-        user['likes'][dotReplacedUrl]=true;
+          user['likes'][dotReplacedUrl] = query;
       }
   
       else if (likeStatus === -1) {
         if (dotReplacedUrl in user['likes']) delete user['likes'][dotReplacedUrl];
-        user['dislikes'][dotReplacedUrl]=true;
+        user['dislikes'][dotReplacedUrl]= query;
       }
   
       else {
@@ -66,6 +69,8 @@ module.exports = app => {
         if(err) {
           return res.json(sendPacket(0, 'Unable to save like status updates'));
         }
+        console.log(user['likes']);
+        console.log(user['dislikes'])
         return res.json(sendPacket(1, 'Document like status successfully changed', {newLikeStatus: likeStatus, user: newUser}));
       })
     })
