@@ -22,6 +22,7 @@ connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=2701
 def index():
   return 'Recommender server loaded successfully'
 
+
 if __name__ == '__main__':
   log('info', "Recommender is listening on port "+str(port) +", " + str(app.config['ENV']) + " environment.")
   app.run(debug=True, host='0.0.0.0', port=port)

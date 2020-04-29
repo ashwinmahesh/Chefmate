@@ -80,7 +80,10 @@ def performPseudoRelevanceFeedback(queryMatrix, rankedDocuments, invertedIndex, 
     if 'Page not found' in document['title']:
       continue
     
-    docIndex = crawlerReverseMap[url]
+    try:
+      docIndex = crawlerReverseMap[url]
+    except:
+      continue
     docWeights = inMemoryTFIDF[:,docIndex]
 
     rankVal = (cosineSimilarity(newQueryForCalculation, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
