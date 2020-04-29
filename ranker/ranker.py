@@ -45,15 +45,15 @@ def index():
 def rankQuery(query):
   log('Ranker', 'Received query: '+query)
   index = query.find(":")
-  newStr = str(index)
-  if index != -1: 
-    excludedTermsQuery = query[index+1:len(query)]
-    query = query[0:index]
-    excludedTerms = stemQuery(excludedTermsQuery, stopwords)
-  else: 
+  if index == -1: 
     excludedTerms = []
-
-  queryTerms = stemQuery(query, stopwords)
+    pureQuery = query
+  else:
+    excludedTerms = stemQuery(query[index+1:len(query)], stopwords)
+    pureQuery = query[0:index]
+    
+  print("Excluded terms:", excludedTerms)
+  queryTerms = stemQuery(pureQuery, stopwords)
   sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex, excludedTerms)
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')
   return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls[0:200]})
