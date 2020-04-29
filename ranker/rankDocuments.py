@@ -12,8 +12,11 @@ from pseudoRelevanceFeedback import performPseudoRelevanceFeedback
 
 porterStemmer = PorterStemmer()
 
-def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
+def rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
+  
   startTime = time.time()
+
+  containsExcludedTerm = False
 
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
@@ -39,7 +42,14 @@ def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerRevers
   docUrlArr = []
   rankings = []
 
-  log("Ranking", 'Calculating rankings for query: '+queryStr)
+  excludedIndexes = []
+  for term in excludedTerms:
+    try:
+      excludedIndex = termReverseMap[term]
+      excludedIndexes.append(excludedIndex)
+    except:
+      continue
+
   for url in docURLs:
     try:
       document = Crawler.objects.get(url=url)
@@ -51,8 +61,16 @@ def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerRevers
     docIndex = crawlerReverseMap[url]
     docWeights = inMemoryTFIDF[:,docIndex]
 
-    rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+    for index in excludedIndexes:
+      if docWeights[index] > 0:
+        containsExcludedTerm = True
+        break
+    
+    if containsExcludedTerm:
+      containsExcludedTerm = False
+      continue
 
+    rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     rankings.append(rankVal)
     docUrlArr.append(url)
 

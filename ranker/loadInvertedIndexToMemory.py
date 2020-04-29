@@ -32,6 +32,7 @@ def loadInvertedIndexToMemory():
   for i in range(0, len(invertedIndex)):
     termReverseMap[allTerms[i][1]] = i
 
+  ###UPDATE THIS BACK TO OLD WAY OF GETTING TFIDF
   for termEntry in allTerms:
     termNum = termReverseMap[termEntry[1]]
     for docKey in termEntry[0]:
@@ -41,7 +42,7 @@ def loadInvertedIndexToMemory():
       try:
         inMemoryTFIDF[termNum][crawlerAxisPos] = doc['tfidf']
       except:
-        inMemoryTFIDF[termNum][crawlerAxisPos] = 0.0001
+        inMemoryTFIDF[termNum][crawlerAxisPos] = 0.001
 
   log('time', 'Finished loading Inverted Index into main memory in ' + str(time.time()-startTime) + ' seconds.')
   return inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority
