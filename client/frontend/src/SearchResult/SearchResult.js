@@ -8,12 +8,13 @@ import NoResults from './NoResults';
 import Timeout from './Timeout';
 // import loading from '../images/loading.gif';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { publicDecrypt } from 'crypto';
-
-const GLOBAL_TIMEOUT = 10;
-
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
+
+
+const GLOBAL_TIMEOUT = 20;
+
+
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
@@ -64,6 +65,11 @@ function SearchResult(props) {
   async function fetchQueryResults() {
     const startTime = Date.now();
     const { data } = await axios.get(`/search/${oldQuery}`);
+    if (data['success'] !== 1) {
+      changeTimedOut(true);
+      changeLoading(false);
+      return;
+    }
     const docUrls = data['content']['sortedDocUrls'];
     updateNumSearched(docUrls.length);
     fetchDocuments(docUrls).then(() => {
@@ -75,6 +81,11 @@ function SearchResult(props) {
 
   async function fetchDocuments(docUrls) {
     const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
+    if (data['success'] !== 1) {
+      changeTimedOut(true);
+      changeLoading(false);
+      return;
+    }
     changeDocuments(data['content']['documents']);
     changeUserLikesDislikes([data['content']['likes'], data['content']['dislikes']]);
   }
@@ -106,13 +117,11 @@ function SearchResult(props) {
 function clockUpdate(changeTimedOut) {
   if (stillLoading) {
     seconds++;
-    console.log('secs: ' + seconds + ' isLoading: ' + stillLoading); 
     if (seconds > GLOBAL_TIMEOUT && stillLoading) {
       changeTimedOut(true);
     }
     
   }
-  //log('time update', seconds);
 }
 
 const mapStateToProps = (state) => ({
