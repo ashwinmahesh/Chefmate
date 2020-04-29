@@ -6,6 +6,8 @@ import { Redirect } from 'react-router-dom';
 import Results from './Results';
 import NoResults from './NoResults';
 import Timeout from './Timeout';
+import Footer from '../Footer/Footer';
+
 // import loading from '../images/loading.gif';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -85,6 +87,8 @@ function SearchResult(props) {
       ) : (
         <NoResults />
       )}
+      <Footer> </Footer>
+
     </div>
   );
 }

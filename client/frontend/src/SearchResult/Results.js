@@ -186,6 +186,7 @@ function Results(props: Props) {
           </a>
         </div>
         <div className={styles.pages}>{renderPageNumbers()}</div>
+
       </>
     );
   }

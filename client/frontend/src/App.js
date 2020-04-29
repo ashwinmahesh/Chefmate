@@ -11,7 +11,7 @@ import History from './history/History';
 import PageNotFound from './PageNotFound/PageNotFound';
 import BeautifulLogin from './BeautifulLogin/BeautifulLogin';
 import { makeStyles } from '@material-ui/core/styles';
-
+import Footer from './Footer/Footer';
 import { updateUser } from './redux/actions/user';
 import { updateTheme } from './redux/actions/theme';
 import BeautifulSignup from './BeautifulLogin/BeautifulSignup';
@@ -43,6 +43,7 @@ function App(props) {
             <Route exact path="/signup" component={BeautifulSignup} />
             <Route path="/result/:query" component={SearchResult} />
             <Route exact path="/history" component={History} />
+            <Route exact path="/footer" component={Footer} />
             <Route exact path="/videos" component={Videos} />
             <Route exact path="/likes" component={Likes} />
             <Route exact path="/dislikes" component={Dislikes} />

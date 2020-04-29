@@ -5,12 +5,12 @@ import { FaSearch } from 'react-icons/fa';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
-
 import HeaderSimple from '../Headers/HeaderSimple';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
+import Footer from '../Footer/Footer';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
@@ -46,17 +46,6 @@ const useStyles = (colors) =>
       bottom: '0',
       height: '100px',
       position: 'fixed',
-    },
-    lucky: {
-      width: '200px',
-      height: '50px',
-      borderRadius: '2px',
-      fontSize: '18px',
-      fontFamily: 'Ubuntu',
-      backgroundColor: '#38698e',
-      opacity: '.8',
-      color: 'white',
-      left: '-10px'
     },
   }));
 type Props = {
@@ -168,8 +157,10 @@ function Homepage(props: Props) {
           )}
         />
       </div>
-      <button className={styles.lucky}> I'm feeling lucky! </button>
+      <Footer></Footer>
+
     </div>
+
   );
 }
 const mapStateToProps = (state) => ({
