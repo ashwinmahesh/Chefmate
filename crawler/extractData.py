@@ -24,11 +24,9 @@ def extractData(baseURL):
   for node in soup.findAll(['p', 'a', 'div', 'li']):
     body+=node.text+'\n'
 
-  #TODO get links for each link. Return. dataParser can use them. Can add to table in memory, I guess.
-  # Hope there are no concurrency issues with that. Need a thread safe ds. Then when done, dataParser can
-  # write to file.
+  newLinks = soup.findAll('a')
 
-  output = dict(link=baseURL, title=title, body=body, description=description)
+  output = dict(link=baseURL, title=title, body=body, description=description, newLinks=newLinks)
   return output
 
 if __name__ == "__main__":

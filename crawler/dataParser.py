@@ -45,7 +45,8 @@ class DataParser:
 
       for link in toParse:
         obj = extractData(link)
-        self.findNewLinks(link)
+        
+        self.addNewLinksToGraphs(obj['link'], obj['newLinks'])
 
         buffer.append('link: ' + link + '\n')
 
@@ -93,47 +94,16 @@ class DataParser:
     FileIO.writeJsonFile(self.outlinkGraph.nodes, self.outlinkGraphFile)
     FileIO.writeJsonFile(self.inlinkGraph.nodes, self.inlinkGraphFile)
 
-  def findNewLinks(self, parseLink):
-    try:
-      head=requests.head(parseLink)
-      if ('content-type' not in head.headers and 'Content-type' not in head.headers) or ("text/html" not in head.headers['content-type'] and "text/html" not in head.headers['Content-type']):
-        log("error", 'Invalid page type')
-        return set()
-    except requests.exceptions.HTTPError as errh:
-      log('error', 'HTTPError')
-      return set()
-    except requests.exceptions.ConnectionError as errc:
-      log('error', 'ConnectionError')
-      return set()
-    except requests.exceptions.Timeout as errt:
-      log('error', 'Timeout Error')
-      return set()
-    except requests.exceptions.RequestException as err:
-      log('error', 'Request exception')
-      return set()
-
-    headers = {'User-Agent':"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Mobile Safari/537.36"}
-    page = requests.get(parseLink, headers=headers)
-    
-    return self.findNewLinksHTML(parseLink, page)
-
-  def findNewLinksHTML(self, parseLink, page):
-    soup = BeautifulSoup(page.content, 'lxml')
-   
-    for link in soup.find_all('a'):
-      href = link.get('href')
-
-      if href is None or len(href) == 0:
-        continue
-
-      if href[0] == '/':
-        self.outlinkGraph.addLink(parseLink, self.baseURL + href)
-        self.inlinkGraph.addLink(self.baseURL + href, parseLink)
-
-      elif href[:len(self.baseURL)] == self.baseURL:
-        self.outlinkGraph.addLink(parseLink, href)
-        self.inlinkGraph.addLink(href, parseLink)
+  def addNewLinksToGraphs(self, parseLink, links):
+    for link in links:
+      if link[0] == '/':
+        absLink = self.baseURL + link
+      elif link[:len(self.baseURL)] == self.baseURL:
+        absLink = link
+      
+      self.outlinkGraph.addLink(parseLink, absLink)
+      self.inlinkGraph.addLink(absLink, parseLink)
 
 if __name__ == "__main__":
-  parser = DataParser('EpiCurious', 'https://www.epicurious.com/')
+  parser = DataParser('EpiCurious', 'https://www.epicurious.com/', 4)
   parser.runParser()
