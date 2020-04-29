@@ -8,10 +8,12 @@ import time
 from cosineSimilarity import cosineSimilarity
 from fetchDocuments import fetchDocuments
 from nltk.stem import PorterStemmer 
+from pseudoRelevanceFeedback import performPseudoRelevanceFeedback
 
 porterStemmer = PorterStemmer()
 
-def rank(queryTerms, termReverseMap, invertedIndex, excludedTerms):
+def rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
+  
   startTime = time.time()
 
   containsExcludedTerm = False
@@ -23,7 +25,7 @@ def rank(queryTerms, termReverseMap, invertedIndex, excludedTerms):
     queryStr+=term + ' '
   
   log("QE", 'Expanding Query Terms')
-  expandedTerms = fetchDocuments(queryTerms, invertedIndex)
+  expandedTerms = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
   for termEntry in expandedTerms:
     docInfoList=termEntry['doc_info']
     for docKey in docInfoList:
@@ -39,8 +41,6 @@ def rank(queryTerms, termReverseMap, invertedIndex, excludedTerms):
 
   docUrlArr = []
   rankings = []
-
-  log("Ranking", 'Calculating rankings for query')
 
   excludedIndexes = []
   for term in excludedTerms:
@@ -75,6 +75,9 @@ def rank(queryTerms, termReverseMap, invertedIndex, excludedTerms):
     docUrlArr.append(url)
 
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
+  
+  if pseudoRelevanceFeedback:
+    sortedDocUrls = performPseudoRelevanceFeedback(queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap)
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
   return sortedDocUrls
