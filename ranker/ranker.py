@@ -37,8 +37,8 @@ connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=2701
 inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority = loadInvertedIndexToMemory()
 stopwords = set(nltk.corpus.stopwords.words('english'))
 
-QUERY_EXPANSION = True
-PSEUDO_RELEVANCE_FEEDBACK = True
+QUERY_EXPANSION = False
+PSEUDO_RELEVANCE_FEEDBACK = False
 
 @app.route('/', methods=["GET"])
 def index():
