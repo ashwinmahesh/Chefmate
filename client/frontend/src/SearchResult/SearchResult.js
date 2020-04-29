@@ -55,14 +55,14 @@ function SearchResult(props) {
     const { data } = await axios.get(`/search/${oldQuery}`);
     const docUrls = data['content']['sortedDocUrls'];
     updateNumSearched(docUrls.length);
-    fetchDocuments(docUrls).then(() => {
+    fetchDocuments(docUrls, startTime).then(() => {
       changeSearchTime((Date.now() - startTime) / 1000);
       changeLoading(false);
     });
   }
 
-  async function fetchDocuments(docUrls) {
-    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
+  async function fetchDocuments(docUrls, startTime) {
+    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls, startTime: startTime });
     changeDocuments(data['content']['documents']);
     changeUserLikesDislikes([data['content']['likes'], data['content']['dislikes']]);
   }

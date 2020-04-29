@@ -5,13 +5,10 @@ const clickLogger = require('../clickLogger');
 
 const { User, Query } = require('../mongoConfig');
 
-var queryStartTime;
-
 module.exports = (app) => {
   app.get('/search/:query', async (request, response) => {
     const query = request.params['query'];
     log('query', `Received query from client: ${query}. Sending data to ranker`);
-    queryStartTime = Date.now();
     const data = await makeRequest('ranker', `query/${query}`);
 
     Query.findById(query, (err, oldQueryObj) => {
@@ -44,6 +41,7 @@ module.exports = (app) => {
     log('fetch', 'Fetching documents from ranker using sorted list of document urls');
 
     const docUrls = req.body['docUrls'].slice(0, 60);
+    const queryStartTime = req.body['startTime'];
     const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {
       docUrls: docUrls,
     });
