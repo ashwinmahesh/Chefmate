@@ -91,18 +91,26 @@ class DataParser:
     for i in range(0, self.MAX_THREADS):
       threadPool[i].join()
 
-    FileIO.writeJsonFile(self.outlinkGraph.nodes, self.outlinkGraphFile)
-    FileIO.writeJsonFile(self.inlinkGraph.nodes, self.inlinkGraphFile)
+    self.saveLinkGraphs()
 
   def addNewLinksToGraphs(self, parseLink, links):
     for link in links:
-      if link[0] == '/':
-        absLink = self.baseURL + link
-      elif link[:len(self.baseURL)] == self.baseURL:
-        absLink = link
+      href = link.get('href')
+
+      if href is None or len(href) == 0:
+        continue
+
+      if href[0] == '/':
+        absLink = self.baseURL + href
+      else:
+        absLink = href
       
       self.outlinkGraph.addLink(parseLink, absLink)
       self.inlinkGraph.addLink(absLink, parseLink)
+
+  def saveLinkGraphs(self):
+    FileIO.writeJsonFile(self.outlinkGraph.nodes, self.outlinkGraphFile)
+    FileIO.writeJsonFile(self.inlinkGraph.nodes, self.inlinkGraphFile)
 
 if __name__ == "__main__":
   parser = DataParser('EpiCurious', 'https://www.epicurious.com/', 4)
