@@ -120,8 +120,27 @@ function Homepage(props: Props) {
       window.location.href = `/result/${query}`;
     }
   }
+
+  async function fetchQueryResults() {
+    const startTime = Date.now();
+    const { data } = await axios.get(`/search/${query}`);
+    if (data['success'] !== 1) {
+      return;
+    }
+    const docUrls = data['content']['sortedDocUrls'];
+    fetchDocuments(docUrls);
+  }
+
+  async function fetchDocuments(docUrls) {
+    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
+    if (data['success'] !== 1) {
+      return;
+    }
+    topDocument = data['content']['documents'][0]['_id'];
+  }
+
   function handleFeelingLucky() {
-    console.log(query);
+    fetchQueryResults();
   }
 
   return (
