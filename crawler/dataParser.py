@@ -5,12 +5,10 @@ import sys
 sys.path.append('..')
 import helpers
 log = helpers.log
-import requests
 
 from extractData import extractData
 from threading import Thread
 from graph import Graph
-from bs4 import BeautifulSoup
 
 class DataParser:
   MAX_BUFFER_LEN = 10
@@ -97,7 +95,7 @@ class DataParser:
     for link in links:
       href = link.get('href')
 
-      if href is None or len(href) == 0:
+      if href is None or len(href) == 0 or href == '#':
         continue
 
       if href[0] == '/':
