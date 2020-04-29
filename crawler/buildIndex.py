@@ -54,7 +54,7 @@ def buildIndex(iterations, threads=1, reset=True, resetFiles=True, passwordLock=
     outlinkGraphFile = 'domains/'+domain['name']+'/'+domain['name']+'_outlinks.json'
     options['pageRank'] and calculatePageRank(domain['name'], inlinkGraphFile, outlinkGraphFile, 3)
 
-    options['parse'] and DataParser(domain['name'], threads).runParser()
+    options['parse'] and DataParser(domain['name'], domain['root'], threads).runParser()
 
     options['database'] and DatabaseBuilder(domain['name'], threads=threads, mode='DEV' if dev else 'PROD').buildRawText()
 
