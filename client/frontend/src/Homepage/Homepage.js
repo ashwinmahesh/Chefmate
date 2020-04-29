@@ -5,6 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
+import footer from '../Footer/Footer'
 import HeaderSimple from '../Headers/HeaderSimple';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
