@@ -7,11 +7,12 @@ import { FaGithub, FaGit } from 'react-icons/fa';
 
 const useStyles = makeStyles({
     root: {
-        justifyContent: 'center',
-        position: 'absolute',
+        borderTop: '1px solid grey',
         left: '0',
         bottom: '0',
         right: '0',
+
+
     },
     footerWriting: {
         color: 'grey',
