@@ -52,7 +52,6 @@ def rankQuery(query):
     excludedTerms = stemQuery(query[index+1:len(query)], stopwords)
     pureQuery = query[0:index]
     
-  print("Excluded terms:", excludedTerms)
   queryTerms = stemQuery(pureQuery, stopwords)
   sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex, excludedTerms)
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')

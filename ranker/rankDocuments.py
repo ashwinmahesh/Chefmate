@@ -41,6 +41,18 @@ def rank(queryTerms, termReverseMap, invertedIndex, excludedTerms):
   rankings = []
 
   log("Ranking", 'Calculating rankings for query')
+
+  #Different
+  excludedIndexes = []
+  for term in excludedTerms:
+    try:
+      excludedIndex = termReverseMap[term]
+      excludedIndexes.append(excludedIndex)
+    except:
+      continue
+  #end of differences
+
+
   for url in docURLs:
     try:
       document = Crawler.objects.get(url=url)
@@ -49,28 +61,42 @@ def rank(queryTerms, termReverseMap, invertedIndex, excludedTerms):
     if 'Page not found' in document['title']:
       continue
 
-    docWeights = np.zeros(len(termReverseMap))
-    for rawTerm in document['body'].lower().split():
-      term = porterStemmer.stem(rawTerm)
-      if term in excludedTerms: 
-         containsExcludedTerm = True
-         break
-      termNum = termReverseMap.get(term)
 
-      if(termNum == None):
-        continue
+    #Code is different starting from here
+    docIndex = crawlerReverseMap[url]
+    docWeights = inMemoryTFIDF[:,docIndex]
 
-      if 'tfidf' not in document or term not in document['tfidf']:
-        docWeights[termNum] += 0.0001
-
-      else:
-        tfidf = document['tfidf'][term]
-        docWeights[termNum] += tfidf
-
+    for index in excludedIndexes:
+      if docWeights[index] > 0:
+        containsExcludedTerm = True
+        break
+    
     if containsExcludedTerm:
       containsExcludedTerm = False
       continue
+    # docWeights = np.zeros(len(termReverseMap))
+    # for rawTerm in document['body'].lower().split():
+    #   term = porterStemmer.stem(rawTerm)
+    #   if term in excludedTerms: 
+    #      containsExcludedTerm = True
+    #      break
+    #   termNum = termReverseMap.get(term)
 
+    #   if(termNum == None):
+    #     continue
+
+    #   if 'tfidf' not in document or term not in document['tfidf']:
+    #     docWeights[termNum] += 0.0001
+
+    #   else:
+    #     tfidf = document['tfidf'][term]
+    #     docWeights[termNum] += tfidf
+
+    # if containsExcludedTerm:
+    #   containsExcludedTerm = False
+    #   continue
+
+    #End of code differences
     rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     rankings.append(rankVal)
     docUrlArr.append(url)
