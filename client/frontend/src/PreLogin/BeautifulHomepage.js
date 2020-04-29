@@ -7,7 +7,6 @@ import AboutUs from './AboutUs'
 import Teammates from './Teammates'
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -74,7 +73,6 @@ export default function BeautifulHomepage(props) {
       <div>
         <Teammates />
       </div>
-      {/* </Transition> */}
     </>
   );
 }

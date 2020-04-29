@@ -7,11 +7,11 @@ import { FaGithub, FaGit } from 'react-icons/fa';
 
 const useStyles = makeStyles({
     root: {
-        width: '100%',
-        borderTop: '1px solid black',
-        marginTop: 'calc(15% + 60px)',
         justifyContent: 'center',
-
+        position: 'absolute',
+        left: '0',
+        bottom: '0',
+        right: '0',
     },
     footerWriting: {
         color: 'grey',
@@ -30,11 +30,9 @@ const useStyles = makeStyles({
 
 export default function Footer() {
     const styles = useStyles();
-   
-
     return (
         <BottomNavigation className={styles.root}>
-            <p className={styles.footerWriting}> Copyright 2020 Chefmate. All Rights Reserved <br></br>
+            <p className={styles.footerWriting}> Copyright 2020 Chefmate. All Rights Reserved. <br></br>
                 <BottomNavigationAction className={styles.github} icon={<FaGithub />} href='https://github.com/amahesh98/Chefmate' />
             </p> 
  

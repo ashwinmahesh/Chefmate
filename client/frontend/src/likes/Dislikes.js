@@ -7,6 +7,8 @@ import LikesExpansionPanel from './LikesExpansionPanel';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
+import Footer from '../Footer/Footer';
+
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
@@ -120,6 +122,7 @@ function Dislikes(props: Props) {
           renderDislikes()
         )}
       </div>
+      <Footer></Footer>
     </div>
   );
 }

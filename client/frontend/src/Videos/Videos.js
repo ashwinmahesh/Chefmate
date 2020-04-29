@@ -6,6 +6,8 @@ import HeaderSearch from '../Headers/HeaderSearch';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
+import Footer from '../Footer/Footer';
+
 
 const useStyles = (colors) =>
     makeStyles((theme) => ({
@@ -46,10 +48,10 @@ const useStyles = (colors) =>
 type Props = {
     theme: String,
 };
-
 function Videos(props: Props) {
     const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
     const styles = useStyles(colors)();
+    const [videos] = useState({});
     const [loginRedirect, changeLoginRedirect] = useState(false);
     const [isLoading, changeLoading] = useState(true);
 
@@ -60,23 +62,33 @@ function Videos(props: Props) {
             changeLoginRedirect(true);
         }
     }
-
     useEffect(() => {
         checkAuthentication();
     }, []);
 
-   
+
+    function renderVideos() {
+        const output = [];
+        return output;
+}
 
     return (
+
         <div className={styles.wrapper}>
             {loginRedirect && <Redirect to="/" />}
             <HeaderSearch initialSearch="" />
-
             <Typography className={styles.title}>Your Videos</Typography>
             <Typography className={styles.pageDescription}>
-                Your videos will be displayed here! 
-      </Typography>
-           
+                Your videos will be displayed here!
+            </Typography>
+            <div className={styles.panelsWrapper}>
+                {isLoading ? (
+                    <CircularProgress className={styles.loading} size={50} />
+                ) : (
+                        renderVideos()
+                    )}
+            </div>
+            <Footer></Footer>
         </div>
     );
 }
