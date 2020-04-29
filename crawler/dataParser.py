@@ -99,12 +99,11 @@ class DataParser:
         continue
 
       if href[0] == '/':
-        absLink = self.baseURL + href
-      else:
-        absLink = href
-      
-      self.outlinkGraph.addLink(parseLink, absLink)
-      self.inlinkGraph.addLink(absLink, parseLink)
+        self.outlinkGraph.addLink(parseLink, self.baseURL + href)
+        self.inlinkGraph.addLink(self.baseURL + href, parseLink)
+      elif href[:len(self.baseURL)] == self.baseURL:
+        self.outlinkGraph.addLink(parseLink, href)
+        self.inlinkGraph.addLink(href, parseLink)
 
   def saveLinkGraphs(self):
     FileIO.writeJsonFile(self.outlinkGraph.nodes, self.outlinkGraphFile)
