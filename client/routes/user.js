@@ -45,15 +45,26 @@ module.exports = app => {
       const dotReplacedUrl = url.replace(/\./g, '%114')
 
       const refStr = String(req.headers.referer);
-      const query = refStr.substring(refStr.lastIndexOf('/') + 1);
+      const prefix = refStr.substring(0, refStr.lastIndexOf('/'));
+      var query = refStr.substring(refStr.lastIndexOf('/') + 1);
   
       if (likeStatus === 1) {
-        if (dotReplacedUrl in user['dislikes']) delete user['dislikes'][dotReplacedUrl];
-          user['likes'][dotReplacedUrl] = query;
+        if (dotReplacedUrl in user['dislikes']) {
+          if (prefix !== "http://localhost:8000/result") {
+            query = user['dislikes'][dotReplacedUrl];
+          }
+          delete user['dislikes'][dotReplacedUrl];
+        } 
+        user['likes'][dotReplacedUrl] = query;
       }
   
       else if (likeStatus === -1) {
-        if (dotReplacedUrl in user['likes']) delete user['likes'][dotReplacedUrl];
+        if (dotReplacedUrl in user['likes']) {
+          if (prefix !== "http://localhost:8000/result") {
+            query = user['likes'][dotReplacedUrl];
+          }
+          delete user['likes'][dotReplacedUrl];
+        }
         user['dislikes'][dotReplacedUrl]= query;
       }
   
