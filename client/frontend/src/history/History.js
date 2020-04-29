@@ -9,7 +9,6 @@ import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 import Footer from '../Footer/Footer';
 
-
 const useStyles = (colors) =>
   makeStyles((theme) => ({
     title: {
@@ -24,7 +23,6 @@ const useStyles = (colors) =>
     },
     wrapper: {
       background: colors.background,
-      minHeight: '100vh',
     },
     pageDescription: {
       textAlign: 'left',
@@ -40,6 +38,7 @@ const useStyles = (colors) =>
       paddingRight: '15px',
       paddingTop: '20px',
       paddingBottom: '20px',
+      minHeight: '100vh',
     },
     loading: {
       color: 'rgb(230, 95, 85)',

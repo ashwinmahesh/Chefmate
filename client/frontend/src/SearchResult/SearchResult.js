@@ -18,13 +18,15 @@ const useStyles = (colors) =>
   makeStyles((theme) => ({
     container: {
       width: '100vw',
-      minHeight: '100vh',
       backgroundColor: colors.background,
     },
 
     loading: {
       color: 'rgb(230, 95, 85)',
       marginTop: '150px',
+    },
+    resultDiv: {
+      minHeight: '100vh',
     },
   }));
 
@@ -73,22 +75,24 @@ function SearchResult(props) {
     <div className={styles.container}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch={oldQuery} />
-      {isLoading ? (
-        // <img className={styles.loading} src={loading} alt="loading..." />
-        <CircularProgress className={styles.loading} size={100} />
-      ) : documents.length > 0 ? (
-        <Results
-          documents={documents}
-          numSearched={numSearched}
-          searchTime={searchTime}
-          likesDislikes={userLikesDislikes}
-          query={oldQuery}
-        />
-      ) : (
-        <NoResults />
-      )}
-      <Footer> </Footer>
+      <div className={styles.resultDiv}>
+        {isLoading ? (
+          // <img className={styles.loading} src={loading} alt="loading..." />
+          <CircularProgress className={styles.loading} size={100} />
+        ) : documents.length > 0 ? (
+          <Results
+            documents={documents}
+            numSearched={numSearched}
+            searchTime={searchTime}
+            likesDislikes={userLikesDislikes}
+            query={oldQuery}
+          />
+        ) : (
+          <NoResults />
+        )}
+      </div>
 
+      <Footer> </Footer>
     </div>
   );
 }

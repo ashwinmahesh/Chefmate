@@ -15,7 +15,6 @@ const useStyles = (colors) =>
   makeStyles((theme) => ({
     container: {
       width: '100vw',
-      height: '100vh',
       background: colors.background,
     },
     searchField: {
@@ -34,6 +33,7 @@ const useStyles = (colors) =>
     },
     contents: {
       marginTop: '100px',
+      height: '100vh',
     },
     searchButton: {
       fontSize: '22pt',
@@ -157,9 +157,7 @@ function Homepage(props: Props) {
         />
       </div>
       <Footer></Footer>
-
     </div>
-
   );
 }
 const mapStateToProps = (state) => ({

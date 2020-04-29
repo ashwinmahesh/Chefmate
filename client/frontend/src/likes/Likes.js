@@ -13,13 +13,13 @@ const useStyles = (colors) =>
   makeStyles((_) => ({
     wrapper: {
       background: colors.background,
-      minHeight: '100vh',
     },
     panelsWrapper: {
       paddingLeft: '15px',
       paddingRight: '15px',
       paddingTop: '20px',
       paddingBottom: '20px',
+      minHeight: '100vh',
     },
     loading: {
       color: 'rgb(230, 95, 85)',
@@ -120,7 +120,7 @@ function Likes(props: Props) {
           renderLikes()
         )}
       </div>
-        <Footer></Footer>
+      <Footer></Footer>
     </div>
   );
 }
