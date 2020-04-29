@@ -6,55 +6,78 @@ from helpers import log
 import numpy as np
 import time
 from cosineSimilarity import cosineSimilarity
+from fetchDocuments import fetchDocuments
+from nltk.stem import PorterStemmer 
+from pseudoRelevanceFeedback import performPseudoRelevanceFeedback
 
-def rank(terms, termReverseMap):
+porterStemmer = PorterStemmer()
+
+def rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
+  
   startTime = time.time()
 
-  log("Ranking", 'Calculating rankings for query')
+  containsExcludedTerm = False
+
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
   queryStr=''
-  for term in terms:
+  for term in queryTerms:
     queryStr+=term + ' '
-    try:
-      termEntry = InvertedIndex.objects.get(term=term)
-
-      docInfoList=termEntry['doc_info']
-      for docKey in docInfoList:
-        url = docInfoList[docKey]['url']
-        if url[0:8] == 'https://':
-          docURLs.add(url)
-
-      termNum = termReverseMap[term]
-      queryTermWeights[termNum] += 1
-    except DoesNotExist:
-      log("query", 'Term not found - '+term)
   
+  log("QE", 'Expanding Query Terms')
+  expandedTerms = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
+  for termEntry in expandedTerms:
+    docInfoList=termEntry['doc_info']
+    for docKey in docInfoList:
+      url = docInfoList[docKey]['url']
+      if url[0:8] == 'https://':
+        docURLs.add(url)
+
+    termNum = termReverseMap[termEntry['term']]
+    if termEntry['term'] in queryTerms:
+      queryTermWeights[termNum] += 2
+    else:
+      queryTermWeights[termNum] += 1
+
   docUrlArr = []
   rankings = []
 
+  excludedIndexes = []
+  for term in excludedTerms:
+    try:
+      excludedIndex = termReverseMap[term]
+      excludedIndexes.append(excludedIndex)
+    except:
+      continue
+
   for url in docURLs:
-    document = Crawler.objects.get(url=url)
+    try:
+      document = Crawler.objects.get(url=url)
+    except DoesNotExist:
+      continue
     if 'Page not found' in document['title']:
       continue
 
-    docWeights = np.zeros(len(termReverseMap))
-    for term in document['body'].lower().split():
-      termNum = termReverseMap.get(term)
-      if(termNum == None):
-        continue
-      if 'tfidf' not in document or term not in document['tfidf']:
-        docWeights[termNum] += 0.01
-      else:
-        tfidf = document['tfidf'][term]
-        docWeights[termNum] += tfidf
+    docIndex = crawlerReverseMap[url]
+    docWeights = inMemoryTFIDF[:,docIndex]
+
+    for index in excludedIndexes:
+      if docWeights[index] > 0:
+        containsExcludedTerm = True
+        break
+    
+    if containsExcludedTerm:
+      containsExcludedTerm = False
+      continue
 
     rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
-
     rankings.append(rankVal)
     docUrlArr.append(url)
 
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
+  
+  if pseudoRelevanceFeedback:
+    sortedDocUrls = performPseudoRelevanceFeedback(queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap)
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
   return sortedDocUrls
