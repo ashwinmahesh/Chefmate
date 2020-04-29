@@ -47,10 +47,11 @@ def rankQuery(query):
   index = query.find(":")
   newStr = str(index)
   if index != -1: 
-    excludedTerms = query[index+1:len(query)]
-    excludedTerms.split(" ")
+    excludedTermsQuery = query[index+1:len(query)]
+    query = query[0:index]
+    excludedTerms = stemQuery(excludedTermsQuery, stopwords)
   else: 
-    excludedTerms = []
+    excludedTermsQuery = []
 
   queryTerms = stemQuery(query, stopwords)
   sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex, excludedTerms)
