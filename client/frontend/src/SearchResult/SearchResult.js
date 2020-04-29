@@ -10,7 +10,7 @@ import Timeout from './Timeout';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { publicDecrypt } from 'crypto';
 
-const GLOBAL_TIMEOUT = 20;
+const GLOBAL_TIMEOUT = 10;
 
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
