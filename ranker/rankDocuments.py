@@ -54,6 +54,7 @@ def rank(queryTerms, termReverseMap, invertedIndex, excludedTerms):
       term = porterStemmer.stem(rawTerm)
       if term in excludedTerms: 
          flag = True
+         break
       termNum = termReverseMap.get(term)
       if(termNum == None):
         continue
@@ -63,9 +64,8 @@ def rank(queryTerms, termReverseMap, invertedIndex, excludedTerms):
         tfidf = document['tfidf'][term]
         docWeights[termNum] += tfidf
 
-    rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
-
     if flag != True:
+      rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
       rankings.append(rankVal)
       docUrlArr.append(url)
     else: 

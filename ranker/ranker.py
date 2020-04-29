@@ -46,7 +46,6 @@ def rankQuery(query):
   log('Ranker', 'Received query: '+query)
   index = query.find(":")
   newStr = str(index)
-  log('Ranker', 'Number: '+ newStr)
   if index != -1: 
     excludedTerms = query[index+1:len(query)]
     excludedTerms.split(" ")
