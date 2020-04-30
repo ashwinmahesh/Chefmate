@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { TextField, IconButton } from '@material-ui/core';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaWindows } from 'react-icons/fa';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
@@ -58,6 +58,7 @@ function Homepage(props: Props) {
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [autocompleteData, changeAutocompleteData] = useState([]);
+  let topDocument = '';
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -136,10 +137,17 @@ function Homepage(props: Props) {
     if (data['success'] !== 1) {
       return;
     }
-    topDocument = data['content']['documents'][0]['_id'];
+    topDocument = data['content']['documents'][0];
+    const colonIndex = topDocument.indexOf(':');
+    const quoteIndex = topDocument.indexOf('"', colonIndex + 1);
+    const spaceIndex2 = topDocument.indexOf(' ', quoteIndex + 1);
+    const myUrl = topDocument.substr(quoteIndex + 1, spaceIndex2 - 11);
+    console.log(myUrl);
+    window.open(myUrl);
   }
 
   function handleFeelingLucky() {
+    console.log(query);
     fetchQueryResults();
   }
 
