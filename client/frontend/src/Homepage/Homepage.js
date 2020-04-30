@@ -138,19 +138,11 @@ function Homepage(props: Props) {
       return;
     }
     topDocument = data['content']['documents'][0];
-    console.log(topDocument);
     const myUrl = JSON.parse(topDocument);
     window.open(myUrl._id);
-    /*const colonIndex = topDocument.indexOf(':');
-    const quoteIndex = topDocument.indexOf('"', colonIndex + 1);
-    const spaceIndex2 = topDocument.indexOf(' ', quoteIndex + 1);
-    const myUrl = topDocument.substr(quoteIndex + 1, spaceIndex2 - 11);
-    console.log(myUrl);
-    window.open(myUrl);*/
   }
 
   function handleFeelingLucky() {
-    console.log(query);
     fetchQueryResults();
   }
 
