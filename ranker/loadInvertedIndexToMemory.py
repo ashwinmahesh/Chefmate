@@ -46,9 +46,9 @@ def loadInvertedIndexToMemory():
         continue
 
       if 'tfidf' not in document or stemmedTerm not in document['tfidf']:
-        inMemoryTFIDF[termIndex][docIndex] += 0.001
+        inMemoryTFIDF[termIndex][docIndex] = 0.001
       else:
-        inMemoryTFIDF[termIndex][docIndex] += document['tfidf'][stemmedTerm]
+        inMemoryTFIDF[termIndex][docIndex] = document['tfidf'][stemmedTerm]
 
   log('time', 'Finished loading Inverted Index into main memory in ' + str(time.time()-startTime) + ' seconds.')
   return inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority
