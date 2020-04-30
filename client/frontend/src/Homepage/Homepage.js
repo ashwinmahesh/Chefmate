@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { TextField, IconButton } from '@material-ui/core';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaWindows } from 'react-icons/fa';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
+import FeelingLuckyButton from './FeelingLuckyButton';
 
 import HeaderSimple from '../Headers/HeaderSimple';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -96,7 +97,7 @@ function Homepage(props: Props) {
         }
         changeAutocompleteData(queryTermList);
       }
-    } 
+    }
   }
   async function handleQueryChange(event) {
     changeQuery(event.target.value);
@@ -118,6 +119,28 @@ function Homepage(props: Props) {
     if (event.key === 'Enter' && query.length !== 0) {
       window.location.href = `/result/${query}`;
     }
+  }
+  
+  async function fetchQueryResults() {
+    const { data } = await axios.get(`/search/${query}`);
+    if (data['success'] !== 1) {
+      return;
+    }
+    const docUrls = data['content']['sortedDocUrls'];
+    fetchDocuments(docUrls);
+  }
+
+  async function fetchDocuments(docUrls) {
+    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
+    if (data['success'] !== 1) {
+      return;
+    }
+    const topDocument = JSON.parse(data['content']['documents'][0]);
+    window.open(topDocument['_id']);
+  }
+
+  function handleFeelingLucky() {
+    fetchQueryResults();
   }
 
   return (
@@ -169,6 +192,7 @@ function Homepage(props: Props) {
             </>
           )}
         />
+        <FeelingLuckyButton onClick={handleFeelingLucky} />
       </div>
     </div>
   );
