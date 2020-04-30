@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
   img: {
     width: '20%',
     height: '100vh',
-    magin: '2'
   }
 }));
 

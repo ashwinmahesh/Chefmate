@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
-import { Redirect } from 'react-router-dom';
 import HeaderSearch from '../Headers/HeaderSearch';
-import { CircularProgress, Typography } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 import Footer from '../Footer/Footer';
@@ -41,10 +39,6 @@ const useStyles = (colors) =>
             paddingBottom: '20px',
             minHeight: '100vh'
         },
-        loading: {
-            color: 'rgb(230, 95, 85)',
-            marginTop: '150px',
-        },
     }));
 type Props = {
     theme: String,
@@ -52,31 +46,9 @@ type Props = {
 function Videos(props: Props) {
     const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
     const styles = useStyles(colors)();
-    const [videos] = useState({});
-    const [loginRedirect, changeLoginRedirect] = useState(false);
-    const [isLoading, changeLoading] = useState(true);
-
-    async function checkAuthentication() {
-        if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
-        const { data } = await axios.get('/checkAuthenticated');
-        if (data.success === 0) {
-            changeLoginRedirect(true);
-        }
-    }
-    useEffect(() => {
-        checkAuthentication();
-    }, []);
-
-
-    function renderVideos() {
-        const output = [];
-        return output;
-}
 
     return (
-
         <div className={styles.wrapper}>
-            {loginRedirect && <Redirect to="/" />}
             <HeaderSearch initialSearch="" />
             <Typography className={styles.title}>Your Videos</Typography>
             <Youtube></Youtube>
