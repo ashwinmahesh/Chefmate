@@ -53,5 +53,5 @@ def initialize():
         if (urlIndex != None):
           userMatrix[userIndex][urlIndex] += VISITED_WEIGHT
 
-  log('time', 'Finished fetching all user info in  ' + str(time.time() - startTime) + ' seconds')
+  log('time', 'Finished building user matrix in  ' + str(time.time() - startTime) + ' seconds')
   return userMatrix, userReverseMap, documentReverseMap

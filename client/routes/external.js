@@ -3,6 +3,7 @@ const sendPacket = require('../sendPacket');
 
 const { User } = require('../mongoConfig');
 
+//TODO - Encrypt this code using bcrypt. Match the body passcode to the encrypted one, same as standard password.
 const AUTH_CODE = 'harrys_chocolate_shop';
 
 module.exports = app => {
@@ -13,7 +14,7 @@ module.exports = app => {
       log('alert', 'Invalid auth code entered.')
       return res.json(sendPacket(0, 'Error fetching all users'))
     }
-    
+
     User.find({}, (err, users) => {
       if(err) {
         log('error', 'There was an error fetching all users');

@@ -19,7 +19,7 @@ app = Flask(__name__)
 port = 8003
 
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
-userMatrix = initialize()
+userMatrix, userReverseMap, documentReverseMap = initialize()
 
 @app.route('/', methods=['GET'])
 def index():
