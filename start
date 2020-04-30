@@ -24,6 +24,10 @@ tell application "Terminal"
 end tell
 
 tell application "Terminal"
+    do script "cd \"`pwd`\"; source scripts/setHeader RECOMMENDER; cd recommender; source ../scripts/createEnv; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; pip install -r requirements.txt; python3 recommender.py"
+end tell
+
+tell application "Terminal"
     do script "cd \"`pwd`\"; source scripts/setHeader \"NODEJS CLIENT\"; cd client; npm install; npm run startDev"
 end tell
 
@@ -36,6 +40,10 @@ osascript <<END
 tell application "Terminal"
     do script "cd \"`pwd`\"; source scripts/setHeader RANKER; cd ranker; source ../scripts/createEnv; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; python3 ranker.py"
 end tell
+
+tell application "Terminal"
+    do script "cd \"`pwd`\"; source scripts/setHeader RECOMMENDER; cd recommender; source ../scripts/createEnv; source venv/bin/activate; export FLASK_ENV=$CHEFMATE_ENV; python3 recommender.py"
+end tell  
 
 tell application "Terminal"
     do script "cd \"`pwd`\"; source scripts/setHeader \"NODEJS CLIENT\"; cd client; npm run startDev"

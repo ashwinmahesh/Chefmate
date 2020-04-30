@@ -38,7 +38,7 @@ inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, auth
 stopwords = set(nltk.corpus.stopwords.words('english'))
 
 QUERY_EXPANSION = False
-PSEUDO_RELEVANCE_FEEDBACK = False
+PSEUDO_RELEVANCE_FEEDBACK = True
 
 @app.route('/', methods=["GET"])
 def index():
