@@ -196,9 +196,9 @@ function Results(props: Props) {
       <p className={styles.resultCount}>
         Found {props.numSearched} results ({props.searchTime} seconds)
       </p>
-      <p className={styles.didyoumean}>
+      {/* <p className={styles.didyoumean}>
         Did you mean ({props.RelevantWord})
-      </p>
+      </p> */}
       <div className={styles.resultContainer}>
         {renderSites()}
         {renderPages()}
