@@ -58,6 +58,7 @@ function Homepage(props: Props) {
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [autocompleteData, changeAutocompleteData] = useState([]);
+  const [isLuckyLoading, changeIsLuckyLoading] = useState(false);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -120,19 +121,23 @@ function Homepage(props: Props) {
       window.location.href = `/result/${query}`;
     }
   }
-  
+
   async function fetchQueryResults() {
     const { data } = await axios.get(`/search/${query}`);
     if (data['success'] !== 1) {
+      changeIsLuckyLoading(false);
       return;
     }
     const docUrls = data['content']['sortedDocUrls'];
-    fetchDocuments(docUrls);
+    fetchDocuments(docUrls).then(() => {
+      changeIsLuckyLoading(false);
+    });
   }
 
   async function fetchDocuments(docUrls) {
     const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
     if (data['success'] !== 1) {
+      changeIsLuckyLoading(false);
       return;
     }
     const topDocument = JSON.parse(data['content']['documents'][0]);
@@ -140,6 +145,8 @@ function Homepage(props: Props) {
   }
 
   function handleFeelingLucky() {
+    if (query.length === 0) return;
+    changeIsLuckyLoading(true);
     fetchQueryResults();
   }
 
@@ -192,7 +199,7 @@ function Homepage(props: Props) {
             </>
           )}
         />
-        <FeelingLuckyButton onClick={handleFeelingLucky} />
+        <FeelingLuckyButton onClick={handleFeelingLucky} loading={isLuckyLoading} />
       </div>
     </div>
   );

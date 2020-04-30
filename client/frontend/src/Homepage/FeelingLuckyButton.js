@@ -28,24 +28,26 @@ const useStyles = (colors) =>
 type Props = {
   theme: String,
   onClick: () => void,
+  loading: Boolean,
 };
 
 function FeelingLuckyButton(props: Props) {
   const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
   const styles = useStyles(colors)();
-  const loading = true;
+
   return (
     <>
       <Button
         className={styles.lucky}
         variant="contained"
         onClick={props.onClick}
-        disabled={loading}
+        disabled={props.loading}
       >
-        {' '}
-        I'm feeling lucky!{' '}
+        I'm feeling lucky!
       </Button>
-      {loading && <CircularProgress size={28} className={styles.loadingCircle} />}
+      {props.loading && (
+        <CircularProgress size={28} className={styles.loadingCircle} />
+      )}
     </>
   );
 }
