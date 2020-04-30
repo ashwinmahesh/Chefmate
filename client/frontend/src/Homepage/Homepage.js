@@ -121,15 +121,6 @@ function Homepage(props: Props) {
     }
   }
 
-  async function fetchQueryResults() {
-    const { data } = await axios.get(`/search/${query}`);
-    if (data['success'] !== 1) {
-      return;
-    }
-    const docUrls = data['content']['sortedDocUrls'];
-    fetchDocuments(docUrls);
-  }
-
   async function fetchDocuments(docUrls) {
     const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
     if (data['success'] !== 1) {
@@ -140,7 +131,12 @@ function Homepage(props: Props) {
   }
 
   function handleFeelingLucky() {
-    fetchQueryResults();
+    const { data } = await axios.get(`/search/${query}`);
+    if (data['success'] !== 1) {
+      return;
+    }
+    const docUrls = data['content']['sortedDocUrls'];
+    fetchDocuments(docUrls);
   }
 
   return (
