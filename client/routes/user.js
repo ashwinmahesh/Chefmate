@@ -1,3 +1,6 @@
+
+//import bcrypt from 'bcrypt'
+//const bcrypt = require('bcrypt')
 const log = require('../logger');
 const sendPacket = require('../sendPacket');
 
@@ -94,6 +97,9 @@ module.exports = app => {
       }
     });
   })
+  
+  //used to check
+  //const usersCheck = [];
 
   app.post('/processRegister', (req, res) => {
     //TODO: Create a new entry for the user in the User table. Use bcrypt to hash the password. Then log them in using a new passport local strategy.
@@ -102,8 +108,32 @@ module.exports = app => {
     let successFullyCreated = true;
 
     if(successFullyCreated) {
+      try{
+        const hashedPassword = bcrypt.hash(password,10);
+        new User({
+          userid: username,
+          password: hashedPassword,
+          likes: {},
+          dislikes: {},
+          history: [],
+        }).save().then((user) => done(null, user));
+
+      }catch{
+        res.redirect('/processRegister')
+      }
+ 
+      
+  
+      
+
+      // check authentication
+      //checkAuthentication();
+  
+      
+      // put in database here
+
       return res.json(sendPacket(1, 'Successfully created user'));
-    }
+    }//else send JSON500
   })
 
   app.get('/recentQueries', (req, res) => {

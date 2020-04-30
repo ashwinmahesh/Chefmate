@@ -1,9 +1,11 @@
 const { User } = require('./mongoConfig');
+const bcrypt = require('bcrypt');
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('./keys');
 const log = require('./logger');
+const localStrategy = require('passport-local').Strategy;
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -42,3 +44,35 @@ passport.use(
     }
   )
 );
+
+
+passport.use(
+  new localStrategy(
+    {
+      username: 'username',
+      password: 'password',
+    },
+    (username,Password, done) => {
+      User.findOne({ userid: username }).then((existingUser) => {
+        if (existingUser) {
+          log("login", "Found existing user")
+          try{
+            //DONT KNOW HOW TO STOP AWAIT ERROR
+            if(await bcrypt.compare(password,existingUser.passwordField)) {
+              return done(null,existingUser)
+            } else {
+              return done(null, false, {message: 'Password incorrect'})
+            }
+          }catch(e){
+            return done(e)
+          }
+        } else {
+          log("login", 'No user exists')
+        }
+      });
+    }
+  )
+);
+
+
+
