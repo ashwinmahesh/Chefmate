@@ -12,7 +12,7 @@ from pseudoRelevanceFeedback import performPseudoRelevanceFeedback
 
 porterStemmer = PorterStemmer()
 
-def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
+def rank(uLikes, uDislikes, query, queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
   startTime = time.time()
 
   docURLs = set()
@@ -20,7 +20,7 @@ def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerRevers
   queryStr=''
   for term in queryTerms:
     queryStr+=term + ' '
-  
+
   log("QE", 'Expanding Query Terms')
   expandedTerms = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
   for termEntry in expandedTerms:
@@ -51,7 +51,18 @@ def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerRevers
     docIndex = crawlerReverseMap[url]
     docWeights = inMemoryTFIDF[:,docIndex]
 
-    rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+    if url in uLikes:
+      if uLikes[url] == query:
+        rankVal = 1
+      else:
+        rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+    elif url in uDislikes:
+      if uDislikes[url] == query:
+        rankVal = 0
+      else:
+        rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+    else:
+      rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
     rankings.append(rankVal)
     docUrlArr.append(url)
@@ -59,7 +70,7 @@ def rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerRevers
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
   
   if pseudoRelevanceFeedback:
-    sortedDocUrls = performPseudoRelevanceFeedback(queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap)
+    sortedDocUrls = performPseudoRelevanceFeedback(uLikes, uDislikes, query, queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap)
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
   return sortedDocUrls

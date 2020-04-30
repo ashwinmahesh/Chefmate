@@ -44,12 +44,17 @@ PSEUDO_RELEVANCE_FEEDBACK = True
 def index():
   return 'I am the ranker!'
 
-@app.route('/query/<query>', methods=['GET'])
+@app.route('/query/<query>', methods=['POST'])
 def rankQuery(query):
   log('Ranker', 'Received query: '+query)
 
+  uLikes = request.json['userLikes']
+  uDislikes = request.json['userDislikes']
+  corrected_uLikes = { k.replace("%114", '.'): v.replace("%20", ' ') for k, v in uLikes.items() }
+  corrected_uDislikes = { k.replace('%114', '.'): v.replace("%20", ' ') for k, v in uDislikes.items() }
+
   queryTerms = stemQuery(query, stopwords)
-  sortedDocUrls = rank(queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
+  sortedDocUrls = rank(corrected_uLikes, corrected_uDislikes, query, queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')
   return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls[0:200]})
 

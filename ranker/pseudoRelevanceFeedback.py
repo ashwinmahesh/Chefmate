@@ -24,7 +24,7 @@ GAMMA = 4.0
 NUM_RELEVANT = 10
 MAX_NEW_WORDS = 50
 
-def performPseudoRelevanceFeedback(queryMatrix, rankedDocuments, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap):
+def performPseudoRelevanceFeedback(uLikes, uDislikes, query, queryMatrix, rankedDocuments, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap):
   startTime = time.time()
   log('pseudo-relevance', 'Performing Pseudo-Relevance Feedback')
   newQuery = np.zeros(len(invertedIndex))
@@ -82,8 +82,21 @@ def performPseudoRelevanceFeedback(queryMatrix, rankedDocuments, invertedIndex, 
     
     docIndex = crawlerReverseMap[url]
     docWeights = inMemoryTFIDF[:,docIndex]
+  
+    if url in uLikes:
+      if uLikes[url] == query:
+        rankVal = 1
+      else:
+        rankVal = (cosineSimilarity(newQueryForCalculation, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+    elif url in uDislikes:
+      if uDislikes[url] == query:
+        rankVal = 0
+      else:
+        rankVal = (cosineSimilarity(newQueryForCalculation, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+    else:
+      rankVal = (cosineSimilarity(newQueryForCalculation, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
-    rankVal = (cosineSimilarity(newQueryForCalculation, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+
 
     rankings.append(rankVal)
     docUrlArr.append(url)

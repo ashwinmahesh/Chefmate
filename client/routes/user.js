@@ -80,8 +80,6 @@ module.exports = app => {
         if(err) {
           return res.json(sendPacket(0, 'Unable to save like status updates'));
         }
-        console.log(user['likes']);
-        console.log(user['dislikes'])
         return res.json(sendPacket(1, 'Document like status successfully changed', {newLikeStatus: likeStatus, user: newUser}));
       })
     })
