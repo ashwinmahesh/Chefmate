@@ -53,7 +53,7 @@ passport.use(
       password: 'password',
     },
     (username,Password, done) => {
-      User.findOne({ userid: username }).then((existingUser) => {
+      User.findOne({ userid: username }).then(async (existingUser) => {
         if (existingUser) {
           log("login", "Found existing user")
           try{
