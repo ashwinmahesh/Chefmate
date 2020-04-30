@@ -1,8 +1,9 @@
+const passport = require("passport");
 const log = require('../logger');
 const sendPacket = require('../sendPacket');
 const clickLogger = require('../clickLogger');
 
-const { User} = require('../mongoConfig');
+const { User } = require('../mongoConfig');
 
 const maxHistoryLength = 100;
 
@@ -73,14 +74,19 @@ module.exports = app => {
     })
   })
 
-  app.post('/processLogin', (req, res) => {
-    //TODO: Finish logging in using passport local strategy.
-    //Status can be removed from body. I just did it to test
-    const { username, password, status } = req.body;
-    if (status===1) {
-      return res.json({success: 1})
-    }
-    return res.json({success: -1})
+  app.post('/processLogin', (req, res, next) => {
+    log('login', 'Received login request');
+
+    passport.authenticate('local', (err, user, info) => {
+      if(err) return next(err);
+      if(!user) return res.json(sendPacket(0, 'Login unsuccessful.'))
+
+      req.login(user, (err) => {
+        if(err) return next(err);
+        return res.json(sendPacket(1, 'Login successful', {userid: user.userid}))
+      })
+
+    }) (req, res, next)
   })
 
   app.get('/validateUsername/:username', (req, res) => {

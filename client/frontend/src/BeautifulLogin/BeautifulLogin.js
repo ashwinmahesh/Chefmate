@@ -127,7 +127,6 @@ export default function BeautifulLogin() {
     const { data } = await axios.post('/processLogin', {
       username: username,
       password: password,
-      status: 0,
     });
     if (data['success'] === 1) changeRedirect(true);
     else {
