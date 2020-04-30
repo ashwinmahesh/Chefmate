@@ -1,21 +1,25 @@
 const { User } = require('./mongoConfig');
-const bcrypt = require('bcrypt');
 
-const passport = require('passport');
+
+//const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('./keys');
 const log = require('./logger');
 const localStrategy = require('passport-local').Strategy;
+const bcrypt = require('bcrypt');
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-  User.findById(id).then((user) => {
-    done(null, user);
+module.exports = (passport) => {
+  passport.serializeUser((user, done) => {
+    done(null, user.id);
   });
-});
+
+  passport.deserializeUser((id, done) => {
+    User.findById(id).then((user) => {
+      done(null, user);
+    });
+  });
+
+
 
 passport.use(
   new GoogleStrategy(
@@ -47,32 +51,25 @@ passport.use(
 
 
 passport.use(
-  new localStrategy(
-    {
-      username: 'username',
-      password: 'password',
-    },
-    (username,Password, done) => {
-      User.findOne({ userid: username }).then(async (existingUser) => {
-        if (existingUser) {
-          log("login", "Found existing user")
-          try{
-            //DONT KNOW HOW TO STOP AWAIT ERROR
-            if(await bcrypt.compare(password,existingUser.passwordField)) {
-              return done(null,existingUser)
-            } else {
-              return done(null, false, {message: 'Password incorrect'})
-            }
-          }catch(e){
-            return done(e)
-          }
-        } else {
-          log("login", 'No user exists')
-        }
-      });
-    }
-  )
+  new localStrategy((username, password, done) => {
+    User.findOne({ userid: username }, async (err, user) => {
+      if (err) return done(null, false, { message: 'No user found' });
+      else if (!(password in user))
+        return done(null, false, {
+          message: 'User not registered with internal service',
+        });
+
+      try {
+        if (await bcrypt.compare(password, user.password))
+          return done(null, user, { message: 'Successfully logged in.' });
+        else return done(null, false, { message: 'Password incorrect' });
+      } catch (err) {
+        return done(err);
+      }
+    });
+  })
 );
+};
 
 
 

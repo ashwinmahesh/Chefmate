@@ -1,12 +1,14 @@
 
 //import bcrypt from 'bcrypt'
-//const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt')
 const log = require('../logger');
 const sendPacket = require('../sendPacket');
 
 const { User} = require('../mongoConfig');
+const passport = require("passport");
 
 const maxHistoryLength = 100;
+
 
 module.exports = app => {
   app.get('/user', (req, res) => {
@@ -74,14 +76,19 @@ module.exports = app => {
     })
   })
 
-  app.post('/processLogin', (req, res) => {
-    //TODO: Finish logging in using passport local strategy.
-    //Status can be removed from body. I just did it to test
-    const { username, password, status } = req.body;
-    if (status===1) {
-      return res.json({success: 1})
-    }
-    return res.json({success: -1})
+  app.post('/processLogin', (req, res, next) => {
+    log('login', 'Received login request');
+
+    passport.authenticate('local', (err, user, info) => {
+      if(err) return next(err);
+      if(!user) return res.json(sendPacket(0, 'Login unsuccessful.'))
+
+      req.login(user, (err) => {
+        if(err) return next(err);
+        return res.json(sendPacket(1, 'Login successful', {userid: user.userid}))
+      })
+
+    }) (req, res, next)
   })
 
   app.get('/validateUsername/:username', (req, res) => {
@@ -101,39 +108,28 @@ module.exports = app => {
   //used to check
   //const usersCheck = [];
 
-  app.post('/processRegister', (req, res) => {
-    //TODO: Create a new entry for the user in the User table. Use bcrypt to hash the password. Then log them in using a new passport local strategy.
-    //Redirect to homepage (main search screen) once completed
+  app.post('/processRegister', async (req, res) => {
     const { username, password} = req.body;
-    let successFullyCreated = true;
-
-    if(successFullyCreated) {
-      try{
-        const hashedPassword = bcrypt.hash(password,10);
-        new User({
-          userid: username,
-          password: hashedPassword,
-          likes: {},
-          dislikes: {},
-          history: [],
-        }).save().then((user) => done(null, user));
-
-      }catch{
-        res.redirect('/processRegister')
+    const hashedPassword = await bcrypt.hash(password,10);
+    const newUser = new User({
+      userid: username,
+      password: hashedPassword,
+      likes: {},
+      dislikes: {},
+      history: [],
+    });
+    newUser.save((err, user) => {
+      if(err){
+        return res.json(sendPacket(0, 'unable to save register'));
       }
- 
-      
-  
-      
 
-      // check authentication
-      //checkAuthentication();
-  
-      
-      // put in database here
-
-      return res.json(sendPacket(1, 'Successfully created user'));
-    }//else send JSON500
+      req.login(user, (err) => {
+        if(err){ 
+          return res.json(sendPacket(0, 'unable to log user in'));
+        }
+        return res.json(sendPacket(1, 'x', { user: user }))
+      })
+    })
   })
 
   app.get('/recentQueries', (req, res) => {
