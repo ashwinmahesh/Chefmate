@@ -7,7 +7,7 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 import Footer from '../Footer/Footer';
-
+import Youtube from './Youtube';
 
 const useStyles = (colors) =>
     makeStyles((theme) => ({
@@ -79,9 +79,8 @@ function Videos(props: Props) {
             {loginRedirect && <Redirect to="/" />}
             <HeaderSearch initialSearch="" />
             <Typography className={styles.title}>Your Videos</Typography>
-            <Typography className={styles.pageDescription}>
-                Your videos will be displayed here!
-            </Typography>
+            <Youtube></Youtube>
+            
             <div className={styles.panelsWrapper}>
             </div>
             <Footer></Footer>

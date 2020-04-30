@@ -113,9 +113,9 @@ function MenuIcon(props: Props) {
         <FaThumbsUp className={[styles.iconStyle, styles.thumbsUp].join(' ')} />
       ) : text === 'Dislikes' ? (
         <FaThumbsDown className={[styles.iconStyle, styles.thumbsDown].join(' ')} />
-      ) : (
+      ) : text === 'History' ? (
         <FaHistory className={[styles.iconStyle].join(' ')} />
-      ,
+      ) : (
         <FaVideo className={[styles.iconStyle].join(' ')} />
       )
       ;
