@@ -1,20 +1,27 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { theme } from '../theme/theme';
+import { Button, CircularProgress } from '@material-ui/core';
 import { connect } from 'react-redux';
-import Button from '@material-ui/core/Button';
 
 const useStyles = (colors) =>
   makeStyles((_) => ({
     lucky: {
-      width: '200px',
       height: '50px',
-      borderRadius: '3px',
       fontSize: '16px',
-      // border: '1px dashed #38698e',
-      // backgroundColor: '#38698e',
-      color: '#38698e',
-      left: '-10px',
+      color: 'white',
+      backgroundColor: colors.headerPrimary,
+      '&:hover': {
+        backgroundColor: colors.headerPrimary,
+      },
+    },
+
+    loadingCircle: {
+      position: 'absolute',
+      color: colors.headerPrimary,
+      top: '432px',
+      left: '50%',
+      marginLeft: -10,
     },
   }));
 
@@ -26,11 +33,20 @@ type Props = {
 function FeelingLuckyButton(props: Props) {
   const colors = props.theme === 'light' ? theme.colors : theme.darkColors;
   const styles = useStyles(colors)();
+  const loading = true;
   return (
-    <Button className={styles.lucky} color="inherit" onClick={props.onClick}>
-      {' '}
-      I'm feeling lucky!{' '}
-    </Button>
+    <>
+      <Button
+        className={styles.lucky}
+        variant="contained"
+        onClick={props.onClick}
+        disabled={loading}
+      >
+        {' '}
+        I'm feeling lucky!{' '}
+      </Button>
+      {loading && <CircularProgress size={28} className={styles.loadingCircle} />}
+    </>
   );
 }
 
