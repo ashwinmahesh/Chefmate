@@ -39,6 +39,7 @@ const useStyles = (colors) =>
             paddingRight: '15px',
             paddingTop: '20px',
             paddingBottom: '20px',
+            minHeight: '100vh'
         },
         loading: {
             color: 'rgb(230, 95, 85)',
@@ -82,11 +83,6 @@ function Videos(props: Props) {
                 Your videos will be displayed here!
             </Typography>
             <div className={styles.panelsWrapper}>
-                {isLoading ? (
-                    <CircularProgress className={styles.loading} size={50} />
-                ) : (
-                        renderVideos()
-                    )}
             </div>
             <Footer></Footer>
         </div>
