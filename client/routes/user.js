@@ -1,5 +1,3 @@
-
-//import bcrypt from 'bcrypt'
 const bcrypt = require('bcrypt')
 const log = require('../logger');
 const sendPacket = require('../sendPacket');
@@ -8,7 +6,6 @@ const { User} = require('../mongoConfig');
 const passport = require("passport");
 
 const maxHistoryLength = 100;
-
 
 module.exports = app => {
   app.get('/user', (req, res) => {
@@ -104,9 +101,6 @@ module.exports = app => {
       }
     });
   })
-  
-  //used to check
-  //const usersCheck = [];
 
   app.post('/processRegister', async (req, res) => {
     const { username, password} = req.body;
