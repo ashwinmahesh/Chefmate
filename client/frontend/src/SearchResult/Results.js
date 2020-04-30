@@ -89,7 +89,6 @@ type Props = {
   documents: [{}],
   numSearched: Number,
   searchTime: Number,
-  RelevantWord: String,
   likesDislikes: [{}],
   theme: String,
   query: String,
