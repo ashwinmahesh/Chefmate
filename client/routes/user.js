@@ -50,7 +50,7 @@ module.exports = app => {
   
       if (likeStatus === 1) {
         if (dotReplacedUrl in user['dislikes']) {
-          if (prefix !== "http://localhost:8000/result") {
+          if (prefix.substring(prefix.lastIndexOf('/') + 1) !== "result") {
             query = user['dislikes'][dotReplacedUrl];
           }
           delete user['dislikes'][dotReplacedUrl];
@@ -60,7 +60,7 @@ module.exports = app => {
   
       else if (likeStatus === -1) {
         if (dotReplacedUrl in user['likes']) {
-          if (prefix !== "http://localhost:8000/result") {
+          if (prefix.substring(prefix.lastIndexOf('/') + 1) !== "result") {
             query = user['likes'][dotReplacedUrl];
           }
           delete user['likes'][dotReplacedUrl];
