@@ -135,9 +135,8 @@ function Homepage(props: Props) {
     if (data['success'] !== 1) {
       return;
     }
-    var topDocument = data['content']['documents'][0];
-    const myUrl = JSON.parse(topDocument);
-    window.open(myUrl._id);
+    const topDocument = JSON.parse(data['content']['documents'][0]);
+    window.open(topDocument['_id']);
   }
 
   function handleFeelingLucky() {
