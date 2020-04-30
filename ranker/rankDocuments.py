@@ -55,12 +55,12 @@ def rank(uLikes, uDislikes, query, queryTerms, termReverseMap, invertedIndex, in
       if uLikes[url] == query:
         rankVal = 1
       else:
-        rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+        rankVal = (0.1 + cosineSimilarity(queryTermWeights, docWeights) * 0.75) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     elif url in uDislikes:
       if uDislikes[url] == query:
         rankVal = 0
       else:
-        rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+        rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.75) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     else:
       rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
