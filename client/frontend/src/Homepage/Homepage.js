@@ -58,7 +58,6 @@ function Homepage(props: Props) {
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [autocompleteData, changeAutocompleteData] = useState([]);
-  let topDocument = '';
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -123,7 +122,6 @@ function Homepage(props: Props) {
   }
 
   async function fetchQueryResults() {
-    const startTime = Date.now();
     const { data } = await axios.get(`/search/${query}`);
     if (data['success'] !== 1) {
       return;
@@ -137,7 +135,7 @@ function Homepage(props: Props) {
     if (data['success'] !== 1) {
       return;
     }
-    topDocument = data['content']['documents'][0];
+    var topDocument = data['content']['documents'][0];
     const myUrl = JSON.parse(topDocument);
     window.open(myUrl._id);
   }
