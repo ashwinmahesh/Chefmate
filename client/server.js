@@ -37,6 +37,7 @@ app.use(passport.session());
 require('./routes/auth')(app);
 require('./routes/user')(app);
 require('./routes/search')(app);
+require('./routes/external')(app)
 
 app.get('*', (_, response) => {
   return response.sendFile('index.html', { root });

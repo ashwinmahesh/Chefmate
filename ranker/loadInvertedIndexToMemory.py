@@ -35,7 +35,7 @@ def loadInvertedIndexToMemory():
 
   termReverseMap = {}
   for i in range(0, len(invertedIndex)):
-    termReverseMap[allTerms[i][1]] = i
+    termReverseMap[invertedIndex[i]['term']] = i
 
   for document in crawlerObjects:
     docIndex = crawlerReverseMap.get(document['url'])

@@ -13,10 +13,13 @@ from helpers import *
 from mongoengine import *
 from mongoConfig import *
 
+from initialize import initialize
+
 app = Flask(__name__)
 port = 8003
 
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
+userMatrix = initialize()
 
 @app.route('/', methods=['GET'])
 def index():
