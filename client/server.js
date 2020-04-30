@@ -8,7 +8,7 @@ const pino = require('express-pino-logger')();
 const bodyParser = require('body-parser');
 const expressSession = require('express-session');
 const passport = require('passport');
-require('./passport-config');
+require('./passport-config')(passport);
 
 const app = express();
 

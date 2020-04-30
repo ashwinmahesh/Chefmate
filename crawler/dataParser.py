@@ -5,15 +5,17 @@ import sys
 sys.path.append('..')
 import helpers
 log = helpers.log
-from extractData import extractData
 
+from extractData import extractData
 from threading import Thread
+from graph import Graph
 
 class DataParser:
   MAX_BUFFER_LEN = 10
 
-  def __init__(self, siteName, threads):
+  def __init__(self, siteName, baseURL, threads):
     self.siteName = siteName
+    self.baseURL = baseURL
     self.crawledFile = 'domains/' + siteName + '/' + siteName + '_crawled.txt'
     self.indexFile = FileIO.createSiteIndexFile(self.siteName)
     self.links = set()
@@ -21,6 +23,10 @@ class DataParser:
     self.readSemaphore = True
     self.writeSemaphore = True
     self.MAX_THREADS = threads
+    self.inlinkGraph = Graph()
+    self.outlinkGraph = Graph()
+    self.inlinkGraphFile = 'domains/' + siteName + '/' + siteName + '_inlinks.json'
+    self.outlinkGraphFile = 'domains/' + siteName + '/' + siteName + '_outlinks.json'
 
   def parserWorker(self):
     buffer = []
@@ -37,6 +43,9 @@ class DataParser:
 
       for link in toParse:
         obj = extractData(link)
+        
+        self.addNewLinksToGraphs(obj['link'], obj['newLinks'])
+
         buffer.append('link: ' + link + '\n')
 
         title = obj['title'] if obj['title']!=None else self.siteName
@@ -80,6 +89,26 @@ class DataParser:
     for i in range(0, self.MAX_THREADS):
       threadPool[i].join()
 
+    self.saveLinkGraphs()
+
+  def addNewLinksToGraphs(self, parseLink, links):
+    for link in links:
+      href = link.get('href')
+
+      if href is None or len(href) == 0 or href == '#':
+        continue
+
+      if href[0] == '/':
+        self.outlinkGraph.addLink(parseLink, self.baseURL + href)
+        self.inlinkGraph.addLink(self.baseURL + href, parseLink)
+      elif href[:len(self.baseURL)] == self.baseURL:
+        self.outlinkGraph.addLink(parseLink, href)
+        self.inlinkGraph.addLink(href, parseLink)
+
+  def saveLinkGraphs(self):
+    FileIO.writeJsonFile(self.outlinkGraph.nodes, self.outlinkGraphFile)
+    FileIO.writeJsonFile(self.inlinkGraph.nodes, self.inlinkGraphFile)
+
 if __name__ == "__main__":
-  parser = DataParser('EpiCurious')
+  parser = DataParser('EpiCurious', 'https://www.epicurious.com/', 4)
   parser.runParser()
