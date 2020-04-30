@@ -21,10 +21,10 @@ port = 8003
 
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 userMatrix, userReverseMap, documentReverseMap = initialize()
-K_VALUE = 5
+K_VALUE = 10
 
 ###For testing
-findKNearestNeighbors(K_VALUE, username='mahesh.ashwin1998@gmail.com', userIndex=userReverseMap['mahesh.ashwin1998@gmail.com'], userMatrix=userMatrix)
+knn = findKNearestNeighbors(K_VALUE, username='mahesh.ashwin1998@gmail.com', userIndex=userReverseMap['mahesh.ashwin1998@gmail.com'], userMatrix=userMatrix)
 
 @app.route('/', methods=['GET'])
 def index():
