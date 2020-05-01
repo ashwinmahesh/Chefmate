@@ -13,10 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 
-
-const GLOBAL_TIMEOUT = 20;
-
-
+const GLOBAL_TIMEOUT = 45;
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
@@ -75,7 +72,7 @@ function SearchResult(props) {
       return;
     }
     const docUrls = data['content']['sortedDocUrls'];
-    
+
     updateNumSearched(docUrls.length);
     fetchDocuments(docUrls, startTime).then(() => {
       changeSearchTime((Date.now() - startTime) / 1000);
@@ -85,7 +82,10 @@ function SearchResult(props) {
   }
 
   async function fetchDocuments(docUrls, startTime) {
-    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls, startTime: startTime });
+    const { data } = await axios.post('/fetchDocuments', {
+      docUrls: docUrls,
+      startTime: startTime,
+    });
     if (data['success'] !== 1) {
       changeTimedOut(true);
       changeLoading(false);
@@ -100,7 +100,7 @@ function SearchResult(props) {
     <div className={styles.container}>
       {loginRedirect && <Redirect to="/" />}
       <HeaderSearch initialSearch={oldQuery} />
-    
+
       <div className={styles.resultDiv}>
         {isLoading ? (
           // <img className={styles.loading} src={loading} alt="loading..." />
@@ -130,7 +130,6 @@ function clockUpdate(changeTimedOut) {
     if (seconds > GLOBAL_TIMEOUT && stillLoading) {
       changeTimedOut(true);
     }
-    
   }
 }
 
