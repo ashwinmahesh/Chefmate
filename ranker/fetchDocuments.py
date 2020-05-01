@@ -20,15 +20,16 @@ def fetchDocuments(stemmedQueryTerms, invertedIndex, queryExpansion=False):
       expandedList += [term for chiSquare, term in performQueryExpansion(queryTerm, invertedIndex)]
   
   termDBObjects = []
+  didUMean = {}
   for term in expandedList:
     try:
       termEntry = InvertedIndex.objects.get(term=term)
       termDBObjects.append(termEntry)
     except DoesNotExist:
       log("query", 'Term not found - '+term+' ...Attempting to find similar...')
-      didUMean = getSimilarTerm(term)
+      didUMean[term] = getSimilarTerm(term)
 
-  return termDBObjects
+  return termDBObjects, didUMean
 
 if __name__ == '__main__':
   connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
