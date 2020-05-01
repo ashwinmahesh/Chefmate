@@ -17,7 +17,7 @@ def hasConnection(page, otherPage, edges):
 
 def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iterations:int, lambdaVar:float=0.0001, testMode=False):
   startTime = time.time()
-
+  log("Hits calculation started at:", str(startTime))
   inlinkGraph = Graph(FileIO.readJsonFile(inlinkGraphFile))
   outlinkGraph = Graph(FileIO.readJsonFile(outlinkGraphFile))
 
@@ -69,6 +69,7 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
     result[page] = hubAuth
 
   not testMode and FileIO.writeJsonFile(result, 'domains/' + domain + '/' + domain + '_HubAuth.json')
+  log('time', 'Hits calculation for ' + domain + ' completed in ' + str(time.time()-startTime) + ' seconds')
 
   return authority[iterations], hub[iterations]
 

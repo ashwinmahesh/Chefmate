@@ -51,7 +51,6 @@ class DatabaseBuilder:
     count=0
     for entry in rawData.keys():
       count+=1
-      print("ENTRY: " + entry)
       doc = rawData[entry]
 
       if doc['title'] == None:
