@@ -50,8 +50,20 @@ def rankQuery(query):
 
   uLikes = request.json['userLikes']
   uDislikes = request.json['userDislikes']
-  corrected_uLikes = { k.replace("%114", '.'): v.replace("%20", ' ') for k, v in uLikes.items() }
-  corrected_uDislikes = { k.replace('%114', '.'): v.replace("%20", ' ') for k, v in uDislikes.items() }
+
+  fixed_uLikes = []
+  fixed_dislikes = []
+
+  for link, value in uLikes.items():
+    if not isinstance(value, bool):
+      fixed_uLikes.append((link, value))
+
+  for link, value in uDislikes.items():
+    if not isinstance(value, bool):
+      fixed_dislikes.append((link, value))
+
+  corrected_uLikes = { k.replace("%114", '.'): v.replace("%20", ' ') for k, v in fixed_uLikes }
+  corrected_uDislikes = { k.replace('%114', '.'): v.replace("%20", ' ') for k, v in fixed_dislikes }
 
   index = query.find(":")
   if index == -1: 
