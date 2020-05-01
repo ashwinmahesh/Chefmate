@@ -39,16 +39,33 @@ inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, auth
 stopwords = set(nltk.corpus.stopwords.words('english'))
 
 QUERY_EXPANSION = False
-PSEUDO_RELEVANCE_FEEDBACK = True
+PSEUDO_RELEVANCE_FEEDBACK = False
 
 @app.route('/', methods=["GET"])
 def index():
   return 'I am the ranker!'
 
-@app.route('/query/<query>', methods=['GET'])
+@app.route('/query/<query>', methods=['POST'])
 def rankQuery(query):
   log('Ranker', 'Received query: '+query)
-  
+
+  uLikes = request.json['userLikes']
+  uDislikes = request.json['userDislikes']
+
+  fixed_uLikes = []
+  fixed_dislikes = []
+
+  for link, value in uLikes.items():
+    if not isinstance(value, bool):
+      fixed_uLikes.append((link, value))
+
+  for link, value in uDislikes.items():
+    if not isinstance(value, bool):
+      fixed_dislikes.append((link, value))
+
+  corrected_uLikes = { k.replace("%114", '.'): v.replace("%20", ' ') for k, v in fixed_uLikes }
+  corrected_uDislikes = { k.replace('%114', '.'): v.replace("%20", ' ') for k, v in fixed_dislikes }
+
   index = query.find(":")
   if index == -1: 
     excludedTerms = []
@@ -56,11 +73,12 @@ def rankQuery(query):
   else:
     excludedTerms = stemQuery(query[index+1:len(query)], stopwords)
     pureQuery = query[0:index]
-    
+
   queryTerms = stemQuery(pureQuery, stopwords)
+
   addSpecialChars(queryTerms)
-  sortedDocUrls = rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
-  
+  sortedDocUrls = rank(corrected_uLikes, corrected_uDislikes, query, queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
+
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')
   return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls[0:200]})
 

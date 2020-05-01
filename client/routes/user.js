@@ -35,7 +35,7 @@ module.exports = app => {
   })
 
   app.post('/changeLikeStatus', (req, res) => {
-    const { likeStatus, url } = req.body;
+    const { likeStatus, url} = req.body;
     if(req.user === undefined) return res.json(sendPacket(0, 'Unable to save because User not logged in.'));
     User.findById(req.user._id, (err, user) => {
       if(err){
@@ -47,15 +47,29 @@ module.exports = app => {
       if(!('dislikes' in user)) user['dislikes']= {};
   
       const dotReplacedUrl = url.replace(/\./g, '%114')
+
+      const refStr = String(req.headers.referer);
+      const prefix = refStr.substring(0, refStr.lastIndexOf('/'));
+      var query = refStr.substring(refStr.lastIndexOf('/') + 1);
   
       if (likeStatus === 1) {
-        if (dotReplacedUrl in user['dislikes']) delete user['dislikes'][dotReplacedUrl];
-        user['likes'][dotReplacedUrl]=true;
+        if (dotReplacedUrl in user['dislikes']) {
+          if (prefix.substring(prefix.lastIndexOf('/') + 1) !== "result") {
+            query = user['dislikes'][dotReplacedUrl];
+          }
+          delete user['dislikes'][dotReplacedUrl];
+        } 
+        user['likes'][dotReplacedUrl] = query;
       }
   
       else if (likeStatus === -1) {
-        if (dotReplacedUrl in user['likes']) delete user['likes'][dotReplacedUrl];
-        user['dislikes'][dotReplacedUrl]=true;
+        if (dotReplacedUrl in user['likes']) {
+          if (prefix.substring(prefix.lastIndexOf('/') + 1) !== "result") {
+            query = user['likes'][dotReplacedUrl];
+          }
+          delete user['likes'][dotReplacedUrl];
+        }
+        user['dislikes'][dotReplacedUrl]= query;
       }
   
       else {
