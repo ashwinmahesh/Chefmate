@@ -39,11 +39,9 @@ username = 'admin'
 password = ''
 
 try:
-  password = open("../../Chefmate_auth/pw.txt").read()
-  print(password)
+  password = open("../../Chefmate_auth/pw.txt").read().strip()
 except:
   print("Error getting Mongo password. Make sure Chefmate_auth/pw.txt exists and is populated.")
-
 
 #password = os.environ.get('MONGODB_PW') or ''
 

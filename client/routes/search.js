@@ -8,8 +8,25 @@ const { User, Query } = require('../mongoConfig');
 module.exports = (app) => {
   app.get('/search/:query', async (request, response) => {
     const query = request.params['query'];
+
+    if (request.user != undefined) {
+      var userLikes = {}
+      var userDislikes = {}
+      await User.findById(request.user._id, (err, user) => {
+        if (err) log('error', 'Unable to find user');
+        else {
+          userLikes = user['likes']
+          userDislikes = user['dislikes']
+        }
+      });
+    } 
+
     log('query', `Received query from client: ${query}. Sending data to ranker`);
-    const data = await makeRequest('ranker', `query/${query}`);
+
+    const data = await makeRequest('ranker', `query/${query}`, 'POST', {
+      userLikes: userLikes,
+      userDislikes: userDislikes,
+    });
 
     Query.findById(query, (err, oldQueryObj) => {
       if (err) log('error', 'Error finding query.');
