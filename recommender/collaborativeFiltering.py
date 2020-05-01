@@ -6,7 +6,6 @@ import numpy as np
 from cosineSimilarity import cosineSimilarity
 from helpers import *
 
-#Pearson Correlation Coefficient Using Cosine Similarity
 def PearsonCorrelation(user1Values:[float], user2Values:[float]):
   return cosineSimilarity(user1Values, user2Values)
 
