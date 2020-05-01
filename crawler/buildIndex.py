@@ -13,6 +13,7 @@ from databaseBuilder import DatabaseBuilder
 from calculateTFIDF import calculateTFIDF
 from calculateIDF import calculateIDF
 from calculatePageRank import calculatePageRank
+from calculateHubAuth import calculateHubAuth
 
 domains = [
     {'name': 'Tasty', 'root': 'https://tasty.co/'},
@@ -22,7 +23,7 @@ domains = [
 
 loginPwd = '$2b$12$xteJc6kD6a3QSpi3MCHz5OyJWFY47uls8iw33Y.mwhqPtd168bOt.'.encode('UTF-8')
 
-def buildIndex(iterations, threads=1, reset=True, resetFiles=True, passwordLock=True, dev=False, options={'crawl':True, 'pageRank': True, 'parse':True, 'database':True, 'idf':True, 'tfidf':True}):
+def buildIndex(iterations, threads=1, reset=False, resetFiles=False, passwordLock=True, dev=False, options={'crawl':True, 'pageRank': True, 'parse':True, 'hits': True, 'database':True, 'idf':True, 'tfidf':True}):
   log('build index', 'Running full suite of crawler programs.')
   programStartTime = time.time()
 
@@ -52,10 +53,11 @@ def buildIndex(iterations, threads=1, reset=True, resetFiles=True, passwordLock=
 
     inlinkGraphFile = 'domains/'+domain['name']+'/'+domain['name']+'_inlinks.json'
     outlinkGraphFile = 'domains/'+domain['name']+'/'+domain['name']+'_outlinks.json'
-    options['pageRank'] and calculatePageRank(domain['name'], inlinkGraphFile, outlinkGraphFile, 3)
-
+    
     options['parse'] and DataParser(domain['name'], domain['root'], threads).runParser()
 
+    options['pageRank'] and calculatePageRank(domain['name'], inlinkGraphFile, outlinkGraphFile, 3)
+    options['hits'] and calculateHubAuth(domain['name'], inlinkGraphFile, outlinkGraphFile, 3)
     options['database'] and DatabaseBuilder(domain['name'], threads=threads, mode='DEV' if dev else 'PROD').buildRawText()
 
 

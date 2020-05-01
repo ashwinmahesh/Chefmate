@@ -1,23 +1,36 @@
 const mongoose = require("mongoose");
 const log = require('./logger');
+const fs = require('fs');
 
-// const databaseAddr = '18.222.251.5'; //OLD DB
-const databaseAddr = '18.219.145.177'; //NEW DB
-// const databaseAddr = 'localhost';
+const username = 'admin';
+//const passwordOld = process.env.MONGODB_PW || '';
+databaseName = 'ChefmateDB'
+//databaseName = 'ChefmateDB_Alt';
+const host = '18.219.145.177'; //NEW DB
+//host = 'localhost'
+//host = '18.222.251.5' //OLD DB
+const port = 27017;
+var password = ' '
 
-const databaseName = 'ChefmateDB'
-// const databaseName = 'ChefmateDB_Alt'
+fs.readFile('../../Chefmate_auth/pw.txt', "utf8", (err, data) => {
+  if(err) {
+    console.log("Error getting Mongo password. Make sure Chefmate_auth/pw.txt exists and is populated.");
+  } else {
+    //Do *NOT* hardcode password, ever
+    password = data
 
-const mongoUri = `mongodb://${databaseAddr}/${databaseName}`;
+    const mongoUri = 'mongodb://' + username + ":" + password.replace(/\n$/, "") + "@" + host + ":" + port + "/" + databaseName;
 
-mongoose
-  .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    log('info', "Connected to database");
-  })
-  .catch(err => {
-    log('error', "Error: Not connected to database.");
-  });
+    mongoose
+      .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true, dbName: databaseName })
+      .then(() => {
+        log('info', "Connected to database");
+      })
+      .catch(err => {
+        log('error', "Error: Not connected to database.");
+    });
+  }
+});
 
 const CrawlerSchema = new mongoose.Schema(
   {

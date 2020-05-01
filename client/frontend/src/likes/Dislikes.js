@@ -7,18 +7,19 @@ import LikesExpansionPanel from './LikesExpansionPanel';
 import { CircularProgress, Typography } from '@material-ui/core';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
+import Footer from '../Footer/Footer';
 
 const useStyles = (colors) =>
-  makeStyles((theme) => ({
+  makeStyles((_) => ({
     wrapper: {
       background: colors.background,
-      minHeight: '100vh',
     },
     panelsWrapper: {
       paddingLeft: '15px',
       paddingRight: '15px',
       paddingTop: '20px',
       paddingBottom: '20px',
+      minHeight: '100vh',
     },
     loading: {
       color: 'rgb(230, 95, 85)',
@@ -120,6 +121,7 @@ function Dislikes(props: Props) {
           renderDislikes()
         )}
       </div>
+      <Footer></Footer>
     </div>
   );
 }

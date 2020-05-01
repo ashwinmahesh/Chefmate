@@ -1,39 +1,30 @@
 .div1 {
   background-image: url('../images/cuisine4.png');
   height: 100vh;
-  opacity: 0.8;
+  opacity: 0.6;
   z-index: -1;
 }
 .div2 {
   background-image: url('../images/cuisine2.png');
   height: 100vh;
-  opacity: 0.8;
+  opacity: 0.6;
   z-index: -1;
 }
 .div3 {
   background-image: url('../images/cuisine3.png');
   height: 100vh;
-  opacity: 0.8;
+  opacity: 0.6;
   z-index: -1;
 }
 .div4 {
   background-image: url('../images/cuisine1.png');
   height: 100vh;
-  opacity: 0.8;
+  opacity: 0.6;
 }
 .div5 {
   background-image: url('../images/cuisine5.png');
   height: 100vh;
-  opacity: 0.8;
+  opacity: 0.6;
 }
 
-#btn {
-  background-color: #38698e;
-  height: 40px;
-  width: 200px;
-  font-size: 20px;
-  color: white;
-  font-weight: bold;
-  border-radius: 4px;
-  margin-top: 40px;
-}
+

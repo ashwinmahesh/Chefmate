@@ -5,23 +5,23 @@ const useStyles = makeStyles((theme) => ({
   container: {
     opacity: '.9',
     backgroundColor: 'white',
-    width: '700px',
-    height: '350px',
+    width: '45%',
+    height: '20%',
+    // height: '300px',
     position: 'absolute',
     left: '25%',
-    top: '25%',
-    borderRadius: '4px',
+    top: '35%',
+    borderRadius: '6px',
     boxShadow: '3px 3px 4px 4px grey',
-    zIndex: '2',
+    display: 'block',
+    padding: '20px'
   },
-  wrapper: {
-    display: 'flex',
-    justifyContent: 'center',
-    minWidth: '500px',
-  },
+  
 }));
 
 export default function LoginBox(props) {
   const styles = useStyles();
-  return <div className={styles.container}>{props.children}</div>;
+  return <div className={styles.container}>{props.children}
+   
+  </div>;
 }
