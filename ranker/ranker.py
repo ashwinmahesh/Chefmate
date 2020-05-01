@@ -77,10 +77,15 @@ def rankQuery(query):
   queryTerms = stemQuery(pureQuery, stopwords)
 
   addSpecialChars(queryTerms)
-  sortedDocUrls = rank(corrected_uLikes, corrected_uDislikes, query, queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
+  rankResults  = rank(corrected_uLikes, corrected_uDislikes, query, queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
+  sortedDocUrls = rankResults[0]
+  didUMeanStr = rankResults[1]
 
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')
-  return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls[0:200]})
+  return sendPacket(1, 'Successfully retrieved query', {
+    'sortedDocUrls':sortedDocUrls[0:200],
+    'didUMeanStr': didUMeanStr
+  })
 
 @app.route('/fetchDocuments', methods=['POST'])
 def fetchDocuments():

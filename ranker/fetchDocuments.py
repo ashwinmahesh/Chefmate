@@ -1,4 +1,5 @@
 from queryExpansion import performQueryExpansion
+from levenDistance import getSimilarTerm
 from mongoConfig import *
 import sys
 sys.path.append('..')
@@ -19,13 +20,16 @@ def fetchDocuments(stemmedQueryTerms, invertedIndex, queryExpansion=False):
       expandedList += [term for chiSquare, term in performQueryExpansion(queryTerm, invertedIndex)]
   
   termDBObjects = []
+  didUMean = {}
   for term in expandedList:
     try:
       termEntry = InvertedIndex.objects.get(term=term)
       termDBObjects.append(termEntry)
     except DoesNotExist:
-      log("query", 'Term not found - '+term)
-  return termDBObjects
+      log("query", 'Term not found - '+term+' ...Attempting to find similar...')
+      didUMean[term] = getSimilarTerm(term)
+
+  return termDBObjects, didUMean
 
 if __name__ == '__main__':
   connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)

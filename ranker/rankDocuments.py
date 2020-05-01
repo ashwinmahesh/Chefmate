@@ -18,11 +18,22 @@ def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, in
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
   queryStr=''
+  didUMeanStr=''
   for term in queryTerms:
     queryStr+=term + ' '
-
+    didUMeanStr+=term + ' '
+  
   log("QE", 'Expanding Query Terms')
-  expandedTerms = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
+  fetchResults = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
+  expandedTerms = fetchResults[0]
+  didUMean = fetchResults[1]
+
+  for x in didUMean:
+    didUMeanStr = didUMeanStr.replace(x, didUMean[x])
+  
+  if didUMeanStr == queryStr:
+    didUMeanStr = ''
+
   for termEntry in expandedTerms:
     docInfoList=termEntry['doc_info']
     for docKey in docInfoList:
@@ -95,4 +106,4 @@ def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, in
     sortedDocUrls = performPseudoRelevanceFeedback(uLikes, uDislikes, query, queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap)
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
-  return sortedDocUrls
+  return sortedDocUrls, didUMeanStr
