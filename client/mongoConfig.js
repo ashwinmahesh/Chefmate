@@ -1,16 +1,21 @@
 const mongoose = require("mongoose");
 const log = require('./logger');
 
-// const databaseAddr = '18.222.251.5';
-const databaseAddr = '18.219.145.177';
+const username = 'admin';
+const password = process.env.MONGODB_PW || '';
 
-const databaseName = 'ChefmateDB'
-// const databaseName = 'ChefmateDB_Alt'
+databaseName = 'ChefmateDB'
+//databaseName = 'ChefmateDB_Alt';
+const host = '18.219.145.177'; //NEW DB
+//host = 'localhost'
+//host = '18.222.251.5' //OLD DB
+const port = 27017;
 
-const mongoUri = `mongodb://${databaseAddr}/${databaseName}`;
+//Do *NOT* hardcode password, ever
+const mongoUri = 'mongodb://' + username + ":" + password + "@" + host + ":" + port + "/" + databaseName;
 
 mongoose
-  .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true, dbName: databaseName })
   .then(() => {
     log('info', "Connected to database");
   })
