@@ -31,7 +31,7 @@ def performPseudoRelevanceFeedback(queryMatrix, rankedDocuments, invertedIndex, 
   newQuery = queryMatrix * ALPHA
 
   relevantWeights = np.zeros(len(invertedIndex))
-  for i in range(0, NUM_RELEVANT):
+  for i in range(0, min(len(rankedDocuments), NUM_RELEVANT)):
     currentDoc = rankedDocuments[i]
     docIndex = crawlerReverseMap[currentDoc]
     docWeights = inMemoryTFIDF[:, docIndex]
