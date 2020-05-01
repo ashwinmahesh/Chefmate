@@ -1,4 +1,5 @@
 import datetime
+import os
 from mongoengine import *
 
 class Crawler(Document):
@@ -34,10 +35,16 @@ class Query(Document):
   query = StringField(required=True, primary_key=True)
   count = IntField(required=True, default=1)
 
-# databaseName = 'ChefmateDB'
+username = 'admin'
+password = os.environ.get('MONGODB_PW') or ''
+authDB = 'admin'
+
+#databaseName = 'ChefmateDB'
 databaseName = 'ChefmateDB_Alt'
+host = '18.219.145.177' #NEW DB
+#host = 'localhost'
+#host = '18.222.251.5'
+port = 27017
 
-# databaseAddr = '18.219.145.177' #NEW DB
-databaseAddr = '18.222.251.5'
-# databaseAddr = 'localhost'
-
+#Do *NOT* hardcode password, ever
+databaseAddr = 'mongodb://' + username + ":" + password + "@" + host + ":" + str(port) + "/" + authDB
