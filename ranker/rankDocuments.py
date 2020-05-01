@@ -96,7 +96,6 @@ def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, in
     else:
       rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
-    rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     rankings.append(rankVal)
     docUrlArr.append(url)
 
