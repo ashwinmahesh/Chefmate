@@ -205,7 +205,7 @@ function Results(props: Props) {
         <p className={styles.didUMeanMain}>
           Did you mean:{' '}
           <a href={`/result/${props.didUMean}`} className={styles.didUMeanLink}>
-            {props.RelevantWord}
+            {props.didUMean}
           </a>
         </p>
       )}
