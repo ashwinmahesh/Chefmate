@@ -1,8 +1,8 @@
 from buildIndex import buildIndex
 
 options = {
-  'crawl':False,
-  'pageRank': True,
+  'crawl':True,
+  'pageRank': False,
   'parse':True,
   'database':True,
   'idf':True,

@@ -18,3 +18,4 @@ port = 27017
 
 #Do *NOT* hardcode password, ever
 databaseAddr = 'mongodb://' + username + ":" + password.rstrip() + "@" + host + ":" + str(port) + "/" + databaseName
+

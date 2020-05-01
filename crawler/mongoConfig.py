@@ -44,6 +44,7 @@ try:
 except:
   print("Error getting Mongo password. Make sure Chefmate_auth/pw.txt exists and is populated.")
 
+
 #password = os.environ.get('MONGODB_PW') or ''
 
 databaseName = 'ChefmateDB'
