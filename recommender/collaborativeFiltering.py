@@ -13,15 +13,27 @@ def PearsonCorrelation(user1Values:[float], user2Values:[float]):
 
   return cosineSimilarity(user1Values, user2Values)
 
-def predictValue(predictIndex):
-  pass
+def predictValue(predictIndex, userIndex, neighborWeights):
+  totalSimilarity = 0.0
+  weightedRating = 0.0
+  countOfIncluded = 0
 
-def collaborativeFiltering(username, userIndex, userMatrix):
+  for weights in neighorWeights:
+    pass
+
+
+def collaborativeFiltering(username, userIndex, userMatrix, kNearestNeighbors):
   startTime = time.time()
   log('collab', 'Beginning collaborative filtering for ' + username)
+
+  neighborWeights = np.zeros((len(kNearestNeighbors), len(userMatrix[0])))
+  for i in range(0, len(kNearestNeighbors)):
+    neighborIndex = kNearestNeighbors[i][0]
+    np.copyto(neighborWeights[i], userMatrix[neighborIndex])
+
+  ##For each value, predict the value for that using nearest neighbors
   for i in range(0, len(userMatrix[userIndex])):
-    ##Skipping entries that user already has data for
     if(userMatrix[userIndex][i]) != 0:
-      continue
+      predictValue(predictIndex=i, userIndex=i, neighborWeights=neighborWeights)
 
   log('time', 'Finished performing collaborative filtering on ' + username + ' in ' + str(time.time() - startTime) + ' seconds')
