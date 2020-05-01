@@ -10,6 +10,7 @@ class Crawler(Document):
   hub = FloatField(required=True, default=1.0)
   authority = FloatField(required=True, default=1.0)
   pageRank = FloatField(required=True, default=1.0)
+  likeCount = IntField(required = True, default=1)
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
   tfidf = DictField(required=True, default={})
@@ -54,4 +55,3 @@ port = 27017
 
 #Do *NOT* hardcode password, ever
 databaseAddr = 'mongodb://' + username + ":" + password.rstrip() + "@" + host + ":" + str(port) + "/" + databaseName
-print(databaseAddr)
