@@ -22,6 +22,9 @@ def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, in
   queryStr=''
   for term in queryTerms:
     queryStr+=term + ' '
+  
+  print("Query terms:", queryTerms)
+  print("Excluded terms:", excludedTerms)
 
   log("QE", 'Expanding Query Terms')
   expandedTerms = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
