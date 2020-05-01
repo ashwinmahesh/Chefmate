@@ -17,8 +17,6 @@ import BeautifulSignup from './BeautifulLogin/BeautifulSignup';
 import BeautifulHomepage from './PreLogin/BeautifulHomepage';
 import Videos from './Videos/Videos';
 
-
-
 // import ReactPlayer from "react-player";
 // import { FaFileExcel } from 'react-icons/fa';
 

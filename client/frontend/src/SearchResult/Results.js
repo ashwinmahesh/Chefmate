@@ -83,8 +83,8 @@ const useStyles = (colors) =>
     },
     word: {
       color: 'blue',
-      fontWeight: 'bold'
-    }
+      fontWeight: 'bold',
+    },
   }));
 
 type Props = {
@@ -187,7 +187,6 @@ function Results(props: Props) {
           </a>
         </div>
         <div className={styles.pages}>{renderPageNumbers()}</div>
-
       </>
     );
   }

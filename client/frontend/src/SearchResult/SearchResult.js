@@ -13,7 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 
-const GLOBAL_TIMEOUT = 45;
+const GLOBAL_TIMEOUT = 120;
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
@@ -45,6 +45,7 @@ function SearchResult(props) {
   const [numSearched, updateNumSearched] = useState(0);
   const [searchTime, changeSearchTime] = useState(1.12);
   const [userLikesDislikes, changeUserLikesDislikes] = useState([]);
+  const [displayDidUMean, changeDisplayDidUMean] = useState(false);
 
   seconds = 0;
   stillLoading = true;
@@ -71,6 +72,11 @@ function SearchResult(props) {
       changeLoading(false);
       return;
     }
+
+    if (data['content']['didUMeanStr'] !== '') {
+      changeDisplayDidUMean(true);
+    }
+
     const docUrls = data['content']['sortedDocUrls'];
 
     updateNumSearched(docUrls.length);

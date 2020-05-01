@@ -24,12 +24,11 @@ GAMMA = 4.0
 NUM_RELEVANT = 10
 MAX_NEW_WORDS = 50
 
-def performPseudoRelevanceFeedback(queryMatrix, rankedDocuments, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap, excludedIndexes):
+def performPseudoRelevanceFeedback(uLikes, uDislikes, query, queryMatrix, rankedDocuments, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap, excludedIndexes):
   startTime = time.time()
   log('pseudo-relevance', 'Performing Pseudo-Relevance Feedback')
   newQuery = np.zeros(len(invertedIndex))
   newQuery = queryMatrix * ALPHA
-  flag = True
 
   relevantWeights = np.zeros(len(invertedIndex))
   for i in range(0, min(len(rankedDocuments), NUM_RELEVANT)):
@@ -87,17 +86,32 @@ def performPseudoRelevanceFeedback(queryMatrix, rankedDocuments, invertedIndex, 
       continue
     docWeights = inMemoryTFIDF[:,docIndex]
 
+    flag = False
+    ### START OF COPIED
     for index in excludedIndexes:
       if docWeights[index] > 0:
-        flag = False
+        flag = True
         break
-    
+
     if flag: 
-      rankVal = (cosineSimilarity(newQueryForCalculation, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
-      rankings.append(rankVal)
-      docUrlArr.append(url)
+      continue
+    
+    ##END OF COPIED
+    if url in uLikes:
+      if uLikes[url] == query:
+        rankVal = 1
+      else:
+        rankVal = (0.1 + cosineSimilarity(newQueryForCalculation, docWeights) * 0.75) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+    elif url in uDislikes:
+      if uDislikes[url] == query:
+        rankVal = 0
+      else:
+        rankVal = (cosineSimilarity(newQueryForCalculation, docWeights) * 0.75) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     else:
-      flag = True
+      rankVal = (cosineSimilarity(newQueryForCalculation, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+
+    rankings.append(rankVal)
+    docUrlArr.append(url)
 
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
 

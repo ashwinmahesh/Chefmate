@@ -12,20 +12,28 @@ from pseudoRelevanceFeedback import performPseudoRelevanceFeedback
 
 porterStemmer = PorterStemmer()
 
-def rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
-  
+def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
   startTime = time.time()
-
-  containsExcludedTerm = False
 
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
   queryStr=''
+  didUMeanStr=''
   for term in queryTerms:
     queryStr+=term + ' '
+    didUMeanStr+=term + ' '
   
   log("QE", 'Expanding Query Terms')
-  expandedTerms = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
+  fetchResults = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
+  expandedTerms = fetchResults[0]
+  didUMean = fetchResults[1]
+
+  for x in didUMean:
+    didUMeanStr = didUMeanStr.replace(x, didUMean[x])
+  
+  if didUMeanStr == queryStr:
+    didUMeanStr = ''
+
   for termEntry in expandedTerms:
     docInfoList=termEntry['doc_info']
     for docKey in docInfoList:
@@ -64,6 +72,8 @@ def rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF
       continue
     docWeights = inMemoryTFIDF[:,docIndex]
 
+    containsExcludedTerm = False
+
     for index in excludedIndexes:
       if docWeights[index] > 0:
         containsExcludedTerm = True
@@ -73,6 +83,19 @@ def rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF
       containsExcludedTerm = False
       continue
 
+    if url in uLikes:
+      if uLikes[url] == query:
+        rankVal = 1
+      else:
+        rankVal = (0.1 + cosineSimilarity(queryTermWeights, docWeights) * 0.75) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+    elif url in uDislikes:
+      if uDislikes[url] == query:
+        rankVal = 0
+      else:
+        rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.75) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+    else:
+      rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
+
     rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     rankings.append(rankVal)
     docUrlArr.append(url)
@@ -80,7 +103,7 @@ def rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF
   sortedDocUrls = [docUrl for ranking, docUrl in sorted(zip(rankings, docUrlArr), reverse=True)]
   
   if pseudoRelevanceFeedback:
-    sortedDocUrls = performPseudoRelevanceFeedback(queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap, excludedIndexes)
+    sortedDocUrls = performPseudoRelevanceFeedback(uLikes, uDislikes, query, queryTermWeights, sortedDocUrls, invertedIndex, termReverseMap, inMemoryTFIDF, crawlerReverseMap, excludedIndexes)
 
   log('time', 'Execution time for cosine similarities for ' + queryStr + ': ' +str(time.time()-startTime)+' seconds')
-  return sortedDocUrls
+  return sortedDocUrls, didUMeanStr
