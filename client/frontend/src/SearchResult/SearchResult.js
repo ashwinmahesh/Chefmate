@@ -13,7 +13,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
 
-const GLOBAL_TIMEOUT = 45;
+const GLOBAL_TIMEOUT = 120;
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
