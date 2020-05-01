@@ -18,6 +18,7 @@ def hasConnection(page, otherPage, edges):
 def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iterations:int, lambdaVar:float=0.0001, testMode=False):
   startTime = time.time()
 
+  print("HITS, calculating Hub and Authority")
   inlinkGraph = Graph(FileIO.readJsonFile(inlinkGraphFile))
   outlinkGraph = Graph(FileIO.readJsonFile(outlinkGraphFile))
 
@@ -26,18 +27,19 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
 
   authority = [{}]
   hub = [{}]
-
+  
   for page in pages: 
     authority[0][page] = 1.0
     hub[0][page] = 1.0
 
+  
   for i in range(1, iterations + 1): 
     authority.append({})
     hub.append({})
-
     for page in pages:
       authority[i][page] = 0.0
       hub[i][page] = 0.0
+      
       
     zAuth = 0.0
     zHub = 0.0
@@ -61,13 +63,14 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
 
     result = {}
 
-    for page in pages: 
-      hubAuth = []
-      hubAuth.append(hub[i].get(page))
-      hubAuth.append(authority[i].get(page))
-      result[page] = hubAuth
+  for page in pages: 
+    hubAuth = []
+    hubAuth.append(hub[i].get(page))
+    hubAuth.append(authority[i].get(page))
+    result[page] = hubAuth
+  print("Done")
 
-    not testMode and FileIO.writeJsonFile(result, 'domains/' + domain + '/' + domain + '_HubAuth.json')
+  not testMode and FileIO.writeJsonFile(result, 'domains/' + domain + '/' + domain + '_HubAuth.json')
 
   return authority[iterations], hub[iterations]
 

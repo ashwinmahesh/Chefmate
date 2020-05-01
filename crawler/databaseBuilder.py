@@ -36,21 +36,28 @@ class DatabaseBuilder:
     self.buildQueue = []
     self.readSemaphore = True
     self.invertedIndexSemaphore = True
+    self.hubAuthFile = 'domains/'+self.domain +'/'+self.domain+"_HubAuth.json"
+    self.hubAuthScores = FileIO.readJsonFile(self.hubAuthFile)
+    self.pageRankFile = 'domains/'+self.domain +'/'+self.domain+"_pageRank.json" 
+    self.pageRanks = FileIO.readJsonFile(self.pageRankFile)
   
   def build(self):
     filePath = 'domains/'+self.domain +'/'+self.domain+"_index.txt" 
     pageRankFile = 'domains/'+self.domain +'/'+self.domain+"_pageRank.json" 
+    
 
     rawData = FileIO.readJsonFile(filePath)
-    pageRanks = FileIO.readJsonFile(pageRankFile)
+    
     count=0
     for entry in rawData.keys():
       count+=1
+      print("ENTRY: " + entry)
       doc = rawData[entry]
+
       if doc['title'] == None:
         doc['title']='No Title'
 
-      self.addDocumentToCollection(url=entry, title=doc['title'], body=doc['body'], description=doc['description'], pageRank=pageRanks[entry])
+      self.addDocumentToCollection(url=entry, title=doc['title'], body=doc['body'], description=doc['description'], pageRank=self.pageRanks[entry], hub=self.hubAuthScores[doc['title']][0], authority=self.hubAuthScores[doc['title']][1])
       self.buildInvertedIndex(doc['body'], entry)
 
       if self.mode=='DEV' and count>=5:
@@ -59,6 +66,7 @@ class DatabaseBuilder:
 
   def makeDocuments(self):
     buildBufferSize = 5
+
     while(len(self.buildQueue) > 0):
       while(not self.readSemaphore):
         pass
@@ -76,7 +84,7 @@ class DatabaseBuilder:
         title = document['title']
         description = document['description']
         body = document['body']
-        self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1)
+        self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1, hub=self.hubAuthScores[url][0], authority=self.hubAuthScores[url][1])
         self.buildInvertedIndex(body, url)
 
   def buildRawText(self):
@@ -131,9 +139,9 @@ class DatabaseBuilder:
       for i in range(0, self.MAX_THREADS):
         threadPool[i].join()
   
-  def addDocumentToCollection(self, url, title, body, description, pageRank):
+  def addDocumentToCollection(self, url, title, body, description, pageRank, hub, authority):
     log("crawler", "Adding "+url+" to collection.")
-    crawlerDoc = Crawler(url=url, title=title, body=body, description=description, pageRank=pageRank, tfidf={'Ashwin': 0})
+    crawlerDoc = Crawler(url=url, title=title, body=body, description=description, pageRank=pageRank, hub=hub, authority=authority,tfidf={'Ashwin': 0})
     crawlerDoc.save()
     
   def buildInvertedIndex(self, body, url):
