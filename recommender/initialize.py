@@ -5,6 +5,7 @@ import time
 import numpy as np
 sys.path.append('../crawler')
 from mongoConfig import *
+from convertWeightsToZeroAverage import convertWeightsToZeroAverage
 
 LIKE_WEIGHT = 2
 VISITED_WEIGHT = 1
@@ -52,6 +53,8 @@ def initialize():
         urlIndex = documentReverseMap.get(visitedUrl)
         if (urlIndex != None):
           userMatrix[userIndex][urlIndex] += VISITED_WEIGHT
+
+    convertWeightsToZeroAverage(userMatrix, modifyIndex=userIndex)
 
   log('time', 'Finished building user matrix in  ' + str(time.time() - startTime) + ' seconds')
   return userMatrix, userReverseMap, documentReverseMap

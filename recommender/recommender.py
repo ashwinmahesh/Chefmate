@@ -16,7 +16,7 @@ from mongoConfig import *
 from initialize import initialize
 from knn import findKNearestNeighbors
 
-from collaborativeFiltering import convertWeightsToZeroAverage
+# from collaborativeFiltering import convertWeightsToZeroAverage
 
 app = Flask(__name__)
 port = 8003
@@ -28,10 +28,10 @@ K_VALUE = 10
 ###For testing
 
 testUsername = 'officialtest@mail.com'
-knn = findKNearestNeighbors(K_VALUE, username=testUsername, userIndex=userReverseMap[testUsername], userMatrix=userMatrix)
-print(knn)
+kNearestNeighbors = findKNearestNeighbors(K_VALUE, username=testUsername, userIndex=userReverseMap[testUsername], userMatrix=userMatrix)
+print(kNearestNeighbors)
 
-print(convertWeightsToZeroAverage(userMatrix[userReverseMap[testUsername]]))
+# print(convertWeightsToZeroAverage(userMatrix[userReverseMap[testUsername]]))
 
 
 
