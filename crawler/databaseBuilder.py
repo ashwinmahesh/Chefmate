@@ -84,7 +84,7 @@ class DatabaseBuilder:
         title = document['title']
         description = document['description']
         body = document['body']
-        self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=1, hub=self.hubAuthScores[url][0], authority=self.hubAuthScores[url][1])
+        self.addDocumentToCollection(url=url, title=title, body=body, description=description, pageRank=self.pageRanks[url], hub=self.hubAuthScores[url][0], authority=self.hubAuthScores[url][1])
         self.buildInvertedIndex(body, url)
 
   def buildRawText(self):
