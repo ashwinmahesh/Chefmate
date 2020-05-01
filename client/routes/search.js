@@ -62,6 +62,7 @@ module.exports = (app) => {
     }
 
     log('Fetch', `Received response from Ranker: ${data.message}`);
+    console.log(data.content)
     return response.json(
       sendPacket(
         data.success,

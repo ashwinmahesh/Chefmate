@@ -76,7 +76,7 @@ def rankQuery(query):
 
   queryTerms = stemQuery(pureQuery, stopwords)
 
-  addSpecialChars(queryTerms)
+  # addSpecialChars(queryTerms)
   rankResults  = rank(corrected_uLikes, corrected_uDislikes, query, queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
   sortedDocUrls = rankResults[0]
   didUMeanStr = rankResults[1]
