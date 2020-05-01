@@ -22,7 +22,7 @@ port = 8003
 
 connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=27017)
 userMatrix, userReverseMap, documentReverseMap = initialize()
-K_VALUE = 5
+K_VALUE = 10
 
 ###For testing
 
@@ -30,7 +30,7 @@ testUsername = 'officialtest@mail.com'
 kNearestNeighbors = findKNearestNeighbors(K_VALUE, username=testUsername, userIndex=userReverseMap[testUsername], userMatrix=userMatrix)
 print(kNearestNeighbors)
 
-collaborativeFiltering(username=testUsername, userIndex=userReverseMap[testUsername], userMatrix=userMatrix, kNearestNeighbors=kNearestNeighbors)
+print(collaborativeFiltering(username=testUsername, userIndex=userReverseMap[testUsername], userMatrix=userMatrix, kNearestNeighbors=kNearestNeighbors))
 # print(convertWeightsToZeroAverage(userMatrix[userReverseMap[testUsername]]))
 
 
