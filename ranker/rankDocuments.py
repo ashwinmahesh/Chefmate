@@ -21,12 +21,8 @@ def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, in
   didUMeanStr=''
   for term in queryTerms:
     queryStr+=term + ' '
-<<<<<<< HEAD
     didUMeanStr+=term + ' '
   
-=======
-
->>>>>>> master
   log("QE", 'Expanding Query Terms')
   fetchResults = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
   expandedTerms = fetchResults[0]
