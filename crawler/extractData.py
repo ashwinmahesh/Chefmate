@@ -21,12 +21,16 @@ def extractData(baseURL):
   description = metaDesc.get('content') if metaDesc!=None else 'No description provided.'
 
   body=''
-  for node in soup.findAll(['p', 'a']):
+  for node in soup.findAll(['p', 'a', 'div', 'li']):
     body+=node.text+'\n'
 
-  output = dict(link=baseURL, title=title, body=body, description=description)
+  newLinks = soup.findAll('a')
+
+  output = dict(link=baseURL, title=title, body=body, description=description, newLinks=newLinks)
   return output
-        
+
 if __name__ == "__main__":
-    data = extractData("https://www.epicurious.com/type/salad")
-    print(data['description'])
+  data = extractData("https://www.epicurious.com/type/salad")
+  print(data['description'])
+
+# TODO: For each link, get in links and out links, add to graph, and ultimately write to appropriate files. Use oldcrawler for reference.

@@ -9,6 +9,8 @@ function getServerPath(serverName) {
     return 'http://localhost:8001'
   else if(serverName == 'ranker')
     return 'http://localhost:8002'
+  else if(serverName == 'recommender')
+    return 'http://localhost:8003'
   else return "ERROR"
 }
 

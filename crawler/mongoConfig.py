@@ -25,7 +25,8 @@ class User(Document):
   password = StringField(required=False)
   likes = DictField(required=True, default={})
   dislikes = DictField(required=True, default={})
-  history = ListField(StringField(required=True, default={}))
+  history = ListField(StringField(required=True, default=[]))
+  recent_queries = ListField(StringField(required=True, default=[]))
   created_at = DateTimeField(default=datetime.datetime.now())
   updated_at = DateTimeField(default=datetime.datetime.now())
 
@@ -37,6 +38,6 @@ databaseName = 'ChefmateDB'
 # databaseName = 'ChefmateDB_Alt'
 
 # databaseAddr = '18.219.145.177' #NEW DB
-databaseAddr = '18.222.251.5'
-# databaseAddr = 'localhost'
+# databaseAddr = '18.222.251.5'
+databaseAddr = 'localhost'
 

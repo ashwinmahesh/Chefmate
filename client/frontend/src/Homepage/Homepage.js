@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { TextField, IconButton } from '@material-ui/core';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaWindows } from 'react-icons/fa';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
+import FeelingLuckyButton from './FeelingLuckyButton';
 import HeaderSimple from '../Headers/HeaderSimple';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { theme } from '../theme/theme';
@@ -56,6 +57,7 @@ function Homepage(props: Props) {
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [autocompleteData, changeAutocompleteData] = useState([]);
+  const [isLuckyLoading, changeIsLuckyLoading] = useState(false);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -67,7 +69,20 @@ function Homepage(props: Props) {
 
   useEffect(() => {
     checkAuthentication();
+    fetchRecentQueries();
   }, []);
+
+  async function fetchRecentQueries() {
+    const { data } = await axios.get(`/recentQueries`);
+    if (data['success'] === 1) {
+      const { recent_queries } = data['content'];
+      const queryTermList = [];
+      for (var i = recent_queries.length - 1; i >= 0; i--) {
+        queryTermList.push(recent_queries[i]);
+      }
+      changeAutocompleteData(queryTermList);
+    }
+  }
 
   async function handleAutocompleteChange(_, newValue) {
     changeQuery(newValue);
@@ -104,6 +119,34 @@ function Homepage(props: Props) {
     if (event.key === 'Enter' && query.length !== 0) {
       window.location.href = `/result/${query}`;
     }
+  }
+
+  async function fetchQueryResults() {
+    const { data } = await axios.get(`/search/${query}`);
+    if (data['success'] !== 1) {
+      changeIsLuckyLoading(false);
+      return;
+    }
+    const docUrls = data['content']['sortedDocUrls'];
+    fetchDocuments(docUrls).then(() => {
+      changeIsLuckyLoading(false);
+    });
+  }
+
+  async function fetchDocuments(docUrls) {
+    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
+    if (data['success'] !== 1) {
+      changeIsLuckyLoading(false);
+      return;
+    }
+    const topDocument = JSON.parse(data['content']['documents'][0]);
+    window.open(topDocument['_id']);
+  }
+
+  function handleFeelingLucky() {
+    if (query.length === 0) return;
+    changeIsLuckyLoading(true);
+    fetchQueryResults();
   }
 
   return (
@@ -155,6 +198,7 @@ function Homepage(props: Props) {
             </>
           )}
         />
+        <FeelingLuckyButton onClick={handleFeelingLucky} loading={isLuckyLoading} />
       </div>
       <Footer></Footer>
     </div>

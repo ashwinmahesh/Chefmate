@@ -11,7 +11,6 @@ from helpers import log
 letters = []
 
 def tfidfWorker():
-  
   while(len(letters) > 0):
     currentLetter = letters.pop()
     startTime = time.time()
@@ -33,11 +32,14 @@ def tfidfWorker():
 
         url = termEntry['doc_info'][docKey]['url']
         if url[0:8] == 'https://':
-          document = Crawler.objects.get(url=url)
+          try:
+            document = Crawler.objects.get(url=url)
+          except DoesNotExist:
+            continue
           if 'tfidf' not in document:
             document['tfidf'] = {}
-            document['tfidf'][term] = tf_idf
-            document.save()
+          document['tfidf'][term.replace('.', ',')] = tf_idf
+          document.save()
 
     log('time', 'Finished calculating tfidf for letter ' + currentLetter.upper() + ' in ' + str(time.time() - startTime) + ' seconds')
 
