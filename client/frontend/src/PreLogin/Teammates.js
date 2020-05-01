@@ -1,10 +1,5 @@
-import React, { useState, useEffect, Component } from 'react';
-import { ScrollTo } from "react-scroll-to";
-import LoginBox from '../Login/LoginBox';
-import { Redirect } from 'react-router-dom';
-import HomepageBackground from '../Login/HomepageBackground';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
 import profile1 from '../images/profile1.jpg';
 import profile2 from '../images/profile2.jpg';
 import profile3 from '../images/profile3.jpg';
@@ -32,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
         fontFamily: 'Ubuntu',
         opacity: '.9'
-
     },
     font: {
         textAlignVertical: "center",// <-- the magic
@@ -40,13 +34,14 @@ const useStyles = makeStyles((theme) => ({
         margin: '12px',
         fontSize: 30,
         letterSpacing: '2px',
-        fontFamily: 'Vernon Adams',
+        fontFamily: 'Ubuntu',
     },
     insideFont: {
         padding: '35px',
         fontSize: '20px',
         marginLeft: '20px',
         marginRight: '20px',
+        fontFamily: 'Ubuntu',
     },
     image: {
         marginTop: '20px',

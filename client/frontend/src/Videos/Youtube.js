@@ -4,14 +4,11 @@ import { Typography } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
-   parent: {
-    minHeight: '20vh'
-   },
     wrapper: {
-        float: 'left',
         textAlign: 'left',
         marginLeft: '100px',
         minWidth: '30px',
+        display: 'block',
     },
     vid: {
         height: '95px',
@@ -31,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         textDecoration: 'none',
         color: 'black',
         '&:hover': {
-            color: 'blue',
+            color: 'rgb(210,107,107)',
             textDecoration: 'underline'
         }
     },
@@ -40,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'left',
         padding: '3px',
         textDecoration: 'italic',
-        color: 'darkblue'
+        color: 'darkgreen'
     },
     font: {
         fontSize: '30px',
@@ -64,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Youtube() {
     const styles = useStyles();
     return (
-        <div className={styles.parent}>
+        <div>
         <div className={styles.wrapper}>
             <a className={styles.underline} href= 'https://youtu.be/a03U45jFxOI'>
                 <Typography className={styles.title}> Butter Chicken - YouTube</Typography>

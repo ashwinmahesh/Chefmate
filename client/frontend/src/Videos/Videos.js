@@ -21,7 +21,7 @@ const useStyles = (colors) =>
         },
         wrapper: {
             background: colors.background,
-            minHeight: '100vh',
+            minHeight: '100vh'
         },
         pageDescription: {
             textAlign: 'left',
@@ -50,11 +50,8 @@ function Videos(props: Props) {
     return (
         <div className={styles.wrapper}>
             <HeaderSearch initialSearch="" />
-            <Typography className={styles.title}>Your Videos</Typography>
+            <Typography className={styles.title}>Videos</Typography>
             <Youtube></Youtube>
-            
-            <div className={styles.panelsWrapper}>
-            </div>
             <Footer></Footer>
         </div>
     );

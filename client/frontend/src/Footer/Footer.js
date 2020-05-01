@@ -27,7 +27,6 @@ export default function Footer() {
   return (
     <BottomNavigation className={styles.root}>
       <p className={styles.footerWriting}>
-        {' '}
         Copyright 2020 Chefmate. All Rights Reserved. <br></br>
         <BottomNavigationAction
           className={styles.github}

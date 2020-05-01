@@ -23,11 +23,12 @@ const useStyles = makeStyles((theme) => ({
     header: {
         width: '100%',
         height: '100px',
-        borderBottom: '2px solid black',
         paddingBottom: '20px',
         paddingTop: '3px',
         backgroundColor: 'black',
-        color: 'white'
+        color: 'white',
+        border: '2px solid white',
+
     },
     font: {
         textAlignVertical: "center",// <-- the magic
@@ -40,13 +41,11 @@ const useStyles = makeStyles((theme) => ({
 
     },
     insideFont: {
-        padding: '10px',
         fontSize: '27px',
         marginLeft: '20px',
         marginRight: '20px',
         fontFamily: 'Ubuntu',
         fontWeight: 'bold',
-        paddingBottom: '10px',
         letterSpacing: '1px',
         color: 'white'
     },
@@ -95,9 +94,9 @@ export default function AboutUs(props) {
                 they frequently visit through our engine
                 Traditional search engines have seeds
                 throughout the entire internet, whereas
-                ours has only be popular cooking sites,
+                ours has only the popular cooking sites,
                 thus we've created a better cooking
-                related search engine to engance user
+                related search engine to enhance user
                 experience. </p></div>
             <div className={styles.image}>
                 <img src={img1} className={styles.img} />
@@ -126,7 +125,7 @@ export default function AboutUs(props) {
                 <p className={styles.txtunder}> 
                 We enabled users to like and dislike
                 their pages and created appropriate UI 
-                to showthem their results. We also display
+                to show them their results. We also display
                  a history of their recently searched items.
                  If we do not recognize an item, we 
                  suggest them an item to help their search.
