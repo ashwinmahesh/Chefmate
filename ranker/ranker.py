@@ -15,6 +15,7 @@ from rankDocuments import rank
 from stemQuery import stemQuery
 import rankerDBConfig
 from loadInvertedIndexToMemory import loadInvertedIndexToMemory
+from addSpecialChars import addSpecialChars
 
 import ssl
 import nltk
@@ -57,6 +58,7 @@ def rankQuery(query):
     pureQuery = query[0:index]
     
   queryTerms = stemQuery(pureQuery, stopwords)
+  addSpecialChars(queryTerms)
   sortedDocUrls = rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
   
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')
