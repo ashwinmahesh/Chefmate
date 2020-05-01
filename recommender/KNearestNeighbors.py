@@ -21,7 +21,9 @@ def findKNearestNeighbors(K, username, userIndex, userMatrix):
     indexes.append(i)
   
   sortedDistances = [(index, distance) for distance, index in sorted(zip(distances, indexes), reverse=True)]
+  log('Time', 'Finished calculating KNN for ' + username)
+  
   return sortedDistances[0 : min(K, len(sortedDistances))]
 
-  log('Time', 'Finished calculating KNN for ' + username)
+
 
