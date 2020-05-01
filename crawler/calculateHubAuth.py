@@ -12,7 +12,6 @@ def hasConnection(otherPage, edges):
 
     return False
 
-
 def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iterations:int, lambdaVar:float=0.0001, testMode=False):
   startTime = time.time()
 
@@ -74,14 +73,7 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
 
     not testMode and FileIO.writeJsonFile(result, 'domains/' + domain + '/' + domain + '_HubAuth.json')
 
-
   return authority[iterations], hub[iterations]
-
-
-
-
-
-
 
 if __name__ == '__main__':
   # pageRanks = calculatePageRank(domain='Tasty', 
