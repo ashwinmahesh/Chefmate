@@ -19,7 +19,7 @@ fs.readFile('../../Chefmate_auth/pw.txt', "utf8", (err, data) => {
     //Do *NOT* hardcode password, ever
     password = data
 
-    const mongoUri = 'mongodb://' + username + ":" + password + "@" + host + ":" + port + "/" + databaseName;
+    const mongoUri = 'mongodb://' + username + ":" + password.replace(/\n$/, "") + "@" + host + ":" + port + "/" + databaseName;
 
     mongoose
       .connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true, dbName: databaseName })

@@ -17,4 +17,4 @@ host = '18.219.145.177' #NEW DB
 port = 27017
 
 #Do *NOT* hardcode password, ever
-databaseAddr = 'mongodb://' + username + ":" + password + "@" + host + ":" + str(port) + "/" + databaseName
+databaseAddr = 'mongodb://' + username + ":" + password.rstrip() + "@" + host + ":" + str(port) + "/" + databaseName

@@ -40,6 +40,7 @@ password = ''
 
 try:
   password = open("../../Chefmate_auth/pw.txt").read()
+  print(password)
 except:
   print("Error getting Mongo password. Make sure Chefmate_auth/pw.txt exists and is populated.")
 
@@ -53,5 +54,5 @@ host = '18.219.145.177' #NEW DB
 port = 27017
 
 #Do *NOT* hardcode password, ever
-databaseAddr = 'mongodb://' + username + ":" + password + "@" + host + ":" + str(port) + "/" + databaseName
+databaseAddr = 'mongodb://' + username + ":" + password.rstrip() + "@" + host + ":" + str(port) + "/" + databaseName
 print(databaseAddr)
