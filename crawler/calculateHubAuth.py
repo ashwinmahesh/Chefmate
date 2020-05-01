@@ -17,7 +17,7 @@ def hasConnection(page, otherPage, edges):
 
 def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iterations:int, lambdaVar:float=0.0001, testMode=False):
   startTime = time.time()
-  log("Hits calculation started at:", str(startTime))
+  log("Hits", "Hits calculation started")
   inlinkGraph = Graph(FileIO.readJsonFile(inlinkGraphFile))
   outlinkGraph = Graph(FileIO.readJsonFile(outlinkGraphFile))
 
