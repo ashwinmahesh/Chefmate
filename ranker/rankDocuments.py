@@ -15,16 +15,11 @@ porterStemmer = PorterStemmer()
 def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
   startTime = time.time()
 
-  containsExcludedTerm = False
-
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
   queryStr=''
   for term in queryTerms:
     queryStr+=term + ' '
-  
-  print("Query terms:", queryTerms)
-  print("Excluded terms:", excludedTerms)
 
   log("QE", 'Expanding Query Terms')
   expandedTerms = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
@@ -66,6 +61,8 @@ def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, in
       continue
     docWeights = inMemoryTFIDF[:,docIndex]
 
+    containsExcludedTerm = False
+
     for index in excludedIndexes:
       if docWeights[index] > 0:
         containsExcludedTerm = True
@@ -87,7 +84,6 @@ def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, in
         rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.75) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     else:
       rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
-
 
     rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     rankings.append(rankVal)
