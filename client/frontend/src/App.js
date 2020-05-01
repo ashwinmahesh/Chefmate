@@ -14,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { updateUser } from './redux/actions/user';
 import { updateTheme } from './redux/actions/theme';
 import BeautifulSignup from './BeautifulLogin/BeautifulSignup';
+import Timeout from './SearchResult/Timeout'
 import BeautifulHomepage from './PreLogin/BeautifulHomepage';
 import Videos from './Videos/Videos';
 
@@ -43,6 +44,7 @@ function App(props) {
             <Route path="/result/:query" component={SearchResult} />
             <Route exact path="/history" component={History} />
             <Route exact path="/videos" component={Videos} />
+            <Route exact path="/timeout" component={Timeout} />
             <Route exact path="/likes" component={Likes} />
             <Route exact path="/dislikes" component={Dislikes} />
             <Route exact path="*" component={PageNotFound} />
