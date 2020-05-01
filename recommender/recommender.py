@@ -14,7 +14,8 @@ from mongoengine import *
 from mongoConfig import *
 
 from initialize import initialize
-from knn import findKNearestNeighbors
+from KNearestNeighbors import findKNearestNeighbors
+from collaborativeFiltering import collaborativeFiltering
 
 app = Flask(__name__)
 port = 8003
@@ -24,7 +25,17 @@ userMatrix, userReverseMap, documentReverseMap = initialize()
 K_VALUE = 10
 
 ###For testing
-knn = findKNearestNeighbors(K_VALUE, username='mahesh.ashwin1998@gmail.com', userIndex=userReverseMap['mahesh.ashwin1998@gmail.com'], userMatrix=userMatrix)
+
+testUsername = 'officialtest@mail.com'
+kNearestNeighbors = findKNearestNeighbors(K_VALUE, username=testUsername, userIndex=userReverseMap[testUsername], userMatrix=userMatrix)
+print(kNearestNeighbors)
+
+print(collaborativeFiltering(username=testUsername, userIndex=userReverseMap[testUsername], userMatrix=userMatrix, kNearestNeighbors=kNearestNeighbors))
+# print(convertWeightsToZeroAverage(userMatrix[userReverseMap[testUsername]]))
+
+
+
+###End of tests
 
 @app.route('/', methods=['GET'])
 def index():
@@ -35,6 +46,8 @@ def performKNN():
   user = request.json['user']
   findKNearestNeighbors()
   return sendPacket(1, 'Successfully calculated ')
+
+
 
 if __name__ == '__main__':
   log('info', "Recommender is listening on port "+str(port) +", " + str(app.config['ENV']) + " environment.")

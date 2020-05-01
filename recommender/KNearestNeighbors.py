@@ -9,6 +9,7 @@ def findKNearestNeighbors(K, username, userIndex, userMatrix):
   startTime = time.time()
   log("KNN", 'Calculating K-Nearest Neighbors for ' + username)
   userWeights = userMatrix[userIndex, :]
+
   indexes = []
   distances = []
   for i in range(0, len(userMatrix)):
@@ -19,8 +20,10 @@ def findKNearestNeighbors(K, username, userIndex, userMatrix):
     distances.append(cosineSimilarity(userWeights, otherWeights))
     indexes.append(i)
   
-  sortedDistances = [index for distance, index in sorted(zip(distances, indexes), reverse=True)]
-  return sortedDistances[0:min(K, len(sortedDistances))]
-
+  sortedDistances = [(index, distance) for distance, index in sorted(zip(distances, indexes), reverse=True)]
   log('Time', 'Finished calculating KNN for ' + username)
+  
+  return sortedDistances[0 : min(K, len(sortedDistances))]
+
+
 

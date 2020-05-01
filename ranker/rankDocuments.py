@@ -57,8 +57,11 @@ def rank(queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF
       continue
     if 'Page not found' in document['title']:
       continue
-
-    docIndex = crawlerReverseMap[url]
+    
+    try:
+      docIndex = crawlerReverseMap[url]
+    except:
+      continue
     docWeights = inMemoryTFIDF[:,docIndex]
 
     for index in excludedIndexes:
