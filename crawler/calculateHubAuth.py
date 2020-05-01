@@ -28,7 +28,6 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
   hub = [{}]
 
   for page in pages: 
-    print("Page1 " + page)
     authority[0][page] = 1.0
     hub[0][page] = 1.0
 
@@ -37,7 +36,6 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
     hub.append({})
 
     for page in pages:
-      print("Page2" + page)
       authority[i][page] = 0.0
       hub[i][page] = 0.0
       
@@ -45,15 +43,10 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
     zHub = 0.0
 
     for page in pages:
-      print("Page: " + page)
       inlinkEdges = inlinkGraph.get(page).keys()
-      print(inlinkEdges)
       outlinkEdges = outlinkGraph.get(page).keys()
-      print(outlinkEdges)
       for otherPage in pages:
         if hasConnection(page, otherPage, outlinkEdges):
-          print(hub[i][page])
-          print(authority[i-1][otherPage])
           hub[i][page] += authority[i-1][otherPage]
           zHub += authority[i-1][otherPage]
         if hasConnection(page, otherPage, inlinkEdges):
@@ -66,8 +59,6 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
         if zHub > 0:
           hub[i][page] = hub[i][page] / zHub
 
-    print(f"Hub at Iteration {i}: {hub[i]}")
-    print(f"Auth at Iteration {i}: {authority[i]}")
     result = {}
 
     for page in pages: 
