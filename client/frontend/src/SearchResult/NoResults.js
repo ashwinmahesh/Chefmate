@@ -14,18 +14,30 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgb(40,40,40)',
   },
   subtitle: {
-    fontStyle: 'italic',
+    fontSize: '16pt',
+  },
+  linkText: {
+    color: 'blue',
+    textDecoration: 'none',
+    fontWeight: 'bold',
   },
 }));
 
-export default function NoResults() {
+type Props = {
+  didUMean: String,
+};
+export default function NoResults(props: Props) {
   const styles = useStyles();
   return (
     <div>
       <FaExclamationCircle className={styles.iconStyle} />
       <p className={styles.font}>Bummer, we couldn't find anything</p>
       <p className={styles.subtitle}>
-        Please use the search bar above to find what you are looking for.{' '}
+        Did you mean:{' '}
+        <a href={`/result/${props.didUMean}`} className={styles.linkText}>
+          {props.didUMean}
+        </a>
+        ?
       </p>
     </div>
   );
