@@ -26,7 +26,7 @@ K_VALUE = 10
 
 ###For testing
 
-testUsername = 'mahesh.ashwin1998@gmail.com'
+testUsername = 'officialtest@mail.com'
 kNearestNeighbors = findKNearestNeighbors(K_VALUE, username=testUsername, userIndex=userReverseMap[testUsername], userMatrix=userMatrix)
 print(kNearestNeighbors)
 
