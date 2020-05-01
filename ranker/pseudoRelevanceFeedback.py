@@ -87,7 +87,6 @@ def performPseudoRelevanceFeedback(uLikes, uDislikes, query, queryMatrix, ranked
     docWeights = inMemoryTFIDF[:,docIndex]
 
     flag = False
-    ### START OF COPIED
     for index in excludedIndexes:
       if docWeights[index] > 0:
         flag = True
@@ -95,8 +94,7 @@ def performPseudoRelevanceFeedback(uLikes, uDislikes, query, queryMatrix, ranked
 
     if flag: 
       continue
-    
-    ##END OF COPIED
+
     if url in uLikes:
       if uLikes[url] == query:
         rankVal = 1
