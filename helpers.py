@@ -9,6 +9,8 @@ def getServerPath(serverName):
     return 'http://localhost:8001'
   elif serverName == 'ranker':
     return 'http://localhost:8002'
+  elif serverName == 'recommender':
+    return 'http://localhost:8003'
   else:
     return "ERROR"
 
@@ -27,28 +29,18 @@ def makeRequest(server, route, method="GET", data={}):
       res=requests.get(serverPath+'/'+route, timeout=3)
       res.raise_for_status()
       res = res.content
-    except requests.exceptions.HTTPError as errh:
-        print ("Http Error:",errh)
-    except requests.exceptions.ConnectionError as errc:
-        print ("Error Connecting:",errc)
-    except requests.exceptions.Timeout as errt:
-        print ("Timeout Error:",errt)
-    except requests.exceptions.RequestException as err:
-        print ("Oops: Something Else",err)
+    except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.RequestException) as err:
+      log('error', err)
+      return res
 
   elif method == 'POST':
     try:
       res=requests.post(serverPath+'/'+route, data, timeout=3)
       res.raise_for_status()
       res=res.content
-    except requests.exceptions.HTTPError as errh:
-        print ("Http Error:",errh)
-    except requests.exceptions.ConnectionError as errc:
-        print ("Error Connecting:",errc)
-    except requests.exceptions.Timeout as errt:
-        print ("Timeout Error:",errt)
-    except requests.exceptions.RequestException as err:
-        print ("Oops: Something Else",err)
+    except (requests.exceptions.HTTPError, requests.exceptions.ConnectionError, requests.exceptions.Timeout, requests.exceptions.RequestException) as err:
+      log('error', err)
+      return res
   if res=='ERROR':
     return res
   return json.loads(res.decode('utf-8'))

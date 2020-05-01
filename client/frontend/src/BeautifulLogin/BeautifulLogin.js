@@ -152,6 +152,7 @@ export default function BeautifulLogin() {
     <div className={styles.wrapper}>
       {loginRedirect && <Redirect to="/" />}
       <Card raised className={styles.card}>
+        
         <LinearProgress
           classes={{
             root: styles.linearProgressRoot,

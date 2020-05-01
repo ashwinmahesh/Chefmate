@@ -7,6 +7,7 @@ import { CircularProgress, Typography } from '@material-ui/core';
 import HistoryExpansionPanel from './HistoryExpansionPanel';
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
+import Footer from '../Footer/Footer';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
@@ -22,7 +23,6 @@ const useStyles = (colors) =>
     },
     wrapper: {
       background: colors.background,
-      minHeight: '100vh',
     },
     pageDescription: {
       textAlign: 'left',
@@ -38,6 +38,7 @@ const useStyles = (colors) =>
       paddingRight: '15px',
       paddingTop: '20px',
       paddingBottom: '20px',
+      minHeight: '100vh',
     },
     loading: {
       color: 'rgb(230, 95, 85)',
@@ -114,6 +115,7 @@ function History(props: Props) {
           showHistoryResults()
         )}
       </div>
+      <Footer></Footer>
     </div>
   );
 }

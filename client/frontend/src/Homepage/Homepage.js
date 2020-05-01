@@ -1,22 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { TextField, IconButton } from '@material-ui/core';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaWindows } from 'react-icons/fa';
 import { makeStyles } from '@material-ui/core/styles';
 import logo from '../images/logo.png';
 import axios from 'axios';
-
+import FeelingLuckyButton from './FeelingLuckyButton';
 import HeaderSimple from '../Headers/HeaderSimple';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-
 import { theme } from '../theme/theme';
 import { connect } from 'react-redux';
+import Footer from '../Footer/Footer';
 
 const useStyles = (colors) =>
   makeStyles((theme) => ({
     container: {
       width: '100vw',
-      height: '100vh',
       background: colors.background,
     },
     searchField: {
@@ -35,6 +34,7 @@ const useStyles = (colors) =>
     },
     contents: {
       marginTop: '100px',
+      height: '100vh',
     },
     searchButton: {
       fontSize: '22pt',
@@ -57,6 +57,7 @@ function Homepage(props: Props) {
   const [query, changeQuery] = useState('');
   const [loginRedirect, changeLoginRedirect] = useState(false);
   const [autocompleteData, changeAutocompleteData] = useState([]);
+  const [isLuckyLoading, changeIsLuckyLoading] = useState(false);
 
   async function checkAuthentication() {
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') return;
@@ -96,7 +97,7 @@ function Homepage(props: Props) {
         }
         changeAutocompleteData(queryTermList);
       }
-    } 
+    }
   }
   async function handleQueryChange(event) {
     changeQuery(event.target.value);
@@ -118,6 +119,34 @@ function Homepage(props: Props) {
     if (event.key === 'Enter' && query.length !== 0) {
       window.location.href = `/result/${query}`;
     }
+  }
+
+  async function fetchQueryResults() {
+    const { data } = await axios.get(`/search/${query}`);
+    if (data['success'] !== 1) {
+      changeIsLuckyLoading(false);
+      return;
+    }
+    const docUrls = data['content']['sortedDocUrls'];
+    fetchDocuments(docUrls).then(() => {
+      changeIsLuckyLoading(false);
+    });
+  }
+
+  async function fetchDocuments(docUrls) {
+    const { data } = await axios.post('/fetchDocuments', { docUrls: docUrls });
+    if (data['success'] !== 1) {
+      changeIsLuckyLoading(false);
+      return;
+    }
+    const topDocument = JSON.parse(data['content']['documents'][0]);
+    window.open(topDocument['_id']);
+  }
+
+  function handleFeelingLucky() {
+    if (query.length === 0) return;
+    changeIsLuckyLoading(true);
+    fetchQueryResults();
   }
 
   return (
@@ -169,7 +198,9 @@ function Homepage(props: Props) {
             </>
           )}
         />
+        <FeelingLuckyButton onClick={handleFeelingLucky} loading={isLuckyLoading} />
       </div>
+      <Footer></Footer>
     </div>
   );
 }

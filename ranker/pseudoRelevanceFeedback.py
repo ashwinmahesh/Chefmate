@@ -31,7 +31,7 @@ def performPseudoRelevanceFeedback(uLikes, uDislikes, query, queryMatrix, ranked
   newQuery = queryMatrix * ALPHA
 
   relevantWeights = np.zeros(len(invertedIndex))
-  for i in range(0, NUM_RELEVANT):
+  for i in range(0, min(len(rankedDocuments), NUM_RELEVANT)):
     currentDoc = rankedDocuments[i]
     docIndex = crawlerReverseMap[currentDoc]
     docWeights = inMemoryTFIDF[:, docIndex]
@@ -80,7 +80,10 @@ def performPseudoRelevanceFeedback(uLikes, uDislikes, query, queryMatrix, ranked
     if 'Page not found' in document['title']:
       continue
     
-    docIndex = crawlerReverseMap[url]
+    try:
+      docIndex = crawlerReverseMap[url]
+    except:
+      continue
     docWeights = inMemoryTFIDF[:,docIndex]
   
     if url in uLikes:

@@ -12,8 +12,10 @@ from pseudoRelevanceFeedback import performPseudoRelevanceFeedback
 
 porterStemmer = PorterStemmer()
 
-def rank(uLikes, uDislikes, query, queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
+def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=False, pseudoRelevanceFeedback=False):
   startTime = time.time()
+
+  containsExcludedTerm = False
 
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
@@ -39,7 +41,14 @@ def rank(uLikes, uDislikes, query, queryTerms, termReverseMap, invertedIndex, in
   docUrlArr = []
   rankings = []
 
-  log("Ranking", 'Calculating rankings for query: '+queryStr)
+  excludedIndexes = []
+  for term in excludedTerms:
+    try:
+      excludedIndex = termReverseMap[term]
+      excludedIndexes.append(excludedIndex)
+    except:
+      continue
+
   for url in docURLs:
     try:
       document = Crawler.objects.get(url=url)
@@ -47,9 +56,21 @@ def rank(uLikes, uDislikes, query, queryTerms, termReverseMap, invertedIndex, in
       continue
     if 'Page not found' in document['title']:
       continue
-
-    docIndex = crawlerReverseMap[url]
+    
+    try:
+      docIndex = crawlerReverseMap[url]
+    except:
+      continue
     docWeights = inMemoryTFIDF[:,docIndex]
+
+    for index in excludedIndexes:
+      if docWeights[index] > 0:
+        containsExcludedTerm = True
+        break
+    
+    if containsExcludedTerm:
+      containsExcludedTerm = False
+      continue
 
     if url in uLikes:
       if uLikes[url] == query:
@@ -64,6 +85,8 @@ def rank(uLikes, uDislikes, query, queryTerms, termReverseMap, invertedIndex, in
     else:
       rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
 
+
+    rankVal = (cosineSimilarity(queryTermWeights, docWeights) * 0.85) + (document['pageRank'] * 0.08) + (document['authority'] * 0.07)
     rankings.append(rankVal)
     docUrlArr.append(url)
 

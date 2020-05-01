@@ -1,6 +1,7 @@
 const log = require('../logger');
 const makeRequest = require('../makeRequest');
 const sendPacket = require('../sendPacket');
+const clickLogger = require('../clickLogger');
 
 const { User, Query } = require('../mongoConfig');
 
@@ -72,10 +73,11 @@ module.exports = (app) => {
   });
 
   app.post('/fetchDocuments', async (req, res) => {
-    const startTime = Date.now();
+    const fetchStartTime = Date.now();
     log('fetch', 'Fetching documents from ranker using sorted list of document urls');
 
     const docUrls = req.body['docUrls'].slice(0, 60);
+    const queryStartTime = req.body['startTime'];
     const data = await makeRequest('ranker', 'fetchDocuments', 'POST', {
       docUrls: docUrls,
     });
@@ -85,7 +87,7 @@ module.exports = (app) => {
     const documents = data['content']['documents'];
     log(
       'fetch',
-      `Received documents from ranker. Execution time ${(Date.now() - startTime) /
+      `Received documents from ranker. Execution time ${(Date.now() - fetchStartTime) /
         1000} seconds.`
     );
 
@@ -93,6 +95,7 @@ module.exports = (app) => {
       User.findById(req.user._id, (err, user) => {
         if (err) log('error', 'Unable to find user');
         else {
+          clickLogger.setCurrQueryTime(Date.now() - queryStartTime);
           return res.json(
             sendPacket(1, 'Successfully fetched documents', {
               documents: documents,
@@ -102,7 +105,8 @@ module.exports = (app) => {
           );
         }
       });
-    } else
+    } else {
+      clickLogger.setCurrQueryTime(Date.now() - queryStartTime);
       return res.json(
         sendPacket(1, 'Successfully fetched documents', {
           documents: documents,
@@ -110,6 +114,7 @@ module.exports = (app) => {
           dislikes: {},
         })
       );
+    }
   });
 
   app.get('/autocomplete/:query', async (req, res) => {

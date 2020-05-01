@@ -73,6 +73,18 @@ const useStyles = (colors) =>
     hidden: {
       visibility: 'hidden',
     },
+    didyoumean: {
+      fontSize: '20px',
+      fontStyle: 'italic',
+      fontFamilt: 'Ubuntu',
+    },
+    resultChoice: {
+      color: 'lightblue',
+    },
+    word: {
+      color: 'blue',
+      fontWeight: 'bold'
+    }
   }));
 
 type Props = {
@@ -175,6 +187,7 @@ function Results(props: Props) {
           </a>
         </div>
         <div className={styles.pages}>{renderPageNumbers()}</div>
+
       </>
     );
   }
@@ -183,6 +196,9 @@ function Results(props: Props) {
     <div className={styles.subcontainer}>
       <p className={styles.resultCount}>
         Found {props.numSearched} results ({props.searchTime} seconds)
+      </p>
+      <p className={styles.didyoumean}>
+        <p className={styles.word}>Did you mean ({props.RelevantWord})</p>
       </p>
       <div className={styles.resultContainer}>
         {renderSites()}

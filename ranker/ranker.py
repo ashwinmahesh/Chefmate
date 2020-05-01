@@ -37,7 +37,7 @@ connect(rankerDBConfig.databaseName, host=rankerDBConfig.databaseAddr, port=2701
 inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority = loadInvertedIndexToMemory()
 stopwords = set(nltk.corpus.stopwords.words('english'))
 
-QUERY_EXPANSION = True
+QUERY_EXPANSION = False
 PSEUDO_RELEVANCE_FEEDBACK = True
 
 @app.route('/', methods=["GET"])
@@ -53,8 +53,17 @@ def rankQuery(query):
   corrected_uLikes = { k.replace("%114", '.'): v.replace("%20", ' ') for k, v in uLikes.items() }
   corrected_uDislikes = { k.replace('%114', '.'): v.replace("%20", ' ') for k, v in uDislikes.items() }
 
+  index = query.find(":")
+  if index == -1: 
+    excludedTerms = []
+    pureQuery = query
+  else:
+    excludedTerms = stemQuery(query[index+1:len(query)], stopwords)
+    pureQuery = query[0:index]
+
   queryTerms = stemQuery(query, stopwords)
-  sortedDocUrls = rank(corrected_uLikes, corrected_uDislikes, query, queryTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
+  sortedDocUrls = rank(corrected_uLikes, corrected_uDislikes, query, queryTerms, excludedTerms, termReverseMap, invertedIndex, inMemoryTFIDF, crawlerReverseMap, queryExpansion=QUERY_EXPANSION, pseudoRelevanceFeedback=PSEUDO_RELEVANCE_FEEDBACK)
+  
   log("Ranked", 'Ranked '+str(len(sortedDocUrls)) +' documents.')
   return sendPacket(1, 'Successfully retrieved query', {'sortedDocUrls':sortedDocUrls[0:200]})
 

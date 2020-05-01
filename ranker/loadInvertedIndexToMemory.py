@@ -7,17 +7,22 @@ from mongoengine import *
 from mongoConfig import *
 from helpers import log
 
+import nltk
+from nltk.stem import PorterStemmer 
+
+porterStemmer = PorterStemmer()
+
 def loadInvertedIndexToMemory():
   log('info', 'Loading Inverted Index into main memory.')
   startTime=time.time()
 
   invertedIndex = InvertedIndex.objects()
-  allTerms = [(term['doc_info'], term['term']) for term in invertedIndex]
+  crawlerObjects = Crawler.objects()
   
   documents = []
   pageRanks = []
   authority = []
-  for document in Crawler.objects():
+  for document in crawlerObjects:
     documents.append(document['url'])
     pageRanks.append(document['pageRank'])
     authority.append(document['authority'])
@@ -30,18 +35,20 @@ def loadInvertedIndexToMemory():
 
   termReverseMap = {}
   for i in range(0, len(invertedIndex)):
-    termReverseMap[allTerms[i][1]] = i
+    termReverseMap[invertedIndex[i]['term']] = i
 
-  for termEntry in allTerms:
-    termNum = termReverseMap[termEntry[1]]
-    for docKey in termEntry[0]:
-      doc = termEntry[0][docKey]
-      url=doc['url']
-      crawlerAxisPos = crawlerReverseMap[url]
-      try:
-        inMemoryTFIDF[termNum][crawlerAxisPos] = doc['tfidf']
-      except:
-        inMemoryTFIDF[termNum][crawlerAxisPos] = 0.0001
+  for document in crawlerObjects:
+    docIndex = crawlerReverseMap.get(document['url'])
+    for term in document['body'].split(' '):
+      stemmedTerm = porterStemmer.stem(term)
+      termIndex = termReverseMap.get(stemmedTerm)
+      if termIndex == None:
+        continue
+
+      if 'tfidf' not in document or stemmedTerm not in document['tfidf']:
+        inMemoryTFIDF[termIndex][docIndex] = 0.001
+      else:
+        inMemoryTFIDF[termIndex][docIndex] = document['tfidf'][stemmedTerm]
 
   log('time', 'Finished loading Inverted Index into main memory in ' + str(time.time()-startTime) + ' seconds.')
   return inMemoryTFIDF, invertedIndex, crawlerReverseMap, termReverseMap, pageRanks, authority
