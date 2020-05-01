@@ -1,4 +1,5 @@
 from queryExpansion import performQueryExpansion
+from levenDistance import getSimilarTerm
 from mongoConfig import *
 import sys
 sys.path.append('..')
@@ -24,7 +25,9 @@ def fetchDocuments(stemmedQueryTerms, invertedIndex, queryExpansion=False):
       termEntry = InvertedIndex.objects.get(term=term)
       termDBObjects.append(termEntry)
     except DoesNotExist:
-      log("query", 'Term not found - '+term)
+      log("query", 'Term not found - '+term+' ...Attempting to find similar...')
+      didUMean = getSimilarTerm(term)
+
   return termDBObjects
 
 if __name__ == '__main__':
