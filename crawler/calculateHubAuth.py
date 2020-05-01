@@ -5,7 +5,10 @@ sys.path.append('../..')
 from Chefmate.crawler.fileIO import FileIO
 from Chefmate.crawler.graph import Graph
 from Chefmate.helpers import log
-def hasConnection(otherPage, edges): 
+def hasConnection(page, otherPage, edges): 
+    if(page == otherPage): 
+      return False
+
     for x in edges: 
       if otherPage == x: 
         return True
@@ -48,12 +51,12 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
       outlinkEdges = outlinkGraph.get(page).keys()
       print(outlinkEdges)
       for otherPage in pages:
-        if hasConnection(otherPage, outlinkEdges):
+        if hasConnection(page, otherPage, outlinkEdges):
           print(hub[i][page])
           print(authority[i-1][otherPage])
           hub[i][page] += authority[i-1][otherPage]
           zHub += authority[i-1][otherPage]
-        if hasConnection(otherPage, inlinkEdges):
+        if hasConnection(page, otherPage, inlinkEdges):
           authority[i][page] += hub[i-1][otherPage]
           zAuth += hub[i-1][otherPage]
     
@@ -63,6 +66,8 @@ def calculateHubAuth(domain:str, inlinkGraphFile:str, outlinkGraphFile:str, iter
         if zHub > 0:
           hub[i][page] = hub[i][page] / zHub
 
+    print(f"Hub at Iteration {i}: {hub[i]}")
+    print(f"Auth at Iteration {i}: {authority[i]}")
     result = {}
 
     for page in pages: 
