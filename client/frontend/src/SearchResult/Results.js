@@ -73,16 +73,13 @@ const useStyles = (colors) =>
     hidden: {
       visibility: 'hidden',
     },
-    didyoumean: {
-      fontSize: '20px',
-      fontStyle: 'italic',
-      fontFamilt: 'Ubuntu',
+    didUMeanMain: {
+      fontFamily: 'Ubuntu',
+      fontSize: '14pt',
     },
-    resultChoice: {
-      color: 'lightblue',
-    },
-    word: {
+    didUMeanLink: {
       color: 'blue',
+      textDecoration: 'none',
       fontWeight: 'bold',
     },
   }));
@@ -94,6 +91,7 @@ type Props = {
   likesDislikes: [{}],
   theme: String,
   query: String,
+  didUMean: String,
 };
 
 function Results(props: Props) {
@@ -196,9 +194,14 @@ function Results(props: Props) {
       <p className={styles.resultCount}>
         Found {props.numSearched} results ({props.searchTime} seconds)
       </p>
-      <p className={styles.didyoumean}>
-        <p className={styles.word}>Did you mean ({props.RelevantWord})</p>
-      </p>
+      {props.didUMean !== props.query && (
+        <p className={styles.didUMeanMain}>
+          Did you mean:{' '}
+          <a href={`/result/${props.didUMean}`} className={styles.didUMeanLink}>
+            {props.didUMean}
+          </a>
+        </p>
+      )}
       <div className={styles.resultContainer}>
         {renderSites()}
         {renderPages()}

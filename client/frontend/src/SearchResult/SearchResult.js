@@ -45,7 +45,7 @@ function SearchResult(props) {
   const [numSearched, updateNumSearched] = useState(0);
   const [searchTime, changeSearchTime] = useState(1.12);
   const [userLikesDislikes, changeUserLikesDislikes] = useState([]);
-  const [displayDidUMean, changeDisplayDidUMean] = useState(false);
+  const [didUMean, changeDidUMean] = useState('');
 
   seconds = 0;
   stillLoading = true;
@@ -73,8 +73,8 @@ function SearchResult(props) {
       return;
     }
 
-    if (data['content']['didUMeanStr'] !== '') {
-      changeDisplayDidUMean(true);
+    if (data['content']['didUMeanStr'] !== null) {
+      changeDidUMean(data['content']['didUMeanStr']);
     }
 
     const docUrls = data['content']['sortedDocUrls'];
@@ -120,9 +120,10 @@ function SearchResult(props) {
             searchTime={searchTime}
             likesDislikes={userLikesDislikes}
             query={oldQuery}
+            didUMean={didUMean}
           />
         ) : (
-          <NoResults />
+          <NoResults didUMean={didUMean} />
         )}
       </div>
       <Footer> </Footer>
