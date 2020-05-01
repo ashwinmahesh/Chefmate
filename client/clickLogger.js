@@ -34,7 +34,7 @@ function setCurrQueryTime(time) {
     numOfSearchTimeBuffEntries++;
   } else {
     var fw = fs.createWriteStream('./logs/searchTime.txt', {
-        flags: 'a' // 'a' means appending
+        flags: 'a+' // 'a' means appending
     });
 
     for (var i = 0; i < searchTimeBuffSize; i++) {
@@ -55,7 +55,7 @@ function recordClick(redirect, currQuery) {
       numOfClicksBuffEntries++;
     } else {
       var fw = fs.createWriteStream('./logs/clicks.txt', {
-          flags: 'a' // 'a' means appending
+          flags: 'a+' // 'a' means appending
       });
 
       for (var i = 0; i < clicksBuffSize; i++) {
