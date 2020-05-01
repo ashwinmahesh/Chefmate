@@ -17,8 +17,8 @@ from calculateHubAuth import calculateHubAuth
 
 domains = [
     {'name': 'Tasty', 'root': 'https://tasty.co/'},
-    #{'name': 'SimplyRecipes', 'root': 'https://www.simplyrecipes.com/'},
-    #{'name': 'EpiCurious', 'root': 'https://www.epicurious.com/'},
+    {'name': 'SimplyRecipes', 'root': 'https://www.simplyrecipes.com/'},
+    {'name': 'EpiCurious', 'root': 'https://www.epicurious.com/'},
 ]
 
 loginPwd = '$2b$12$xteJc6kD6a3QSpi3MCHz5OyJWFY47uls8iw33Y.mwhqPtd168bOt.'.encode('UTF-8')
