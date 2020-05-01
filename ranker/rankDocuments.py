@@ -18,19 +18,19 @@ def rank(uLikes, uDislikes, query, queryTerms, excludedTerms, termReverseMap, in
   docURLs = set()
   queryTermWeights = np.zeros(len(termReverseMap))
   queryStr=''
-  didUMeanStr=''
   for term in queryTerms:
     queryStr+=term + ' '
-    didUMeanStr+=term + ' '
   
   log("QE", 'Expanding Query Terms')
-  fetchResults = fetchDocuments(queryTerms, invertedIndex, queryExpansion=queryExpansion)
+  fetchResults = fetchDocuments(query, queryTerms, invertedIndex, queryExpansion=queryExpansion)
   expandedTerms = fetchResults[0]
   didUMean = fetchResults[1]
 
+  didUMeanStr=query
   for x in didUMean:
     didUMeanStr = didUMeanStr.replace(x, didUMean[x])
   
+  print(didUMeanStr)
   if didUMeanStr == queryStr:
     didUMeanStr = ''
 

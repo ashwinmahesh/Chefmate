@@ -10,7 +10,7 @@ from helpers import log
 
 from nltk.stem import PorterStemmer 
 
-def fetchDocuments(stemmedQueryTerms, invertedIndex, queryExpansion=False):
+def fetchDocuments(userQuery, stemmedQueryTerms, invertedIndex, queryExpansion=False):
   expandedList = []
   for term in stemmedQueryTerms:
     expandedList.append(term)
@@ -26,8 +26,11 @@ def fetchDocuments(stemmedQueryTerms, invertedIndex, queryExpansion=False):
       termEntry = InvertedIndex.objects.get(term=term)
       termDBObjects.append(termEntry)
     except DoesNotExist:
-      log("query", 'Term not found - '+term+' ...Attempting to find similar...')
-      didUMean[term] = getSimilarTerm(term)
+      if term in userQuery:
+        log("query", 'Term not found - '+term+' ...Attempting to find similar...')
+        didUMean[term] = getSimilarTerm(term)
+      else:
+        log("query", 'Term not found - '+term)
 
   return termDBObjects, didUMean
 
