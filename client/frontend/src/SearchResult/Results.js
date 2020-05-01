@@ -73,16 +73,9 @@ const useStyles = (colors) =>
     hidden: {
       visibility: 'hidden',
     },
-    didyoumean: {
-      fontSize: '20px',
-      fontStyle: 'italic',
-      fontFamily: 'Ubuntu',
-      color: 'blue',
-      fontWeight: 'bold',
-    },
     didUMeanMain: {
       fontFamily: 'Ubuntu',
-      fontSize: '16pt',
+      fontSize: '14pt',
     },
     didUMeanLink: {
       color: 'blue',
