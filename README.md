@@ -1,12 +1,12 @@
 ![Chefmate Logo](client/frontend/src/images/logo.png)
 
 <h3>
-Arshad Khan,
 Ashwin Mahesh,
+Turner Dunlop,
 Nathan Venckus,
 Richa Tenany,
-Turner Dunlop,
 Vishva Pandya
+Arshad Khan,
 </h3>
 <h2>Features</h2>
 <h3>Crawler</h3>
